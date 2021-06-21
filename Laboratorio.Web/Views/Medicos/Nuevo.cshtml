@@ -1,0 +1,125 @@
+﻿
+
+@{
+    ViewBag.Title = "Medico";
+    Layout = null;
+}
+
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<form class="m-form m-form--fit m-form--label-align-right">
+    <div class="m-portlet__body" style="height:inherit;">
+
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Nombre(s)
+            </label>
+            <div class="col-7">
+                <input class="form-control m-input" type="text" name="nombre" id="nombremedico">
+
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Apellido Paterno
+            </label>
+            <div class="col-7">
+                <input class="form-control m-input" type="text" id="paternomedico">
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Apellido Materno
+            </label>
+            <div class="col-7">
+                <input class="form-control m-input" type="text" id="maternomedico">
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Genero
+            </label>
+            <div class="col-7">
+                <select id="Generomedico" class="form-control m-input">
+                    <option value="1">Masculino</option>
+                    <option value="2">Femenino</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Email
+            </label>
+            <div class="col-7">
+                <input class="form-control m-input" type="text" id="emailmedico">
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Telefono
+            </label>
+            <div class="col-7">
+                <input class="form-control m-input" type="text" id="telefonomedico">
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Celular
+            </label>
+            <div class="col-7">
+                <input class="form-control m-input" type="text" id="celularmedico">
+            </div>
+        </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label class="col-2 col-form-label">Direccion</label>
+            <div class="col-7">
+                <input class="form-control m-input" id="direccionmedico" />
+            </div>
+        </div>
+    <div class="m-portlet__foot m-portlet__foot--fit">
+        <div class="m-form__actions">
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-7">
+                    <button type="reset" class="btn btn-accent m-btn m-btn--air m-btn--custom" onclick="GuardarMedico()">
+                        Guardar Medico
+                    </button>
+                    &nbsp;&nbsp;
+                    <a onclick="javascript: $('#generalesSolicitud').show();$('#nuevoMedico').hide(); $('#listadoMedicos').show();" class="btn btn-secondary m-btn m-btn--air m-btn--custom">Cancelar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    function GuardarMedico() {
+        if ($('#nombremedico').val() != "") {
+            var nam = $('#nombremedico').val() + " " + $('#paternomedico').val() + " " + $('#maternomedico').val();
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    Direccion: $('#direccionmedico').val(), Nick: $('#nickmedico').val(), Nombre: $('#nombremedico').val(), Paterno: $('#paternomedico').val(),
+                    Materno: $('#maternomedico').val(), Telefono: $('#telefonomedico').val(), Email: $('#emailmedico').val(), Celular: $('#celularmedico').val(),
+                    Genero: $('#Generomedico').val()
+                },
+                url: '@Url.Content("~/")Medicos/Crear',
+                async: true,
+                success: function (response) {
+                    if (response.Resultado) {
+                        alert("Medico registrado con éxito");
+
+                        $('#generalesSolicitud').show();
+                        $('#nuevoMedico').hide(); $('#listadoMedicos').show();
+
+                        $('#txtMedico').val(nam);
+                        SearchTextMedico();
+                    }
+                }
+            })
+        }
+    }
+</script>

@@ -1,0 +1,87 @@
+﻿
+@{
+    ViewBag.Title = "ReporteSolicitudes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="m-portlet m-portlet--tabs m-portlet--accent m-portlet--head-solid-bg m-portlet--head-sm">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <i class="icon-layers font-blue"></i>
+            <span class="caption-subject bold uppercase m--font-metal">
+                REPORTE DE SOLICITUDES DE ESTUDIOS
+            </span>
+        </div>
+    </div>
+    <div class="m-portlet__body">
+        <div class="form-group m-form__group row">
+            <label class="col-form-label col-lg-2 col-sm-12">
+                Laboratorios
+                <span class="required" aria-required="true"> * </span>
+            </label>
+            <div class="col-lg-3 col-md-9 col-sm-12">
+                @Html.DropDownList("Laboratorios", null, new { @class = "form-control m-input", @id = "Laboratorios", @name = "Laboratorios", @tabindex = "-1" })
+            </div>
+            <div class="col-lg-3 col-md-9 col-sm-12">
+                <select id="mes" class="form-control m-input">
+                    <option value="1">ENERO</option>
+                    <option value="2">FEBRERO</option>
+                    <option value="3">MARZO</option>
+                    <option value="4">ABRIL</option>
+                    <option value="5">MAYO</option>
+                    <option value="6">JUNIO</option>
+                    <option value="7">JULIO</option>
+                    <option value="8">AGOSTO</option>
+                    <option value="9">SEPTIEMBRE</option>
+                    <option value="10">OCTUBRE</option>
+                    <option value="11">NOVIEMBRE</option>
+                    <option value="12">DICIEMBRE</option>
+                </select>
+            </div>
+            <div class="col-lg-2 col-md-9 col-sm-12">
+                <input class="form-control m-input" placeholder="Año" id="anio" />
+            </div>
+            <div class="col-lg-2 col-md-9 col-sm-12">
+                <a class="btn btn-secondary m-btn m-btn--air m-btn--custom" onclick="Buscar()">Buscar</a>
+            </div>
+        </div>
+    </div>
+    <div  class="m-portlet__body" id="resultadoBusqueda">
+        
+    </div>
+</div>
+<script>
+     $(document).ready(function () {
+            var ddl = $('#labs');
+
+        ddl.empty();
+        var labs = @Html.Raw(Json.Encode(ViewBag.Labs));
+        $(labs).each(function () {
+            $(document.createElement('option'))
+                .attr({ 'value': this.Id })
+                .text(this.Nombre)
+                .appendTo(ddl);
+        });
+        });
+       function Buscar() {
+           $('#resultadoBusqueda').html('');
+           $('#resultadoBusqueda').show();
+         $.ajax({
+            type: "POST",
+            dataType: 'json',
+            data: {
+                Laboratorio: parseInt($('#Laboratorios').val()), Mes: parseInt($('#mes').val()), Anio: parseInt($('#anio').val())
+            },
+            url: '@Url.Content("~/")Estudios/ResultadoBusqueda',
+            async: true,
+            success: function (response) {
+                $('#resultadoBusqueda').html(response);
+            },
+            error: function (response) {
+                $('#resultadoBusqueda').html(response.responseText);
+            }
+           });
+     }
+
+</script>

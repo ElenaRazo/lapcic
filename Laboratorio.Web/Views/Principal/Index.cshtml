@@ -1,0 +1,89 @@
+﻿
+@using Laboratorio.Administracion
+@model Usuario
+@{
+    Layout = null;
+}
+
+<html lang="en">
+<!--<![endif]--><!-- BEGIN HEAD -->
+<head>
+    <meta charset="utf-8">
+    <title>Laboratorio</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta content="" name="author">
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="~/assets/vendors/base/vendors.bundle.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/demo/default/base/style.bundle.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="favicon.ico">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <style type="text/css">
+        .green {
+            color: white;
+            font-weight: bold;
+        }
+
+        .P100 {
+            background-color: rgb(115, 174, 60);
+        }
+    </style>
+</head>
+<!-- END HEAD -->
+<body class=" login">
+    <!-- BEGIN : LOGIN PAGE 5-1 -->
+    <div class="m-login__container" style="align-self:center;margin-top:15%">
+        <div class="m-login__logo">
+            <a href="#">
+                <img src="~/assets/demo/default/media/img/logo/logo.png" />
+            </a>
+        </div>
+        <div class="m-login__signin" style="align-self:center;">
+            <div class="m-login__form-action">
+                <a href="@Url.Action("Paciente","Seguridad")" class="btn btn-success m-btn m-btn--pill m-btn--custom m-btn--air"  style="float: right;">
+                    Pacientes
+                </a>
+                <a href="@Url.Action("Index","Seguridad")" class="btn btn-primary m-btn m-btn--pill m-btn--custom m-btn--air" style="color:white;">
+                    Empleados
+                </a>
+            </div>
+
+        </div>
+    </div>
+    <a onclick="window.open('www.rushtecnologias.com','_blank')" style="position:fixed;bottom:10px;right:10px;">
+        Rush Tecnologías S.A. de C.V. 2018
+    </a>
+    <script>
+    function AsignarValor(valor) {
+        $('#Laboratorio').val(valor);
+        $('.P100').css('background-color', 'rgb(115, 174, 60)');
+        $('#bolita-' + valor).css('background-color', '#0299cf');
+    }
+    function CheckIn() {
+        $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    Inicio: { Nick: $('#Nick').val(), Password: $('#Password').val(), Laboratorio : $('#Laboratorio').val() }
+                },
+            url: '@Url.Content("~/")Seguridad/Chekin',
+                async: true,
+                success: function (response) {
+                    alert('Has registrado acceso/salida');
+                },
+            error: function (response) {
+                    if (response != "") {
+
+                        alert('error');
+                    } else {
+                        alert('Has registrado acceso/salida');
+                    }
+                }
+            });
+    }
+    </script>
+    @*@Scripts.Render("~/Scripts/jquery-1.10.2.min.js")
+        @Scripts.Render("~/assets/vendors/base/vendors.bundle.js")
+        @Scripts.Render("~/assets/demo/default/base/scripts.bundle.js")*@
+</body>
+</html>

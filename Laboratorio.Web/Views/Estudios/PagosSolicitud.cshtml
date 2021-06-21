@@ -1,0 +1,92 @@
+﻿
+@{
+    ViewBag.Title = "Nuevo";
+    Layout = null;
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<div class="m-portlet__body" style="height:inherit;" id="listado">
+    <div class="form-group m-form__group row">
+        <label class="col-form-label col-lg-2 col-sm-12">
+            Tipo de pago
+            <span class="required" aria-required="true"> * </span>
+        </label>
+        <div class="col-lg-10 col-md-9 col-sm-12">
+            @Html.DropDownList("TipoPago", null, new { @class = "form-control m-input", @id = "TipoPago", @name = "TipoPago", @tabindex = "-1" })
+            <span class="" dir="ltr" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-puesto_list-container"><span class="select2-selection__rendered" id="select2-puesto_list-container"><span class="select2-selection__placeholder">Selecciona el tipo de pago que deseas agregar</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+        </div>
+        <label class="col-form-label col-lg-2 col-sm-12">
+            4 últimos digitos de la tarjeta en caso de que aplique
+            <span class="required" aria-required="true"> * </span>
+        </label>
+        <div class="col-lg-10 col-md-9 col-sm-12">
+            <input type="text" id="adicional" class="form-control" name="adicional" aria-required="true" value="0" aria-invalid="false">
+        </div>
+        <label class="col-form-label col-lg-2 col-sm-12">
+            Monto
+            <span class="required" aria-required="true"> * </span>
+        </label>
+        <div class="col-lg-10 col-md-9 col-sm-12">
+            <input type="text" id="monto" class="form-control" onblur="javscript: actualizarprecio()" name="monto" aria-required="true" value="0" aria-invalid="false">
+        </div>
+        <label class="col-form-label col-lg-2 col-sm-12">
+            Descuento
+            <span class="required" aria-required="true"> * </span>
+        </label>
+        <div class="col-lg-10 col-md-9 col-sm-12">
+            <input type="text" id="descuento" class="form-control" onblur="javscript: actualizarprecio()" value="@ViewBag.Descuento" name="descuento" aria-required="true" aria-invalid="false">
+        </div>
+        <label class="col-form-label col-lg-2 col-sm-12">
+            Costo de urgencias
+            <span class="required" aria-required="true"> * </span>
+        </label>
+        <div class="col-lg-10 col-md-9 col-sm-12">
+            <input type="text" id="urgencias" class="form-control" onblur="javscript: actualizarprecio()" value="@ViewBag.CostoUrgencia" name="urgencias" aria-required="true" aria-invalid="false">
+        </div>
+        <div class="col-lg-2">
+            <button class="btn btn-primary" onclick="AplicarPago()">
+                Aplicar
+            </button>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#descuentosolicitud').val(@ViewBag.Descuento);
+        if (empresa == 18)
+            $('#TipoPago').val("PG");
+        else
+            $('#TipoPago').val("EF");
+          $('#urgenciacosto').val(@ViewBag.CostoUrgencia);
+          $('#descuentosolicitud').html($('#descuento').val());
+          $('#urgenciacosto').html($('#urgencias').val());
+    });
+
+    function AplicarPago() {
+        if ($('#monto').val() != "") {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    ClaveSolicitud: '@ViewBag.ClaveSolicitud',
+                    Descuento: parseFloat($('#descuento').val()),
+                    CostoUrgencias: parseFloat($('#urgencias').val()),
+                    Monto: parseFloat($('#monto').val()), Tipo: $('#TipoPago').val(), Adicional: $('#adicional').val()
+                },
+                url: '@Url.Content("~/")Estudios/AplicarPago',
+                async: true,
+                success: function (response)
+                {
+                    if (response.Resultado) {
+
+                        alert('Solicitud ingresada con exito');
+                        window.location.reload();
+                    }
+                    else {
+                        alert('Error al realizar el movimiento');
+                    }
+                }
+            })
+        }
+    }
+</script>

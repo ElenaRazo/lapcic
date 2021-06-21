@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewBag.Title = "ResultadosSolicitud";
+    Layout = null;
+}
+
+<div class="m-portlet__body" style="height:inherit;">
+    <form class="m-form m-form--fit m-form--label-align-right">
+        <div class="m-portlet__body" style="height:inherit;">
+            <table class="table table-striped m-table">
+                <thead>
+                    <tr style="height: 30px; background-color:darkgray; color:white;">
+                        <th style="width:30%"> Componente </th>
+                        <th style="width:10%"> Resultado </th>
+                        <th style="width:10%"> Unidad </th>
+                        <th style="width:30%"> Referencia </th>
+                        <th style="width:20%"> Observaciones </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < @ViewBag.Resultados.Count; i++)
+                    {
+                        if (@ViewBag.Resultados[i].Titulo != "1")
+                        {
+                            <tr>
+                                <td style="width:30%">@ViewBag.Resultados[i].NombreEstudio</td>
+                                <td style="width:10%">@ViewBag.Resultados[i].Resultado</td>
+                                <td style="width:10%">@ViewBag.Resultados[i].Unidad</td>
+                                <td style="width:30%">
+                                    @if (ViewBag.Resultados[i].TipoCaptura == "4" && @ViewBag.Resultados[i].Observaciones != "")
+                                    {
+                                        @ViewBag.Resultados[i].Observaciones
+                                    }
+                                    else
+                                    {
+                                        @ViewBag.Resultados[i].Referencia
+                                    }
+                                </td> 
+                                 <td style="width:30%">
+                                     @ViewBag.Resultados[i].Observaciones
+                                 </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit">
+            <div class="m-form__actions m-form__actions--solid">
+                <div class="row">
+                    <div class="col-lg-6">
+                        
+                        <a class="btn btn-secondary m-btn m-btn--air m-btn--custom" onclick="$('#Resultado').hide();$('#listadoEstudiosSolicitud').show();">
+                            Cancelar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

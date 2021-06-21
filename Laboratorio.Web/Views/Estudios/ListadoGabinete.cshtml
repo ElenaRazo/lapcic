@@ -1,0 +1,90 @@
+﻿
+@{
+    ViewBag.Title = "Nuevo";
+    Layout = null;
+}
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<div id="listadogabinete" class="m-portlet__body">
+    <table class="table table-striped m-table" id="tblEstudioGabinete">
+        <thead>
+            <tr style="height: 30px; background-color:darkgray; color:white;">
+                <th style="width:2%"> # </th>
+                <th style="width:10%"> Clave </th>
+                <th style="width:5%"> Fecha </th>
+                <th style="width:40%"> Paciente </th>
+                <th style="width:18%"> TIPO </th>
+                <th style="width:20%"> Estatus </th>
+                <th style="width:auto;"> </th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < @ViewBag.Estudios.Count; i++)
+            {
+            <tr>
+                <td style="width:2%">@(i+1)</td>
+                <td style="width:5%">@(ViewBag.Estudios[i].ClaveSolicitud)</td>
+                <td style="width:5%">@(ViewBag.Estudios[i].Fecha.ToString("dd/MM/yyyy hh:mm"))</td>
+                <td style="width:40%">@(ViewBag.Estudios[i].Paciente.Nombre.ToUpper() + " " + ViewBag.Estudios[i].Paciente.Paterno.ToUpper() + " " + ViewBag.Estudios[i].Paciente.Materno.ToUpper())</td>
+                <td style="width:18%">@(ViewBag.Estudios[i].TipoEstudio)</td>
+                <td style="width:20%">@(ViewBag.Estudios[i].EstatusSolicitud)</td>
+                <td style="width:auto;">
+                    <a href="@Url.Action("DetalleEstudioGabinete", "Estudios", new { Id = ViewBag.Estudios[i].Id })" title="Ver Detalle">
+                        <i class="fa fa-search"></i>
+                    </a>
+                    <a href="@Url.Action("SolicitudGabinete","Estudios", new { Id = @ViewBag.Estudios[i].Id })" target="_blank" class="btn btn-outline btn-circle dark btn-sm black" title="Ver solicitud">
+                        <i class="fa fa-file-pdf-o"></i>
+                    </a>
+
+                    @if (ViewBag.Usuario != null && ViewBag.Usuario.Puesto.Id < 6)
+                    {
+                        <a onclick="Eliminar(@ViewBag.Estudios[i].Id)" class="btn btn-outline btn-circle dark btn-sm black" title="Eliminar">
+                            <i class="fa fa-trash-o"></i>
+                        </a>
+                    }
+                </td>
+            </tr>
+                <tr>
+                    <td colspan="6">@(ViewBag.Estudios[i].Observaciones)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<script type="text/javascript">
+     $(document).ready(function () {
+        $('#contadorSolicitudes').text("@(ViewBag.Estudios.Count) Solicitudes");
+    });
+    function Eliminar(id) {
+         if (confirm("¿Deseas eliminar la solicitud?")) {
+
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    Id: id
+                },
+                url: '@Url.Content("~/")Estudios/EliminarSolicitudGabinete',
+                async: true,
+                success: function (response) {
+                    if (response.respuesta)
+                        alert('Solicitud eliminada con éxito');
+                    window.location.reload();
+                },
+                error: function (response) {
+                    if (response.respuesta)
+                        alert('Solicitud eliminada con éxito');
+                    window.location.reload();
+                }
+        });
+        } else {
+
+        }
+
+
+
+    }
+</script>

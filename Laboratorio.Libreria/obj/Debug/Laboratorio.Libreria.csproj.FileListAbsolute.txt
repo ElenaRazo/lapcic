@@ -1,0 +1,16 @@
+D:\Project\Laboratorio.Web\Laboratorio.Libreria\bin\Debug\Laboratorio.Libreria.dll
+D:\Project\Laboratorio.Web\Laboratorio.Libreria\bin\Debug\Laboratorio.Libreria.pdb
+D:\Project\Laboratorio.Web\Laboratorio.Libreria\obj\Debug\Laboratorio.Libreria.csprojResolveAssemblyReference.cache
+D:\Project\Laboratorio.Web\Laboratorio.Libreria\obj\Debug\Laboratorio.Libreria.dll
+D:\Project\Laboratorio.Web\Laboratorio.Libreria\obj\Debug\Laboratorio.Libreria.pdb
+D:\Project\Laboratorio\Laboratorio.Libreria\bin\Debug\Laboratorio.Libreria.dll
+D:\Project\Laboratorio\Laboratorio.Libreria\bin\Debug\Laboratorio.Libreria.pdb
+D:\Project\Laboratorio\Laboratorio.Libreria\obj\Debug\Laboratorio.Libreria.dll
+D:\Project\Laboratorio\Laboratorio.Libreria\obj\Debug\Laboratorio.Libreria.pdb
+D:\Project\Laboratorio\Laboratorio.Libreria\obj\Debug\Laboratorio.Libreria.csprojResolveAssemblyReference.cache
+D:\Proyectos\Laboratorio\Laboratorio.Libreria\bin\Debug\Laboratorio.Libreria.dll
+D:\Proyectos\Laboratorio\Laboratorio.Libreria\bin\Debug\Laboratorio.Libreria.pdb
+D:\Proyectos\Laboratorio\Laboratorio.Libreria\obj\Debug\Laboratorio.Libreria.csprojAssemblyReference.cache
+D:\Proyectos\Laboratorio\Laboratorio.Libreria\obj\Debug\Laboratorio.Libreria.csproj.CoreCompileInputs.cache
+D:\Proyectos\Laboratorio\Laboratorio.Libreria\obj\Debug\Laboratorio.Libreria.dll
+D:\Proyectos\Laboratorio\Laboratorio.Libreria\obj\Debug\Laboratorio.Libreria.pdb

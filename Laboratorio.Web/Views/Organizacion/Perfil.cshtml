@@ -1,0 +1,264 @@
+﻿
+@{
+    ViewBag.Title = "Perfil";
+    Layout = "~/Views/Shared/_LayoutOrganizacion.cshtml";
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<div class="m-portlet" id="form_wizard_1" style="background-color: #ffffff00;"  >
+    <div class="m-portlet__head" style="background-color: #00BCD4;color: white;">
+        <div class="m-portlet__head-caption">
+            <i class=" icon-layers font-blue"></i>
+            <span class="caption-subject font-blue bold uppercase">
+                @(ViewBag.Organizacion.Nombre)
+            </span>
+        </div>
+        <div class="m-portlet__head-tools">
+            <a href="@Url.Action("Organizacion","Seguridad")" style="color:white">Cerrar sesión</a>
+        </div>
+    </div>
+    <div class="portlet-body form">
+        <div class="row">
+            <div class="col-xl-3 col-lg-4">
+                <div class="m-portlet">
+                    <div class="m-portlet__body">
+                        <div class="m-card-profile">
+                            <div class="m-card-profile__title m--hide">
+                                Mi cuenta
+                            </div>
+                            <div class="m-card-profile__pic">
+                                <div class="m-dropzone dropzone m-dropzone--primary dz-clickable dz-started" action="@Url.Action("SubirFoto", "Multimedia", new { Identificador = ViewBag.Organizacion.Id })" id="m-dropzone-two">
+                                    <img src="@(Url.Content("~/")+"Directorio/"+ViewBag.Organizacion.Foto)" style="height:15%">
+                                    <div class="m-dropzone__msg dz-message needsclick">
+                                        <h3 class="m-dropzone__msg-title">
+                                            Cambiar
+                                        </h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="m-card-profile__details">
+                                <span class="m-card-profile__name">
+                                    @(ViewBag.Organizacion.Nombre)
+                                </span>
+                                <input type="password" id="pass" class="form-control m-input" /><button type="reset" class="btn btn-accent m-btn m-btn--air m-btn--custom" onclick="CambiarPass()">Cambiar contraseña</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-9 col-lg-8">
+                <div class="m-portlet m-portlet--tabs">
+                    <div class="m-portlet__head">
+                        <div class="m-portlet__head-tools">
+                            <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
+                                <li class="nav-item m-tabs__item">
+                                    <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_user_profile_tab_1" role="tab">
+                                        <i class="flaticon-share m--hide"></i>
+                                        Perfil
+                                    </a>
+                                </li>
+                                <li class="nav-item m-tabs__item">
+                                    <a class="nav-link m-tabs__link " data-toggle="tab" href="#m_user_profile_tab_2" role="tab">
+                                        <i class="flaticon-share m--hide"></i>
+                                        Expediente
+                                    </a>
+                                </li>
+                                <li class="nav-item m-tabs__item">
+                                    <a class="nav-link m-tabs__link " data-toggle="tab" href="#m_user_profile_tab_3" role="tab">
+                                        <i class="flaticon-share m--hide"></i>
+                                        Gabinete
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="m-portlet__head-tools">
+                        </div>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="m_user_profile_tab_1">
+                            <form class="m-form m-form--fit m-form--label-align-right">
+                                <div class="m-portlet__body" style="height:inherit; padding:2.2rem;">
+
+                                    <div class="form-group m-form__group row">
+                                        <label for="example-text-input" class="col-2 col-form-label">
+                                            Nombre(s)
+                                        </label>
+                                        <div class="col-10">
+                                            <input class="form-control m-input" type="text" name="nombre" value="@(ViewBag.Organizacion.Nombre)" id="nombre">
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group m-form__group row">
+                                        <label for="example-text-input" class="col-2 col-form-label">
+                                            Telefono
+                                        </label>
+                                        <div class="col-10">
+                                            <input class="form-control m-input" type="text" value="@(ViewBag.Organizacion.Telefono)" id="telefono">
+                                        </div>
+                                    </div>
+                                    <div class="form-group m-form__group row">
+                                        <label for="example-text-input" class="col-2 col-form-label">
+                                            Telefono 2
+                                        </label>
+                                        <div class="col-10">
+                                            <input class="form-control m-input" type="text" value="@(ViewBag.Organizacion.Celular)" id="celular">
+                                        </div>
+                                    </div>
+                                    <div class="form-group m-form__group row">
+                                        <label for="example-text-input" class="col-2 col-form-label">
+                                            Colonia
+                                        </label>
+                                        <div class="col-10">
+                                            <input class="form-control m-input" type="text" value="@(ViewBag.Organizacion.Colonia)" id="colonia">
+                                        </div>
+                                    </div>
+                                    <div class="form-group m-form__group row">
+                                        <label class="col-2 col-form-label">Direccion</label>
+                                        <div class="col-10">
+                                            <input class="form-control m-input" id="nick" value="@(ViewBag.Organizacion.Direccion)" />
+                                        </div>
+                                    </div>
+                                </div>
+                                @*<div class="m-portlet__foot m-portlet__foot--fit">
+                                    <div class="m-form__actions">
+                                        <div class="row">
+                                            <div class="col-2"></div>
+                                            <div class="col-7">
+                                                <button type="reset" class="btn btn-accent m-btn m-btn--air m-btn--custom" onclick="Actualizar()">
+                                                    Actualizar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>*@
+                            </form>
+                        </div>
+                        <div class="tab-pane" id="m_user_profile_tab_2">
+                            @{ Html.RenderAction("Expediente", "Organizacion", new { Id = ViewBag.Organizacion.Id }); }
+                        </div>
+                        <div class="tab-pane" id="m_user_profile_tab_3">
+                            @{ Html.RenderAction("ListadoEstudiosGabinete", "Organizacion", new { Id = ViewBag.Organizacion.Id }); }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var adjuntos = "";
+    function Actualizar(id) {
+
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            data: {
+              Nick:$('#nick').val(),   IdEmpleado: @(ViewBag.Organizacion.Id),IdPuesto: $('#puesto').val(), IdDepartamento: $('#Departamento').val(), Nombre: $('#nombre').val(), Paterno: $('#paterno').val(), Materno: $('#materno').val(), Email: '@(ViewBag.Organizacion.Email)', RFC: $('#rfc').val(), Descripcion: $('#descripcion').val(), Foto: "",
+                Administrador: $("#Administrador").is(':checked') ? 1 : 0, Root: $("#Root").is(':checked') ? 1 : 0 },
+            url: '/Empleados/Actualizar',
+            async: true,
+            success: function (response) {
+                alert("Datos guardados");
+                location.replace("@Url.Action("Index","Empleados")");
+            }
+        })
+    }
+    $(document).ready(function () {
+        $('#Estado').val(@(ViewBag.Organizacion.Ciudad != null ? ViewBag.Organizacion.Ciudad.Estado.Id :0));
+        CallChangeEstado();
+    });
+     function EnviarCorreo(detalle, id) {
+             if (confirm("¿Deseas enviar por correo electrónico?")) {
+                 $.ajax({
+                     type: "POST",
+                     dataType: 'json',
+                     data: {
+                         receiver: '@ViewBag.Organizacion.Email',
+                         Detalle: detalle,
+                         Id: id
+                    },
+                     url: '@Url.Content("~/")Estudios/EnvioCorreoInterpretacion',
+                     async: true,
+                     success: function (response) {
+                         window.location.reload();
+                     },
+                     error: function (response) {
+                         window.location.reload();
+                     }
+                 });
+             } else {
+
+             }
+
+         }
+     function CallChangeEstado() {
+        var ddl = $('#Municipio');
+        ddl.empty();
+
+        if (parseInt($('#Estado').val()) != 0) {
+            $.getJSON('@Url.Content("~/")Catalogos/GetMunicipiosPorEstado', { Id: parseInt($('#Estado').val()) }, function (result) {
+                var i = 0;
+                $(result).each(function () {
+                    i++;
+                    $(document.createElement('option'))
+                        .attr('value', this.Id)
+                        .text(this.Nombre)
+                        .appendTo(ddl);
+                    if (i == result.length) {
+                        $('#Municipio').val(@(ViewBag.Organizacion.Ciudad != null ? ViewBag.Organizacion.Ciudad.Id :0))
+                        CallChangeMunicipio();
+                    }
+                });
+            });
+
+        }
+
+    };
+    function CalcularEdad() {
+        debugger;
+        var f = new Date();
+        var anio = f.getFullYear();
+        var e = new Date($('#fecha').val());
+        var anioe = e.getFullYear();
+        $('#edad').val(f - e);
+    };
+    function CallChangeMunicipio() {
+        var ddl2 = $('#Colonia');
+        ddl2.empty();
+        if (parseInt($('#Municipio').val()) != 0) {
+            $.getJSON('@Url.Content("~/")Catalogos/GetColoniasPorMunicipio', { Id: parseInt($('#Municipio').val()) }, function (result) {
+                var i = 0;
+                $(result).each(function () {
+                    i++;
+                    $(document.createElement('option'))
+                        .attr({ 'value': this.Id })
+                        .text(this.Nombre)
+                        .appendTo(ddl2);
+                    if (i == result.length) {
+                        debugger;
+                        $('#Colonia').val(@(ViewBag.Organizacion.Colonia != null ? ViewBag.Organizacion.Colonia.Id :0))
+                    }
+                });
+            });
+        }
+    };
+     function CambiarPass() {
+        if ($('#pass').val() != "") {
+
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    Pass: $('#pass').val()
+                },
+                url: '@Url.Content("~/")Organizacions/ActualizarPass',
+                async: true,
+                success: function (response) {
+                    if (response.Resultado) {
+                        alert("Por seguridad, será redigirido a la pagina de inicio de sesión");
+                        window.location.replace('@Url.Content("~/")Seguridad/Organizacion');
+                    }
+                }
+            })
+        }
+    }
+</script>

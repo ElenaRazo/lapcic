@@ -1,0 +1,483 @@
+﻿
+@{
+    ViewBag.Title = "Resultado";
+    Layout = null;
+}
+
+
+
+
+<style type="text/css">
+    body {
+        font-size: 11px;
+    }
+
+    .nota {
+        position: fixed;
+        bottom: 0px;
+        padding: 10px;
+    }
+
+    .ClaveHT {
+        text-align: left;
+        color: #DDD;
+        font-size: 2em;
+    }
+
+    .HRCVE1 {
+        position: absolute;
+        top: 930px;
+        text-align: right;
+        z-index: -1;
+    }
+
+    .HRCVE2 {
+        position: absolute;
+        top: 2200px;
+        text-align: right;
+        z-index: -1;
+    }
+
+    .HRCVE3 {
+        position: absolute;
+        top: 3470px;
+        text-align: right;
+        z-index: -1;
+    }
+
+    .HRCVE4 {
+        position: absolute;
+        top: 4060px;
+        text-align: right;
+        z-index: -1;
+    }
+</style>
+
+<table border="0" style="margin-top:0px;width:100%;height:100%;">
+    <tbody>
+        <tr style="height:450px">
+            <td colspan="2">
+                <div id="pnlEncabezado" class="portlet-body form">
+
+                    <table cellspacing="0" border="0" style="border-collapse:collapse; width:100%">
+                        <tbody>
+                            <tr>
+                                <td colspan="2">
+                                    <table style="border-bottom: black 1px solid; width:100%;">
+                                        <tbody>
+                                            <tr>
+                                                <td align="right" colspan="5">
+                                                    <strong style="font-size: 11px;">Clave: </strong>
+                                                    <span id="FormView1_Label5" style="font-weight: bold;font-size: 11px;">@ViewBag.Solicitud.ClaveSolicitud</span><br />
+                                                    <span id="FormView1_Label5" style='font-weight: bold;font-size: 11px; color:@(ViewBag.Solicitud.TipoUrgencia.ToString() == "URGENCIA" ? "red" : "black")'>Entrega: @ViewBag.Solicitud.TipoUrgencia</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td rowspan="4">
+                                                    <img src="~/assets/demo/default/media/img/logo/logo.png" style="width:180px" />
+                                                    <br />
+                                                    <center id="FormView1_Label5" style="font-weight: bold;font-size: 11px;">LABORATORIO</center>
+                                                </td>
+                                                <td align="left" style="font-weight: bold; width: 10%;font-size: 11px; ">
+                                                    Clave:
+                                                </td>
+                                                <td style=" width: 45%;">
+                                                    <span id="FormView1_CLAVE_SOLICITUDLabel" style="font-size: 11px; ">@ViewBag.Solicitud.ClaveSolicitud</span>
+                                                </td>
+                                                <td align="left" style="font-weight: bold;font-size: 11px;  width: 15%;">
+                                                    Edad, Sexo:
+                                                </td>
+                                                <td style=" width: 30%;">
+                                                    <span id="FormView1_EDAD_PACIENTELabel" style="font-size: 11px; ">
+                                                        @*@ViewBag.Solicitud.Paciente.Edad*@
+                                                        @{var edad = ""; }
+                                                        @{
+                                                            var startDate = ViewBag.Solicitud.Paciente.FechaNacimiento;
+                                                            if (startDate != null && startDate.Year > 1) {
+
+                                                                var endDate = DateTime.Today;
+
+                                                                if (startDate > endDate)
+                                                                {
+                                                                    edad = "";
+                                                                }
+
+                                                                int years = endDate.Year - startDate.Year;
+                                                                int months = 0;
+                                                                int days = 0;
+
+                                                                // Check if the last year, was a full year.
+                                                                if (endDate < startDate.AddYears(years) && years != 0)
+                                                                {
+                                                                    years--;
+                                                                }
+
+                                                                // Calculate the number of months.
+                                                                startDate = startDate.AddYears(years);
+
+                                                                if (startDate.Year == endDate.Year)
+                                                                {
+                                                                    months = endDate.Month - startDate.Month;
+                                                                }
+                                                                else
+                                                                {
+                                                                    months = (12 - startDate.Month) + endDate.Month;
+                                                                }
+
+                                                                // Check if last month was a complete month.
+                                                                if (endDate < startDate.AddMonths(months) && months != 0)
+                                                                {
+                                                                    months--;
+                                                                }
+
+                                                                // Calculate the number of days.
+                                                                startDate = startDate.AddMonths(months);
+
+                                                                days = (endDate - startDate).Days;
+
+                                                                edad = years + " año(s) - " + months + " mes(es)";
+                                                            }
+
+                                                        }
+                                                        @edad
+                                                    </span>,
+                                                    <span id="FormView1_Label1" style="font-size: 11px; ">@(ViewBag.Solicitud.Paciente.Genero == "F" ? "Femenino" : "Masculino")</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="left" style="font-weight: bold; font-size: 11px;  width: 10%;">
+                                                    Paciente:
+                                                </td>
+                                                <td style=" width: 45%;">
+                                                    <span id="FormView1_PACIENTELabel" style="font-size: 11px; ">@ViewBag.Solicitud.Paciente.NombreCompleto.ToUpper()</span>
+                                                </td>
+                                                <td align="left" style="font-weight: bold;font-size: 11px; width: 15%; ">
+                                                    Empresa:
+                                                </td>
+                                                <td style=" width: 30%;">
+                                                    <span id="FormView1_EMPRESALabel" style="font-size: 11px; ">@ViewBag.Solicitud.Empresa.Nombre.ToUpper()</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="left" style="font-weight: bold; font-size: 11px;  width: 10%;">
+                                                    F. Nac:
+                                                </td>
+                                                <td style=" width: 45%;">
+                                                    <span id="FormView1_PACIENTELabel" style="font-size: 11px; ">@ViewBag.Solicitud.Paciente.FechaNacimiento.ToString("dd/MM/yyyy")</span>
+                                                </td>
+                                                <td align="left" style="font-weight: bold;font-size: 11px; width: 15%; ">
+                                                    Folio:
+                                                </td>
+                                                <td style=" width: 30%;">
+                                                    <span id="FormView1_EMPRESALabel" style="font-size: 11px; ">@ViewBag.Solicitud.Folio</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="left" style="font-weight: bold;font-size: 11px; width: 10%;">
+                                                    Dirección:
+                                                </td>
+                                                <td style=" width: 45%;">
+                                                    <span id="FormView1_Label2" style="font-size: 11px;">@ViewBag.Solicitud.Paciente.Direccion.ToUpper()</span>
+                                                </td>
+                                                <td align="left" style="font-weight: bold;font-size: 11px;  width: 15%;">
+                                                    Teléfono:
+                                                </td>
+                                                <td style=" width: 30%;">
+                                                    <span id="FormView1_EMPRESALabel" style="font-size: 11px; ">@(ViewBag.Solicitud.Paciente.Telefono) | @(ViewBag.Solicitud.Paciente.Celular)</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td align="left" style="font-weight: bold; font-size: 11px;  width: 10%;">
+                                                    Usuario:
+                                                </td>
+                                                <td style=" width: 45%;">
+                                                    <span id="FormView1_PACIENTELabel" style="font-size: 11px; ">@(ViewBag.Solicitud.Usuario.NombreCompleto.ToUpper())</span>
+                                                </td>
+                                                <td align="left" style="font-weight: bold;font-size: 11px; width: 15%;">
+                                                    F. Solicitud:
+                                                </td>
+                                                <td style=" width: 30%;">
+                                                    <span id="FormView1_FECHA_SOLICITUDLabel" style="font-size: 11px;">@ViewBag.Solicitud.Fecha.ToString("dd/MM/yyyy")</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td align="left" style="font-weight: bold; font-size: 11px; width: 10%;">
+                                                    Médico:
+                                                </td>
+                                                <td style=" width: 45%; height: 18px">
+                                                    <span id="FormView1_MEDICOLabel" style="font-size: 11px">@ViewBag.Solicitud.Medico.NombreCompleto.ToUpper()</span>
+                                                </td>
+                                                <td align="left" style="font-weight: bold;font-size: 11px; width: 15%;">
+                                                    F. Impresión:
+                                                </td>
+                                                <td style=" height: 18px; width: 30%;">
+                                                    <span id="FormView1_Label4" style="font-size: 11px">@DateTime.Now.ToString("dd/MM/yyyy") @DateTime.Now.ToShortTimeString() </span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <span style="display:@(ViewBag.Solicitud.ObservacionUrgencia != "" ? "block" : "none")">
+                                        @(ViewBag.Solicitud.ObservacionUrgencia)
+                                    </span>
+                                    <center id="FormView1_LABORATORIOLabel" style="font-size: 11px">@ViewBag.Solicitud.Laboratorio.Nombre.ToUpper() - Tel. @ViewBag.Solicitud.Laboratorio.Telefono</center>
+                                </td>
+                            </tr>
+                            <tr style="height:250px; vertical-align:top">
+                                <td style="width:100%">
+                                    <table class="table table-striped m-table" style="width:100%;">
+                                        <thead>
+                                            <tr>
+                                                <th style="width:40%;text-align:left;font-size: 11px;"> Estudio </th>
+                                                <th style="width:15%;font-size: 11px; text-align:right;"> Precio </th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                var total = 0.0;
+                                                for (int i = 0; i < @ViewBag.EstudiosSolicitud.Count; i++)
+                                                {
+
+                                                    total = total + ViewBag.EstudiosSolicitud[i].PrecioBase;
+                                                    <tr>
+                                                        <td style="width:40%;font-size: 11px;">@ViewBag.EstudiosSolicitud[i].Nombre</td>
+                                                        <td style="width:15%; text-align:right;font-size: 11px;">@(ViewBag.Solicitud.Empresa.Precios == true ? ViewBag.EstudiosSolicitud[i].PrecioBase : "--")</td>
+                                                        <td></td>
+                                                    </tr>
+                                                    @*if (i == ViewBag.EstudiosSolicitud.Count - 1)
+                                                        {
+                                                            total = (ViewBag.Solicitud.Empresa.Precios == true ? total : 0.0);
+                                                                <tr>
+                                                                    <td style="width:40%;font-size: 11px;text-align:right;">TOTAL</td>
+                                                                    <td style="width:30%; text-align:right;font-size: 11px;">@total</td>
+                                                                    <td></td>
+                                                                </tr>
+                                                        }*@
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <table style="width:100%; border:1px solid black; border-collapse:collapse;">
+                                        <tr>
+                                            <td style="font-weight:bold; font-size: 11px; width:10%;">SubTotal</td>
+                                            <td style="font-weight:bold;font-size: 11px;width:10%;">@(ViewBag.Solicitud.Empresa.Precios == true ? ViewBag.Solicitud.SubTotal : "--")</td>
+                                            <td style="font-weight:bold; font-size: 11px;width:10%;">Urgencias</td>
+                                            <td style="font-weight:bold;font-size: 11px;width:10%;">@(ViewBag.Solicitud.Empresa.Precios == true ? ViewBag.Solicitud.CostoUrgencia : "--")</td>
+                                            <td style="font-weight:bold; font-size: 11px;width:10%;">Total</td>
+                                            <td style="font-weight:bold;font-size: 11px;width:10%;">@(ViewBag.Solicitud.Empresa.Precios == true ? ViewBag.Solicitud.Total : "--")</td>
+                                            <td style="font-weight:bold; font-size: 11px;width:10%;">A cuenta</td>
+                                            <td style="font-weight:bold;font-size: 11px;width:10%;">@(ViewBag.Solicitud.Empresa.Precios == true ? ViewBag.Solicitud.Acuenta : "--")</td>
+                                            <td style="font-weight:bold; font-size: 11px;width:10%;">Debe</td>
+                                            <td style="font-weight:bold;font-size: 11px;width:10%;">@(ViewBag.Solicitud.Empresa.Precios == true ? ViewBag.Solicitud.Debe : "--")</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </td>
+        </tr>
+        <tr style="height:450px">
+            <td colspan="2">
+                <div id="pnlEncabezado" class="portlet-body form">
+
+                    <table cellspacing="0" border="0" id="FormView1" style="border-collapse:collapse; width:100%">
+                        <tbody>
+                            <tr>
+                                <td colspan="2">
+                                    <table style="border-bottom: black 1px solid; width:100%;">
+                                        <tbody>
+                                            <tr>
+                                                <td align="right" colspan="5">
+                                                    <strong style="font-size: 11px;">Clave: </strong>
+                                                    <span id="FormView1_Label5" style="font-weight: bold;font-size: 11px;">@ViewBag.Solicitud.ClaveSolicitud</span><br />
+                                                    <span id="FormView1_Label5" style='font-weight: bold;font-size: 11px; color:@(ViewBag.Solicitud.TipoUrgencia.ToString() == "URGENCIA" ? "red" : "black")'>Entrega: @ViewBag.Solicitud.TipoUrgencia</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td rowspan="4">
+                                                    <img src="~/assets/demo/default/media/img/logo/logo.png" style="width:180px" />
+                                                    <br />
+                                                    <center id="FormView1_Label5" style="font-weight: bold;font-size: 11px;">LABORATORIO</center>
+                                                </td>
+                                                <td align="left" style="font-weight: bold; width: 10%;font-size: 11px; ">
+                                                    Clave:
+                                                </td>
+                                                <td style=" width: 45%;">
+                                                    <span id="FormView1_CLAVE_SOLICITUDLabel" style="font-size: 11px; ">@ViewBag.Solicitud.ClaveSolicitud</span>
+                                                </td>
+                                                <td align="left" style="font-weight: bold;font-size: 11px;  width: 15%;">
+                                                    Edad, Sexo:
+                                                </td>
+                                                <td style=" width: 30%;">
+                                                    <span id="FormView1_EDAD_PACIENTELabel" style="font-size: 11px; ">@edad</span>,
+                                                    <span id="FormView1_Label1" style="font-size: 11px; ">@(ViewBag.Solicitud.Paciente.Genero == "F" ? "Femenino" : "Masculino")</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="left" style="font-weight: bold; font-size: 11px;  width: 10%;">
+                                                    Paciente:
+                                                </td>
+                                                <td style=" width: 45%;">
+                                                    <span id="FormView1_PACIENTELabel" style="font-size: 11px; ">@ViewBag.Solicitud.Paciente.NombreCompleto.ToUpper()</span>
+                                                </td>
+                                                <td align="left" style="font-weight: bold;font-size: 11px; width: 15%; ">
+                                                    Empresa:
+                                                </td>
+                                                <td style=" width: 30%;">
+                                                    <span id="FormView1_EMPRESALabel" style="font-size: 11px; ">@ViewBag.Solicitud.Empresa.Nombre.ToUpper()</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="left" style="font-weight: bold; font-size: 11px;  width: 10%;">
+                                                    F. Nac:
+                                                </td>
+                                                <td style=" width: 45%;">
+                                                    <span id="FormView1_PACIENTELabel" style="font-size: 11px; ">@ViewBag.Solicitud.Paciente.FechaNacimiento.ToString("dd/MM/yyyy")</span>
+                                                </td>
+                                                <td align="left" style="font-weight: bold;font-size: 11px; width: 15%; ">
+                                                    Folio:
+                                                </td>
+                                                <td style=" width: 30%;">
+                                                    <span id="FormView1_EMPRESALabel" style="font-size: 11px; ">@ViewBag.Solicitud.Folio</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="left" style="font-weight: bold;font-size: 11px; width: 10%;">
+                                                    Dirección:
+                                                </td>
+                                                <td style=" width: 45%;">
+                                                    <span id="FormView1_Label2" style="font-size: 11px;">@ViewBag.Solicitud.Paciente.Direccion.ToUpper()</span>
+                                                </td>
+                                                <td align="left" style="font-weight: bold;font-size: 11px;  width: 15%;">
+                                                    Teléfono:
+                                                </td>
+                                                <td style=" width: 30%;">
+                                                    <span id="FormView1_EMPRESALabel" style="font-size: 11px; ">@(ViewBag.Solicitud.Paciente.Telefono) | @(ViewBag.Solicitud.Paciente.Celular)</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td align="left" style="font-weight: bold; font-size: 11px;  width: 10%;">
+                                                    Usuario:
+                                                </td>
+                                                <td style=" width: 45%;">
+                                                    <span id="FormView1_PACIENTELabel" style="font-size: 11px; ">@(ViewBag.Solicitud.Usuario.NombreCompleto.ToUpper())</span>
+                                                </td>
+                                                <td align="left" style="font-weight: bold;font-size: 11px; width: 15%;">
+                                                    F. Solicitud:
+                                                </td>
+                                                <td style=" width: 30%;">
+                                                    <span id="FormView1_FECHA_SOLICITUDLabel" style="font-size: 11px;">@ViewBag.Solicitud.Fecha.ToString("dd/MM/yyyy")</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td align="left" style="font-weight: bold; font-size: 11px; width: 10%;">
+                                                    Médico:
+                                                </td>
+                                                <td style=" width: 45%; height: 18px">
+                                                    <span id="FormView1_MEDICOLabel" style="font-size: 11px">@ViewBag.Solicitud.Medico.NombreCompleto.ToUpper()</span>
+                                                </td>
+                                                <td align="left" style="font-weight: bold;font-size: 11px; width: 15%;">
+                                                    F. Impresión:
+                                                </td>
+                                                <td style=" height: 18px; width: 30%;">
+                                                    <span id="FormView1_Label4" style="font-size: 11px">@DateTime.Now.ToString("dd/MM/yyyy") @DateTime.Now.ToShortTimeString() </span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <span style="display:@(ViewBag.Solicitud.ObservacionUrgencia != "" ? "block" : "none")">
+                                        @(ViewBag.Solicitud.ObservacionUrgencia)
+                                    </span>
+                                    <center id="FormView1_LABORATORIOLabel" style="font-size: 11px">@ViewBag.Solicitud.Laboratorio.Nombre - Tel. @ViewBag.Solicitud.Laboratorio.Telefono</center>
+                                </td>
+                            </tr>
+                            <tr style="height:250px; vertical-align:top">
+                                <td style="width:100%">
+                                    <table class="table table-striped m-table" style="width:100%;">
+                                        <thead>
+                                            <tr>
+                                                <th style="width:40%;text-align:left;font-size: 11px;"> Estudio </th>
+                                                <th style="width:15%;font-size: 11px; text-align:right;"> Precio </th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                var total2 = 0.0;
+                                                for (int i = 0; i < @ViewBag.EstudiosSolicitud.Count; i++)
+                                                {
+
+                                                    total2 = total2 + ViewBag.EstudiosSolicitud[i].PrecioBase;
+                                                    <tr>
+                                                        <td style="width:40%;font-size: 11px;">@ViewBag.EstudiosSolicitud[i].Nombre</td>
+                                                        <td style="width:15%; text-align:right;font-size: 11px;">@(ViewBag.Solicitud.Empresa.Precios == true ? ViewBag.EstudiosSolicitud[i].PrecioBase : "--")</td>
+                                                        <td></td>
+                                                    </tr>
+                                                    @*if (i == ViewBag.EstudiosSolicitud.Count - 1)
+                                {
+                                    total2 = (ViewBag.Solicitud.Empresa.Precios == true ? total : 0.0);
+                                    <tr>
+                                        <td style="width:40%;font-size: 11px;text-align:right;">TOTAL</td>
+                                        <td style="width:30%; text-align:right;font-size: 11px;">@total2</td>
+                                        <td></td>
+                                    </tr>
+                                }*@
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="font-size:11px;">
+                                    Ingrese a https://servicioslapcic.com.mx para conocer sus resultados y expediente clinico con su usuario
+                                    @ViewBag.Solicitud.Paciente.Id y contraseña.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <table style="width:100%; border:1px solid black; border-collapse:collapse;">
+                                        <tr>
+                                            <td style="font-weight:bold; font-size: 11px; width:10%;">SubTotal</td>
+                                            <td style="font-weight:bold;font-size: 11px;width:10%;">@(ViewBag.Solicitud.Empresa.Precios == true ? ViewBag.Solicitud.SubTotal : "--")</td>
+                                            <td style="font-weight:bold; font-size: 11px;width:10%;">Urgencias</td>
+                                            <td style="font-weight:bold;font-size: 11px;width:10%;">@(ViewBag.Solicitud.Empresa.Precios == true ? ViewBag.Solicitud.CostoUrgencia : "--")</td>
+                                            <td style="font-weight:bold; font-size: 11px;width:10%;">Total</td>
+                                            <td style="font-weight:bold;font-size: 11px;width:10%;">@(ViewBag.Solicitud.Empresa.Precios == true ? ViewBag.Solicitud.Total : "--")</td>
+                                            <td style="font-weight:bold; font-size: 11px;width:10%;">A cuenta</td>
+                                            <td style="font-weight:bold;font-size: 11px;width:10%;">@(ViewBag.Solicitud.Empresa.Precios == true ? ViewBag.Solicitud.Acuenta : "--")</td>
+                                            <td style="font-weight:bold; font-size: 11px;width:10%;">Debe</td>
+                                            <td style="font-weight:bold;font-size: 11px;width:10%;">@(ViewBag.Solicitud.Empresa.Precios == true ? ViewBag.Solicitud.Debe : "--")</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </td>
+        </tr>
+
+    </tbody>
+</table>
+<br />
+
+<script language="javascript" type="text/javascript">
+    if (window.print())
+        window.close();
+</script>
+
+
+

@@ -1,0 +1,308 @@
+﻿
+@{
+    ViewBag.Title = "Resultado";
+    Layout = null;
+}
+<img src="~/assets/demo/default/media/img/logo/logo.png" />
+<style type="text/css">
+    body {
+        font-size: 11px;
+    }
+
+    .nota {
+        position: fixed;
+        bottom: 0px;
+        padding: 10px;
+    }
+
+    .ClaveHT {
+        text-align: left;
+        color: #DDD;
+        font-size: 2em;
+    }
+
+    .HRCVE1 {
+        position: absolute;
+        top: 930px;
+        text-align: right;
+        z-index: -1;
+    }
+
+    .HRCVE2 {
+        position: absolute;
+        top: 2200px;
+        text-align: right;
+        z-index: -1;
+    }
+
+    .HRCVE3 {
+        position: absolute;
+        top: 3470px;
+        text-align: right;
+        z-index: -1;
+    }
+
+    .HRCVE4 {
+        position: absolute;
+        top: 4060px;
+        text-align: right;
+        z-index: -1;
+    }
+</style>
+<table border="0" cellpadding="0" cellspacing="0" style="width:100%;margin-top:20px;">
+    <tbody>
+        <tr>
+            <td align="right" valign="top" style="float:right">
+                <strong>Clave: </strong>
+                <span id="FormView1_Label5">@ViewBag.Solicitud.ClaveSolicitud</span>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+<table style="border-bottom: black 1px solid; width:100%; ">
+    <tbody>
+        <tr>
+            <td align="left" style="font-weight: bold; width: 69px;font-size: 15px; ">
+                Clave:
+            </td>
+            <td style="width: 300px">
+                <span id="FormView1_CLAVE_SOLICITUDLabel" style="font-size: 15px; ">@ViewBag.Solicitud.ClaveSolicitud</span>
+            </td>
+            <td align="left" style="font-weight: bold;font-size: 15px; ">
+                Edad, Sexo:
+            </td>
+            <td style="width: 284px">
+                <span id="FormView1_EDAD_PACIENTELabel" style="font-size: 15px; ">
+                    @{var edad = ""; }
+                    @{
+                        var startDate = ViewBag.Solicitud.Paciente.FechaNacimiento;
+                        if (startDate != null && startDate.Year > 1)
+                        {
+
+                            var endDate = DateTime.Today;
+
+                            if (startDate > endDate)
+                            {
+                                edad = "";
+                            }
+
+                            int years = endDate.Year - startDate.Year;
+                            int months = 0;
+                            int days = 0;
+
+                            // Check if the last year, was a full year.
+                            if (endDate < startDate.AddYears(years) && years != 0)
+                            {
+                                years--;
+                            }
+
+                            // Calculate the number of months.
+                            startDate = startDate.AddYears(years);
+
+                            if (startDate.Year == endDate.Year)
+                            {
+                                months = endDate.Month - startDate.Month;
+                            }
+                            else
+                            {
+                                months = (12 - startDate.Month) + endDate.Month;
+                            }
+
+                            // Check if last month was a complete month.
+                            if (endDate < startDate.AddMonths(months) && months != 0)
+                            {
+                                months--;
+                            }
+
+                            // Calculate the number of days.
+                            startDate = startDate.AddMonths(months);
+
+                            days = (endDate - startDate).Days;
+
+                            edad = years + " año(s) - " + months + " mes(es)";
+                        }
+
+                    }
+                    @edad
+                </span>,
+                <span id="FormView1_Label1" style="font-size: 15px; ">@ViewBag.Solicitud.Paciente.Genero</span>
+            </td>
+        </tr>
+        <tr>
+            <td align="left" style="font-weight: bold; font-size: 15px; width: 69px;">
+                Paciente:
+            </td>
+            <td style="width: 300px">
+                <span id="FormView1_PACIENTELabel" style="font-size: 15px; ">@ViewBag.Solicitud.Paciente.NombreCompleto</span>
+            </td>
+            <td align="left" style="font-weight: bold;font-size: 15px; ">
+                Empresa:
+            </td>
+            <td style="width: 284px">
+                <span id="FormView1_EMPRESALabel" style="font-size: 15px; ">@ViewBag.Solicitud.Empresa.Nombre</span>
+            </td>
+        </tr>
+        <tr>
+            <td align="left" style="font-weight: bold;font-size: 15px; width: 69px;">
+                Dirección:
+            </td>
+            <td style="width: 300px">
+                <span id="FormView1_Label2" style="font-size: 15px;">@ViewBag.Solicitud.Paciente.Direccion</span>
+            </td>
+            <td align="left" style="font-weight: bold;font-size: 15px;">
+                Fecha solicitud:
+            </td>
+            <td style="width: 284px">
+                <span id="FormView1_FECHA_SOLICITUDLabel" style="font-size: 15px;">@ViewBag.Solicitud.Fecha.ToString("dd/MM/yyyy HH:mm:ss")</span>
+            </td>
+        </tr>
+        <tr>
+            <td align="left" style="font-weight: bold; font-size: 15px;width: 69px;">
+                Médico:
+            </td>
+            <td style="width: 300px; height: 18px">
+                <span id="FormView1_MEDICOLabel" style="font-size: 11px">@ViewBag.Solicitud.Medico.NombreCompleto</span>
+            </td>
+            <td align="left" style="font-weight: bold;font-size: 11px">
+                Fecha impresión:
+            </td>
+            <td style="width: 284px; height: 18px">
+                <span id="FormView1_Label4" style="font-size: 11px">@DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")</span>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br />
+<center id="FormView1_LABORATORIOLabel" style="font-size: 11px">@ViewBag.Solicitud.Laboratorio.Nombre</center>
+<br />
+<div id="page-container">
+    <div id="content-wrap">
+        <table>
+            <tbody>
+                <tr>
+                    <td valign="top" style="font-weight:bold;font-size: 15px;width:30%">ESTUDIO</td>
+                    <td valign="top" style="font-weight:normal;font-size: 15px;width:30%;">RESULTADO</td>
+                    <td valign="top" style="font-weight:normal;font-size: 15px;width:40%;padding-left:50px;"> NORMAL</td>
+                </tr>
+                @foreach (var r in ViewBag.Resultado)
+                {
+
+                    if (r.Titulo == "1")
+                    {
+                        <tr>
+                            <td width="30%" valign="top" style="font-size: 15px; font-weight:@(r.Titulo == "1"  ? "bold" : "normal")">@r.NombreEstudio</td>
+                            <td width="30%" valign="top" style="font-weight:@(r.FueraRango ? "bold" : "normal");font-size: 15px;">
+                                @(Html.Raw(r.Resultado))  @(r.Unidad)<br />
+                                @(Html.Raw(r.Observaciones))
+                            </td>
+                            <td colspan="2" width="40%" valign="top" style="font-weight:normal;font-size: 15px;padding-left:50px;">
+
+                                @if (r.TipoCaptura.ToString() == "4" && r.Observaciones != "")
+                                {
+                                    @(Html.Raw(r.Observaciones))
+                                }
+                                else
+                                {
+                                    if (r.Normal != "")
+                                    {
+                                        @Html.Raw(r.Normal)
+                                    }
+                                    else
+                                    {
+                                        @((r.Titulo == "1" && r.Titulo == "2" && r.Titulo == "3" && r.Titulo == "4") ? r.MIN + " - " + r.MAX : "")
+                                    }
+                                }
+
+                            </td>
+                        </tr>
+                        @*<tr>
+                    <td valign="top" style="border-bottom:1px solid #ccc; font-weight:@(r.Negrita ? "bold" : "normal");font-size: 13px;width:20%;padding-top:10px;margin-top:50px;">@r.NombreEstudio</td>
+                    <td valign="top" style="border-bottom:1px solid #ccc;font-weight:@(r.FueraRango ? "bold" : "normal");font-size: 13px;width:30%;padding-top:10px;margin-top:50px;">@(r.Resultado + " " + r.Unidad)</td>
+                    <td valign="top" style="border-bottom:1px solid #ccc;font-weight:normal;font-size: 13px;width:30%;padding-top:10px;margin-top:50px;">
+                        @if (r.TipoCaptura.ToString() == "4" && r.Observaciones != "")
+                        {
+                            @(Html.Raw(r.Observaciones))
+                        }
+                        else
+                        {
+                            if (r.Normal != "")
+                            {
+                                @(r.Normal)
+                            }
+                            else
+                            {
+                                @((r.Titulo == "1" && r.Titulo == "2" && r.Titulo == "3" && r.Titulo == "4") ? r.MIN + " - " + r.MAX : "")
+                            }
+                        }
+
+                    </td>
+                    <td valign="top" style="border-bottom:1px solid #ccc;font-weight:normal;font-size: 14px;width:25%">@(Html.Raw(r.Observaciones))</td>
+                </tr>*@
+                    }
+                    else
+                    {
+                        <tr>
+                            @if (r.EstudioComponente.ToString() == "-1")
+                            {
+                                <td valign="top" colspan="4" style="font-size: 15px;font-weight:@(r.Negrita ? "bold" : "normal"); padding-left:20px;border-bottom:1px solid #ccc;margin-top:15px;">@r.NombreEstudio</td>
+                            }
+                            else
+                            {
+
+
+                                if (r.TipoCaptura.ToString() == "3" && r.Normal == "")
+                                {
+                                    <td width="30%" valign="top" style="font-size: 15px; padding-left:20px;font-weight:@(r.Titulo == "1" ? "bold" : "normal");">@r.NombreEstudio</td>
+                                    <td valign="top" colspan="2" width="70%" style="font-weight:@(r.FueraRango ? "bold" : "normal");font-size: 15px;">
+                                        @(Html.Raw(r.Resultado))  @(r.Unidad)<br />
+                                        @(Html.Raw(r.Observaciones))
+                                    </td>
+
+                                }
+                                else
+                                {
+                                    <td width="30%" valign="top" style="font-size: 15px; padding-left:20px;font-weight:@(r.Titulo == "1" ? "bold" : "normal");">@r.NombreEstudio</td>
+                                    <td valign="top" width="30%" style="font-weight:@(r.FueraRango ? "bold" : "normal");font-size: 15px;">
+                                       @(Html.Raw(r.Resultado))  @(r.Unidad)<br />
+                                        @(Html.Raw(r.Observaciones))
+                                    </td>
+                                    <td colspan="2" width="40%" valign="top" style="font-weight:normal;font-size: 15px;padding-left:50px;">
+                                        @if (r.TipoCaptura.ToString() == "4" && r.Observaciones != "")
+                                        {
+                                            @(Html.Raw(r.Observaciones))
+                                        }
+                                        else
+                                        {
+                                            if (r.Normal != "")
+                                            {
+                                                @Html.Raw(r.Normal)
+                                            }
+                                            else
+                                            {
+                                                @((r.Titulo == "1" && r.Titulo == "2" && r.Titulo == "3" && r.Titulo == "4") ? r.MIN + " - " + r.MAX : "")
+                                            }
+                                        }
+
+                                    </td>
+                                }
+                            }
+                        </tr>
+                    }
+                }
+            </tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script language="javascript" type="text/javascript">
+            //if (window.print())
+              //  window.close();
+</script>
+
+
+
+

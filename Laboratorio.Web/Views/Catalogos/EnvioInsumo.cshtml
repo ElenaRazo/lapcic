@@ -1,0 +1,132 @@
+﻿
+
+
+@{
+    ViewBag.Title = "Nuevo";
+    Layout = null;
+}
+
+<!--                       -->
+<div class="m-portlet  m-portlet--tabs m-portlet--info m-portlet--head-solid-bg m-portlet--head-sm" id="form_wizard_1">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <i class=" icon-layers font-blue"></i>
+            <span class="caption-subject font-blue bold uppercase" style="color:white;">
+              ENVIO DE INSUMOS A LABORATORIO
+            </span>
+        </div>
+    </div>
+    <div class="portlet-body form">
+        <form class="m-form m-form--fit m-form--label-align-right" action="#" id="submit_form" method="POST" novalidate="novalidate">
+            <div class="form-wizard">
+                <div class="m-portlet__body">
+                    <h3 class="block">Datos generales</h3>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Laboratorio al que se enviara el insumo
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-6 col-md-9 col-sm-12">
+                            @Html.DropDownList("Laboratorios", null, new { @class = "form-control m-input", @id = "Laboratorio", @name = "Laboratorio", @tabindex = "-1" })
+                            <span class="" dir="ltr" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-puesto_list-container"><span class="select2-selection__rendered" id="select2-puesto_list-container"><span class="select2-selection__placeholder">Selecciona el laboratorio al que enviaras el insumom</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Proveedor
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-6 col-md-9 col-sm-12">
+                            @Html.DropDownList("ProveedorEnvio", null, new { @class = "form-control m-input", @id = "ProveedorEnvio", @name = "Proveedor", @tabindex = "-1" })
+                            <span class="" dir="ltr" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-puesto_list-container"><span class="select2-selection__rendered" id="select2-puesto_list-container"><span class="select2-selection__placeholder">Selecciona el proveedor</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Tipo de deposito
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-6 col-md-9 col-sm-12">
+                            @Html.DropDownList("TipoDepositoEnvio", null, new { @class = "form-control m-input", @id = "TipoDepositoEnvio", @name = "TipoDeposito", @tabindex = "-1" })
+                            <span class="" dir="ltr" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-puesto_list-container"><span class="select2-selection__rendered" id="select2-puesto_list-container"><span class="select2-selection__placeholder">Selecciona el tipo de deposito</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label">
+                            Unidad
+                        </label>
+                        <div class="col-7">
+                            <select id="Unidadenvio" class="form-control m-input">
+                                <option value="N/A">SELECCIONE UNA OPCIÓN</option>
+                                <option value="PIEZA">Pieza</option>
+                                <option value="CAJA">Caja</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Cantidad
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-2 col-md-9 col-sm-12">
+                            <input type="number" id="cantidadenvio" class="form-control" name="cantidad" aria-required="true" aria-invalid="false">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Total piezas
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-2 col-md-9 col-sm-12">
+                            <input type="number" id="totalpiezasenvio" class="form-control" name="totalpiezas" aria-required="true" aria-invalid="false">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Fecha de compra
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-2 col-md-9 col-sm-12">
+                            <input placeholder="yyyy/MM/dd" id="fechaenvio" class="form-control" name="fecha" aria-required="true" aria-invalid="false">
+                        </div>
+                    </div>
+                </div>
+                <div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit">
+                    <div class="m-form__actions m-form__actions--solid">
+                        <div class="row">
+                            <div class="col-lg-2"></div>
+                            <div class="col-lg-10">
+                                <a  class="btn btn-success" onclick="javascript:Enviar()">
+                                    Enviar
+                                </a>
+                                <a class="btn btn-success" onclick="javascript:$('#envia').show();$('#listado').hide();">
+                                    Cancelar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function Enviar() {
+        if ($('#cantidadenvio').val() != "") {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: { Tipo: $('#Unidadenvio').val(), TotalCompra: parseFloat('0'), Fecha: $('#fechaenvio').val(), Cantidad: parseInt($('#cantidadenvio').val()), TipoDeposito: parseInt($('#TipoDepositoEnvio').val()), Proveedor: parseInt($('#ProveedorEnvio').val()), TotalPiezas: parseInt($('#totalpiezasenvio').val()), Laboratorio: parseInt($('#Laboratorio').val()) },
+                url: '@Url.Content("~/")Catalogos/EnviarInsumo',
+                async: true,
+                success: function (response) {
+                    alert("Datos guardados");
+                    location.reload();
+                }
+            })
+        }
+    }
+</script>
+
+

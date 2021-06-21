@@ -1,0 +1,120 @@
+﻿
+@{
+    ViewBag.Title = "TipoPago";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Scripts/jquery.dataTables.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.dataTables.min.js"></script>
+<div class="m-portlet m-portlet--tabs m-portlet--accent m-portlet--head-solid-bg m-portlet--head-sm">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <i class="icon-layers font-blue"></i>
+            <span class="caption-subject bold uppercase m--font-metal">
+                Usuarios
+            </span>
+        </div>
+        <div class="m-portlet__head-tools">
+            <ul class="m-portlet__nav">
+                <li class="m-portlet__nav-item m-portlet__nav-item--last">
+                    <div class="m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" data-dropdown-toggle="hover" aria-expanded="true">
+                        <a href="@Url.Action("Nuevo","Usuarios")" class="m-portlet__nav-link btn btn-lg btn-secondary  m-btn m-btn--icon m-btn--icon-only m-btn--pill  m-dropdown__toggle" title="Nuevo registro">
+                            <i class="la la-plus"></i>
+                        </a>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="m-portlet__body">
+        <table class="table table-striped m-table" id="tblUsuarios">
+            <thead>
+                <tr style="height: 54px;">
+                    <th style="width:5%"></th>
+                    <th style="width:10%"> Nombre </th>
+                    <th style="width:10%"> Paterno </th>
+                    <th style="width:10%"> Materno </th>
+                    <th style="width:10%"> Nick </th>
+                    <th style="width:10%"> Datos actuales </th>
+                    <th style="width:30%"> Cambiar perfil </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < @ViewBag.Usuarios.Count; i++)
+                {
+                    <tr>
+                        <td style="width:5%">@(i + 1)</td>
+                        <td style="width:10%">@(ViewBag.Usuarios[i].Nombre)</td>
+                        <td style="width:10%">@(ViewBag.Usuarios[i].Paterno)</td>
+                        <td style="width:10%">@(ViewBag.Usuarios[i].Materno)</td>
+                        <td style="width:10%">@(ViewBag.Usuarios[i].Nick)</td>
+                        <td style="width:10%">@(ViewBag.Usuarios[i].Puesto.Nombre) - @(ViewBag.Usuarios[i].LaboratorioCompleto != null ? ViewBag.Usuarios[i].LaboratorioCompleto.Nombre : "")</td>
+                        <td  style="width:30%">
+                        @Html.DropDownList("Puestos", null, new { @class = "form-control m-input", @id = "Puestos" + ViewBag.Usuarios[i].Id, @name = "Laboratorios", @tabindex = "-1", @onchange = "CallChangePuestos(" + ViewBag.Usuarios[i].Id + ", "+ ViewBag.Usuarios[i].Puesto.Id + ")" })
+                            @Html.DropDownList("Laboratorios", null, new { @class = "form-control m-input", @id = "Laboratorios"+ ViewBag.Usuarios[i].Id, @name = "Laboratorios", @tabindex = "-1", @onchange = "CallChangeLaboratorios(" + ViewBag.Usuarios[i].Id +")" })<br />
+                        
+                        </td>
+                        
+                        <td>
+                            <a onclick="EliminarUsuuario(@ViewBag.Usuarios[i].Id)" class="btn btn-outline btn-circle dark btn-sm black" title="Eliminar">
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#tblUsuarios').DataTable();
+        $('#tblUsuarios').removeClass('dataTable');
+    });
+    function CallChangeLaboratorios(id, p) {
+        var puesto = parseInt($('#Puestos' + id).val());
+        if (puesto == 0) {
+            puesto = p;
+        }
+        debugger;
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            data: {
+                Laboratorio: parseInt($('#Laboratorios' + id).val()),
+                Usuario: id,
+                Rol: puesto,
+            },
+
+            url: '@Url.Content("~/")Usuarios/CambiarLaboratorio',
+            async: true,
+            success: function (response) {
+                alert("Datos guardados");
+                window.location.reload();
+            }
+        })
+
+    }
+     function EliminarUsuuario(id) {
+        debugger;
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            data: {
+                Usuario: id
+            },
+
+            url: '@Url.Content("~/")Usuarios/EliminarUsuario',
+            async: true,
+            success: function (response) {
+                alert("Datos guardados");
+                window.location.reload();
+            }
+        })
+    }
+</script>

@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "Medicos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@*<link href="~/Scripts/jquery.dataTables.min.css" rel="stylesheet" />*@
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<div class="m-portlet m-portlet--tabs m-portlet--accent m-portlet--head-solid-bg m-portlet--head-sm">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <i class="icon-layers font-blue"></i>
+            <span class="caption-subject bold uppercase m--font-metal">
+                MEDICOS
+            </span>
+        </div>
+        <div class="m-portlet__head-tools">
+            <ul class="m-portlet__nav">
+                <li class="m-portlet__nav-item m-portlet__nav-item--last">
+                    <div class="m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" data-dropdown-toggle="hover" aria-expanded="true">
+                        <a onclick="javascript: $('#nuevoMedico').show(); $('#listadoMedicos').hide();" class="m-portlet__nav-link btn btn-lg btn-secondary  m-btn m-btn--icon m-btn--icon-only m-btn--pill  m-dropdown__toggle" title="Nuevo registro">
+                            <i class="la la-plus"></i>
+                        </a>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="m-portlet__body" id="listadoMedicos">
+        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Busqueda de medicos" title="Ingresa un nombre" />
+        @{ Html.RenderAction("Listado", "Medicos"); }
+    </div>
+
+    <div class="m-portlet__body" id="nuevoMedico" style="display:none;">
+        @{ Html.RenderAction("Nuevo", "Medicos"); }
+    </div>
+</div>

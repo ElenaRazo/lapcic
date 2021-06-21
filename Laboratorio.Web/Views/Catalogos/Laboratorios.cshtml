@@ -1,0 +1,87 @@
+﻿
+@{
+    ViewBag.Title = "TipoDeposito";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Scripts/jquery.dataTables.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.dataTables.min.js"></script>
+<div class="m-portlet m-portlet--tabs m-portlet--accent m-portlet--head-solid-bg m-portlet--head-sm">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <i class="icon-layers font-blue"></i>
+            <span class="caption-subject bold uppercase m--font-metal">
+                Laboratorios
+            </span>
+        </div>
+        <div class="m-portlet__head-tools">
+            <ul class="m-portlet__nav">
+                <li class="m-portlet__nav-item m-portlet__nav-item--last">
+                    <div class="m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" data-dropdown-toggle="hover" aria-expanded="true">
+                        <a href="#" class="m-portlet__nav-link btn btn-lg btn-secondary  m-btn m-btn--icon m-btn--icon-only m-btn--pill  m-dropdown__toggle">
+                            <i class="la la-ellipsis-h"></i>
+                        </a>
+                        <div class="m-dropdown__wrapper">
+                            <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
+                            <div class="m-dropdown__inner">
+                                <div class="m-dropdown__body">
+                                    <div class="m-dropdown__content">
+                                        <ul class="m-nav">
+                                            <li class="m-nav__section m-nav__section--first">
+                                                <span class="m-nav__section-text">
+                                                    Acciones
+                                                </span>
+                                            </li>
+                                            <li class="m-nav__item">
+                                                <a onclick="javascript:$('#nuevo').show();$('#listado').hide();" class="m-nav__link">
+                                                    <i class="m-nav__link-icon flaticon-add"></i>
+                                                    <span class="m-nav__link-text">
+                                                        Registrar nuevo
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="nuevo" style="display:none;">
+        @{ Html.RenderAction("NuevoLaboratorio", "Catalogos"); }
+    </div>
+    <div class="m-portlet__body" id="listado">
+        <table class="table table-striped m-table" id="tblUsuarios">
+            <thead>
+                <tr style="height: 54px;">
+                    <th style="width:10%"></th>
+                    <th style="width:30%"> Nombre </th>
+                    <th style="width:30%"> Responsable </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < @ViewBag.Laboratorios.Count; i++)
+                {
+                    <tr>
+                        <td style="width:10%">@(i + 1)</td>
+                        <td style="width:35%">@(ViewBag.Laboratorios[i].Nombre)</td>
+                        <td style="width:55%">@(ViewBag.Laboratorios[i].Responsable)</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">Direccion: @(ViewBag.Laboratorios[i].Direccion)<br />Telefono: @(ViewBag.Laboratorios[i].Telefono)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#tblUsuarios').DataTable();
+        $('#tblUsuarios').removeClass('dataTable');
+    });
+</script>

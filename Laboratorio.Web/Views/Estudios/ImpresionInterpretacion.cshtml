@@ -1,0 +1,127 @@
+﻿
+@{
+    ViewBag.Title = "Resultado";
+    Layout = null;
+}
+<img src="~/assets/demo/default/media/img/logo/logo.png" />
+<style type="text/css">
+    body {
+        font-size: 11px;
+    }
+
+    .nota {
+        position: fixed;
+        bottom: 0px;
+        padding: 10px;
+    }
+
+    .ClaveHT {
+        text-align: left;
+        color: #DDD;
+        font-size: 2em;
+    }
+
+    .HRCVE1 {
+        position: absolute;
+        top: 930px;
+        text-align: right;
+        z-index: -1;
+    }
+
+    .HRCVE2 {
+        position: absolute;
+        top: 2200px;
+        text-align: right;
+        z-index: -1;
+    }
+
+    .HRCVE3 {
+        position: absolute;
+        top: 3470px;
+        text-align: right;
+        z-index: -1;
+    }
+
+    .HRCVE4 {
+        position: absolute;
+        top: 4060px;
+        text-align: right;
+        z-index: -1;
+    }
+</style>
+<table style="border-bottom: black 1px solid; width:100%; ">
+    <tbody>
+        
+        <tr>
+            <td align="right" style="font-weight: bold; font-size: 11px; width: 69px;">
+                Paciente:
+            </td>
+            <td style="width: 300px">
+                <span id="FormView1_PACIENTELabel" style="font-size: 11px; ">@ViewBag.Estudio.Paciente.NombreCompleto</span>
+            </td>
+            <td align="right" style="font-weight: bold;font-size: 11px; ">
+                Edad, Sexo:
+            </td>
+            <td style="width: 284px">
+                <span id="FormView1_EDAD_PACIENTELabel" style="font-size: 11px; ">@ViewBag.Estudio.Paciente.Edad</span>,
+                <span id="FormView1_Label1" style="font-size: 11px; ">M</span>
+            </td>
+        </tr>
+        <tr>
+            <td align="right" style="font-weight: bold;font-size: 11px; width: 69px;">
+                Dirección:
+            </td>
+            <td style="width: 300px">
+                <span id="FormView1_Label2" style="font-size: 11px;">@ViewBag.Estudio.Paciente.Direccion</span>
+            </td>
+            <td align="right" style="font-weight: bold;font-size: 11px;">
+                Fecha Estudio:
+            </td>
+            <td style="width: 284px">
+                <span id="FormView1_FECHA_EstudioLabel" style="font-size: 11px;">@ViewBag.Estudio.Fecha</span>
+            </td>
+        </tr>
+        <tr>
+            <td align="right" style="font-weight: bold; font-size: 11px;width: 69px;">
+                Médico:
+            </td>
+            <td style="width: 300px; height: 18px">
+                <span id="FormView1_MEDICOLabel" style="font-size: 11px">@ViewBag.Estudio.Medico.NombreCompleto</span>
+            </td>
+            <td align="right" style="font-weight: bold;font-size: 11px">
+                Fecha impresión:
+            </td>
+            <td style="width: 284px; height: 18px">
+                <span id="FormView1_Label4" style="font-size: 11px">@DateTime.Now.ToShortDateString() @DateTime.Now.ToShortTimeString() </span>
+            </td>
+        </tr>
+    </tbody>
+</table><br />
+<div>
+    <strong>@ViewBag.Detalle.Nombre</strong><br /><br />
+    Interpretación:<br />
+   <span style="text-align:justify">@Html.Raw(HttpUtility.HtmlDecode(ViewBag.Detalle.Resultado))</span>
+</div>
+
+<div style="position:fixed; bottom:0px; left:10px;right:10px; height:200px; text-align:center">
+    @{
+        if (ViewBag.Detalle.MedicoInterpretacion != null && (ViewBag.Detalle.MedicoInterpretacion.Id == 58 || ViewBag.Detalle.MedicoInterpretacion.Id == 57))
+        {
+            <img src="@("~/assets/demo/default/media/img/logo/Firma" + ViewBag.Detalle.MedicoInterpretacion.Id +".jpg")"><br />
+        }
+
+    }
+   
+
+    _________________________________________________
+    <br />
+    @(ViewBag.Detalle.MedicoInterpretacion != null ? ViewBag.Detalle.MedicoInterpretacion.NombreCompleto : "")
+    <br />
+    @Html.Raw(ViewBag.Detalle.MedicoInterpretacion != null ? ViewBag.Detalle.MedicoInterpretacion.Direccion : "")
+
+</div>
+
+<script language="javascript" type="text/javascript">
+            //if (window.print())
+              //  window.close();
+</script>

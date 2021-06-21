@@ -1,0 +1,782 @@
+﻿
+
+@{
+    ViewBag.Title = "Nuevo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+
+</head>
+<style>
+div.gallery {
+  border: 1px solid #ccc;
+}
+
+div.gallery:hover {
+  border: 1px solid #777;
+}
+
+div.gallery img {
+  width: 100%;
+  height: auto;
+}
+
+div.desc {
+  padding: 15px;
+  text-align: center;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+</style>
+<div class="m-portlet m-portlet--info" id="form_wizard_1">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <i class="icon-layers font-blue"></i>
+            <span class="caption-subject font-blue bold uppercase">
+               DETALLE DE ESTUDIO DE GABINETE
+            </span>
+        </div>
+        <div class="m-portlet__head-tools">
+            <a style="font-weight:bold;font-size: 2rem;color: cornflowerblue;float: right;padding-right: 1rem;">
+                @(ViewBag.Estudio.Paciente.NombreCompleto) -  @(ViewBag.Estudio.ClaveSolicitud)
+            </a>
+            <input type="email" id="correo" class="form-control m-input" placeholder="Otro correo electrónico al que se enviará la interpretación" />
+            <a class="btn btn-metal" href="@Url.Action("Gabinete", "Estudios")" title="Ver Detalle">
+                Cancelar
+            </a>
+        </div>
+    </div>
+    <div class="portlet-body form">
+        <div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit" style="display:@(ViewBag.Estudio.Interpretacion && (ViewBag.Usuario.Puesto.Id < 6) ? "block" : "none")">
+            <div class="m-form__actions m-form__actions--solid">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <a class="btn btn-primary m-btn m-btn--air m-btn--custom" onclick="javascript:ActualizarSolicitud()">
+                            Guardar
+                        </a>
+                        <a class="btn btn-secondary m-btn m-btn--air m-btn--custom" onclick=" window.history.back();">
+                            Cancelar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="m-portlet m-portlet--full-height m-portlet--tabs  ">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
+                        <li class="nav-item m-tabs__item">
+                            <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_user_profile_tab_1" role="tab">
+                                <i class="flaticon-share m--hide"></i>
+                                Datos Generales
+                            </a>
+                        </li>
+                        <li class="nav-item m-tabs__item">
+                            <a class="nav-link m-tabs__link " data-toggle="tab" href="#m_user_profile_tab_3" role="tab">
+                                <i class="flaticon-share m--hide"></i>
+                                Pagos
+                            </a>
+                        </li>
+                        <li class="nav-item m-tabs__item">
+                            <a class="nav-link m-tabs__link " data-toggle="tab" href="#m_user_profile_tab_2" role="tab">
+                                <i class="flaticon-share m--hide"></i>
+                                Estudios
+                            </a>
+                        </li>
+                        <li class="nav-item m-tabs__item">
+                            <a class="nav-link m-tabs__link " data-toggle="tab" href="#m_user_profile_tab_5" role="tab">
+                                <i class="flaticon-share m--hide"></i>
+                                Datos del paciente
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="m-portlet__head-tools">
+                </div>
+            </div>
+            <div class="tab-content">
+                <div class="tab-pane active" id="m_user_profile_tab_1" style="padding:20px;">
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Paciente de @(ViewBag.Estudio.Paciente.Edad + " años")
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-5 col-md-9 col-sm-12">
+                            <input type="text" id="nombre" class="form-control" onchange="SearchPaciente()" value="@(ViewBag.Estudio.Paciente.NombreCompleto)" aria-required="true" aria-invalid="false">
+                            <select id="PacientesNuevo" disabled="disabled" class="form-control m-input"></select>
+                            <span class="" dir="ltr" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-puesto_list-container"><span class="select2-selection__rendered" id="select2-puesto_list-container"><span class="select2-selection__placeholder">Selecciona el paciente</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Fecha de Nacimiento/Edad
+                        </label>
+                        <div class="col-lg-6 col-md-9 col-sm-12">
+                            <input type="text" id="clave" disabled="disabled" class="form-control" name="clave" value="@(ViewBag.Estudio.Paciente.FechaNacimiento.Year > 1 ? ViewBag.Estudio.Paciente.FechaNacimiento.ToString("dd/MM/yyyy") : "----")
+                                @(ViewBag.Estudio.Paciente.FechaNacimiento.Year == 1 ? ViewBag.Estudio.Paciente.Edad : (DateTime.Now.Year - ViewBag.Estudio.Paciente.FechaNacimiento.Year)) años" aria-required="true" aria-invalid="false">
+
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Estatus
+                        </label>
+                        <div class="col-lg-6 col-md-9 col-sm-12">
+                            <input type="text" id="clave" disabled="disabled" class="form-control" name="clave" value=" @ViewBag.Estudio.EstatusSolicitud" aria-required="true" aria-invalid="false">
+
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Clave
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-4 col-md-9 col-sm-12">
+                            <input type="text" id="clave" disabled="disabled" class="form-control" name="clave" value="@ViewBag.Estudio.ClaveSolicitud" aria-required="true" aria-invalid="false">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Médico
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-6 col-md-9 col-sm-12">
+                            @Html.DropDownList("Medicos", null, new { @class = "form-control m-input", @id = "Medico", @name = "Medico", @tabindex = "-1" })
+                            <span class="" dir="ltr" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-puesto_list-container"><span class="select2-selection__rendered" id="select2-puesto_list-container"><span class="select2-selection__placeholder">Selecciona el médico</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Empresa
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-6 col-md-9 col-sm-12">
+                            @Html.DropDownList("Empresas", null, new { @class = "form-control m-input", @id = "Empresas", @name = "Empresas", @tabindex = "-1" })
+                            <span class="" dir="ltr" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-puesto_list-container"><span class="select2-selection__rendered" id="select2-puesto_list-container"><span class="select2-selection__placeholder">Selecciona la empresa</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Pase médico o documento
+                        </label>
+                        <div class="col-lg-4 col-md-9 col-sm-12">
+                            <input type="text" id="pase" class="form-control" name="pase" value="@ViewBag.Estudio.Folio" aria-required="true" aria-invalid="false">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Observaciones
+                        </label>
+                        <div class="col-lg-6 col-md-9 col-sm-12">
+                            <textarea class="form-control m-input" rows="3" name="remarks" id="indicaciones">@ViewBag.Estudio.Observaciones</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Factura
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-6 col-md-9 col-sm-12">
+                            <select id="factura" class="form-control m-input">
+                                <option value="0">NO</option>
+                                <option value="1">SI</option>
+                            </select>
+                            <span class="" dir="ltr" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-puesto_list-container"><span class="select2-selection__rendered" id="select2-puesto_list-container"><span class="select2-selection__placeholder">Selecciona si se factura</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Datos Factura
+                        </label>
+                        <div class="col-lg-6 col-md-9 col-sm-12">
+                            <textarea class="form-control m-input" rows="3" name="remarks" id="datosfactura">@ViewBag.Estudio.DatosFactura</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="m_user_profile_tab_3">
+                    @*@{
+                    var total = 0;
+                    for (int i = 0; i < @ViewBag.Estudio.Estudios.Count; i++)
+                    {
+                        total = ViewBag.Estudio.Estudios[i].PrecioBase + total;
+                        if (i == (@ViewBag.Estudio.Estudios.Count - 1)) {
+                        }
+                    }
+                }*@
+                    @{ Html.RenderAction("PagosGabinete", "Estudios", new { Id = ViewBag.Estudio.Id }); }
+                    <div class="m-portlet__body" style="height:inherit;" id="listado">
+                        <table class="table table-striped m-table" id="tblUsuarios">
+                            <thead>
+                                <tr style="height: 30px; background-color:darkgray; color:white;">
+                                    <th style="width:5%"> Tipo </th>
+                                    <th style="width:10%"> Monto </th>
+                                    <th style="width:20%"> Fecha </th>
+                                    <th style="width:auto;"> </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < @ViewBag.Estudio.Pagos.Count; i++)
+                                {
+                                    <tr>
+                                        <td style="width:5%">@(ViewBag.Estudio.Pagos[i].ClavePago)</td>
+                                        <td style="width:10%">@(ViewBag.Estudio.Pagos[i].Monto)</td>
+                                        <td style="width:20%">@(ViewBag.Estudio.Pagos[i].Fecha)</td>
+                                        <td style="width:auto;">
+                                            @*<a style="display:@(ViewBag.Estudio.Pagos[i].Monto > 0 ? "block" : "none")" onclick="EliminarPago(@(ViewBag.Estudio.Pagos[i].Id))" class="btn btn-outline btn-circle dark btn-sm black" title="Eliminar">
+                                            <i class="fa fa-trash-o"></i>
+                                        </a>*@
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane" id="m_user_profile_tab_2">
+                    <div class="col-lg-12">
+                        <div class="form-group m-form__group row" style="padding:2.2rem">
+                            <label class="col-form-label col-lg-3 col-sm-12">
+                                Tipo de estudio
+                                <span class="required" aria-required="true"> * </span>
+                            </label>
+                            <div class="col-lg-6 col-md-9 col-sm-12">
+                                <select class="form-control m-input" id="TipoEstudio" onchange="GetEstudiosTipo()">
+                                    <option value="16"> RADIOLOGÍA</option>
+                                    <option value="17"> ULTRASONIDO </option>
+                                </select>
+                                <span class="" dir="ltr" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-puesto_list-container"><span class="select2-selection__rendered" id="select2-puesto_list-container"><span class="select2-selection__placeholder">Selecciona el tipo de estudio</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                            </div>
+                        </div>
+                        <div class="form-group m-form__group row" style="padding:2.2rem">
+                            <label class="col-form-label col-lg-3 col-sm-12">
+                                Estudio
+                                <span class="required" aria-required="true"> * </span>
+                            </label>
+                            <div class="col-lg-6 col-md-9 col-sm-12">
+                                <select class="form-control m-input" id="Estudios" onchange="setPrecioEstudio(this.options[this.selectedIndex].getAttribute('precio'))" onFocus="expand(this)" onBlur="unexpand(this)"></select><a onclick="javascript:Agregar()" class="btn btn-secondary m-btn m-btn--air m-btn--custom">Agregar</a>
+                                <span class="" dir="ltr" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-puesto_list-container"><span class="select2-selection__rendered" id="select2-puesto_list-container"><span class="select2-selection__placeholder">Selecciona el estudio</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <table class="table table-striped m-table" id="tblEstudioGabinete">
+                        <thead>
+                            <tr style="height: 30px; background-color:darkgray; color:white;">
+                                <th style="width:90%"> Estudio </th>
+                                <th style="width:10%"> Precio </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < @ViewBag.Estudio.Estudios.Count; i++)
+                            {
+                                <tr>
+                                    <td style="width:80%">
+                                        <span style="font-weight:bold; color:lightgreen"> @(ViewBag.Estudio.Estudios[i].Departamento.Nombre) </span>  - @(ViewBag.Estudio.Estudios[i].Nombre) <br />
+                                        @if (ViewBag.Estudio.Estudios[i].Departamento.Id == 16)
+                                        {
+                                            <strong>Observaciones del Técnico/Médico: </strong><div>@Html.Raw(HttpUtility.HtmlDecode(ViewBag.Estudio.Estudios[i].ObservacionesTecnico)) </div><br />
+                                            <strong> Observaciones: </strong><div> @Html.Raw(HttpUtility.HtmlDecode(ViewBag.Estudio.Estudios[i].Observaciones)) </div><br />
+                                        }
+                                        <strong> Interpretación: </strong><div>@Html.Raw(HttpUtility.HtmlDecode(ViewBag.Estudio.Estudios[i].Resultado))</div>
+                                    </td>
+                                        <td style = "width:10%" >$ @(ViewBag.Estudio.Estudios[i].PrecioBase) </td>
+                                        <td>
+                                            <a target="_blank" href = "@Url.Action("Interpretacion", "Estudios", new { Detalle = ViewBag.Estudio.Estudios[i].IdDetalle, Id =  ViewBag.Estudio.Id  })" class="btn btn-outline btn-circle dark btn-sm black" title="Interpretación">
+                                                <i class="fa fa-file"></i>
+                                            </a>
+                                            <a onclick = "EnviarCorreo(@ViewBag.Estudio.Estudios[i].IdDetalle,  @ViewBag.Estudio.Id)" class="btn btn-outline btn-circle dark btn-sm black" title="Envio por correo">
+                                                <i class="fa fa-mail-forward"></i>
+                                            </a>
+                                        </td>
+                                </tr>
+                                        <tr>
+                                            <td colspan = "3" >
+                                                @if(ViewBag.Estudio.Estudios[i].Adjunto != null @*&& ViewBag.Estudio.EstatusSolicitud == Laboratorio.Administracion.EstatusSolicitudGabinete.RESULTADOPAGADO*@)
+                                                {
+                                                    <div class="m-portlet">
+                                                        <div class="col-lg-12">
+                                                            @for (int a = 0; a < @ViewBag.Estudio.Estudios[i].Adjunto.Count; a++)
+                                                            {
+                                                                <div class="col-lg-2" style="display:inline-block;">
+                                                                    @if (ViewBag.Estudio.Estudios[i].Adjunto[a].Contains("mp4"))
+                                                                    {
+                                                                    <a target="_blank" href="@Url.Content("~/")Directorio/@(ViewBag.Estudio.Estudios[i].Adjunto[a])" style="width:80px; height:70px" ondblclick="">
+                                                                        <img width="80" src="~/assets/demo/default/media/img/misc/play.png">
+                                                                    </a>
+                                                                    }
+                                                                    else if (ViewBag.Estudio.Estudios[i].Adjunto[a].Contains("pdf"))
+                                                                    {
+                                                                    <a target="_blank" href="@Url.Content("~/")Directorio/@(ViewBag.Estudio.Estudios[i].Adjunto[a])" style="width:80px; height:70px">
+                                                                        <img width="80" src="https://lh3.googleusercontent.com/W1Jwfw3dKIo8BsQFaLc0y4UflpgSUlDKiWn4LgjKXFW1Uxj1t8qfwYu987CnBDWdsENT">
+                                                                    </a>
+                                                                    }
+                                                                    else if (ViewBag.Estudio.Estudios[i].Adjunto[a].Contains("doc") || ViewBag.Estudio.Estudios[i].Adjunto[a].Contains("docx"))
+                                                                    {
+                                                                    <a target="_blank" href="@Url.Content("~/")Directorio/@(ViewBag.Estudio.Estudios[i].Adjunto[a])" style="width:80px; height:70px">
+                                                                        <img width="80" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Microsoft_Office_Word_%282018–present%29.svg/180px-Microsoft_Office_Word_%282018–present%29.svg.png">
+                                                                    </a>
+                                                                    }
+                                                                    else if (ViewBag.Estudio.Estudios[i].Adjunto[a].Contains("zip") || ViewBag.Estudio.Estudios[i].Adjunto[a].Contains("rar"))
+                                                                    {
+                                                                    <a target="_blank" href="@Url.Content("~/")Directorio/@(ViewBag.Estudio.Estudios[i].Adjunto[a])" style="width:80px; height:70px">
+                                                                        <img width="80" src="https://www.nchsoftware.com/zip/images/zip_files.png">
+                                                                    </a>
+                                                                    }
+                                                                    else if (ViewBag.Estudio.Estudios[i].Adjunto[a].Contains("dcm") || ViewBag.Estudio.Estudios[i].Adjunto[a].Contains("dcm30"))
+                                                                    {
+                                                                    <a target="_blank" href="@Url.Content("~/")Directorio/@(ViewBag.Estudio.Estudios[i].Adjunto[a])" style="width:80px; height:70px">
+                                                                        <img width="80" src="https://blog.nema.org/wp-content/uploads/2016/11/DICOM-logo-e1479849233486.jpg">
+                                                                    </a>
+                                                                    }
+                                                                    else
+                                                                    {
+
+                                                                        <a class="btn btn-sm btn-icon btn-bg-light btn-text-primary btn-hover-primary" title="Agregar para impresión" onclick="javascript:Agregarimagen('@Url.Content("~/")Directorio/@(ViewBag.Estudio.Estudios[i].Adjunto[a])', @ViewBag.Estudio.Id,'@(ViewBag.Estudio.Estudios[i].Adjunto[a])')">
+                                                                            <i class="fa fa-plus"></i>
+                                                                        </a>
+                                                                        <a target="_blank" href="@Url.Content("~/")Directorio/@(ViewBag.Estudio.Estudios[i].Adjunto[a])">
+                                                                            <img src="@Url.Content("~/")Directorio/@(ViewBag.Estudio.Estudios[i].Adjunto[a])" width="80" height="70">
+                                                                        </a>
+
+                                                                    }
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                        <div>
+                                                            <div class="col-lg-12" style="background-color:azure;" id="@("listadoimagenes" +ViewBag.Estudio.Id)">
+                                                            </div>
+                                                            <a class="btn btn-metal" onclick="javascript:ImprimirImagenes(@ViewBag.Estudio.Id, @ViewBag.Estudio.Estudios[i].IdDetalle)" title="Imprimir imagenes">
+                                                                Imprimir imagenes
+                                                            </a>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                }
+                                                @*@if ((@ViewBag.Estudio.Estudios[i].FechaEnvio.Year > 1) && (ViewBag.Estudio.Interpretacion) && (ViewBag.Usuario.Puesto.Id == 8 || ViewBag.Usuario.Puesto.Id == 6))
+                                            {
+                                                <div class="portlet-body form">
+                                                    <form class="m-form m-form--fit m-form--label-align-right" action="#" id="submit_form" method="POST" novalidate="novalidate">
+                                                        <div class="form-wizard">
+                                                            <div class="m-portlet__body">
+                                                                <h3 class="block">Interpretación del estudio</h3>
+                                                                <div class="form-group m-form__group row">
+                                                                    <label class="col-form-label col-lg-3 col-sm-12">
+                                                                        Interpretación
+                                                                        <span class="required" aria-required="true"> * </span>
+                                                                    </label>
+                                                                    <div class="col-lg-9">
+                                                                        <textarea class="form-control m-input" rows="3" name="remarks" id="observaciones@(ViewBag.Estudio.Estudios.Count > 0 ? ViewBag.Estudio.Estudios[i].IdDetalle:0)"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit">
+                                                                <div class="m-form__actions m-form__actions--solid">
+                                                                    <div class="row">
+                                                                        <div class="col-lg-2"></div>
+                                                                        <div class="col-lg-10">
+                                                                            <button type="reset" class="btn btn-success" onclick="javascript: GuardarResultado(@(ViewBag.Estudio.Estudios.Count > 0 ? ViewBag.Estudio.Estudios[i].IdDetalle:0))">
+                                                                                Guardar
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            }
+                                            else*@
+                                                @if ((@ViewBag.Estudio.Estudios[i].FechaEnvio.Year >= 1 || ViewBag.Estudio.Estudios[i].Interpretacion)
+            && (ViewBag.Usuario.Puesto.Id == 8 || ViewBag.Usuario.Puesto.Id == 6 || ViewBag.Usuario.Puesto.Id == 7)
+            && (((ViewBag.Usuario.Puesto.Id == 8 && ViewBag.Estudio.Estudios[i].ObservacionesTecnico == "") || (ViewBag.Estudio.Estudios[i].Departamento.Id == 16 && ViewBag.Usuario.Puesto.Id == 6 && ViewBag.Estudio.Estudios[i].ObservacionesTecnico != "" && ViewBag.Estudio.Estudios[i].Resultado == "") || (ViewBag.Estudio.Estudios[i].Departamento.Id == 17 && ViewBag.Usuario.Puesto.Id == 6 && ViewBag.Estudio.Estudios[i].ObservacionesTecnico == ""))))
+                                                {
+
+                                                    {
+                                                        <div class="portlet-body form">
+                                                            <form class="m-form m-form--fit m-form--label-align-right" action="#" id="submit_form" method="POST" novalidate="novalidate">
+                                                                <div class="form-wizard">
+                                                                    <div class="m-portlet__body">
+                                                                        <h3 class="block">Envio de información</h3>
+                                                                        <div class="form-group m-form__group row">
+                                                                            <label class="col-form-label col-lg-3 col-sm-12">
+                                                                                Observaciones/Interpretación
+                                                                                <span class="required" aria-required="true"> * </span>
+                                                                            </label>
+                                                                            @*<div class="col-lg-9">
+                                                                            <textarea class="form-control m-input" rows="8" name="remarks" id="observaciones@(ViewBag.Estudio.Estudios.Count > 0 ? ViewBag.Estudio.Estudios[i].IdDetalle : 0)"></textarea>
+                                                                        </div>*@
+                                                                            <div class="col-lg-9 cont observaciones@(ViewBag.Estudio.Estudios.Count > 0 ? ViewBag.Estudio.Estudios[i].IdDetalle : 0)" id="contenido">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group m-form__group row">
+                                                                            <div class="m-dropzone dropzone m-dropzone--primary dz-clickable" action="@Url.Action("Subir", "Multimedia")" id="m-dropzone-two" style="width:100%;">
+                                                                                <div class="m-dropzone__msg dz-message needsclick">
+                                                                                    <h3 class="m-dropzone__msg-title">
+                                                                                        Arroja aqui los archivos que deseas subir.
+                                                                                    </h3>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit">
+                                                                        <div class="m-form__actions m-form__actions--solid">
+                                                                            <div class="row">
+
+                                                                                <div class="col-lg-2"></div>
+                                                                                <div class="col-lg-10">
+                                                                                    <button type="reset" class="btn btn-success" onclick="javascript: GuardarResultado(@(ViewBag.Estudio.Estudios.Count > 0 ? ViewBag.Estudio.Estudios[i].IdDetalle : 0), 0)">
+                                                                                        Enviar
+                                                                                    </button>
+                                                                                    <button type="reset" class="btn btn-success" onclick="javascript: GuardarResultado(@(ViewBag.Estudio.Estudios.Count > 0 ? ViewBag.Estudio.Estudios[i].IdDetalle : 0), 1)">
+                                                                                        Guardar y  Enviar
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    }
+                                                }
+                                                else
+                                                {
+
+                                                }
+                                                <br />
+                                            </td>
+                                        </tr>
+                            }
+                            </tbody>
+                            </table>
+                        </div>
+                
+                <div class="tab-pane" id="m_user_profile_tab_5">
+                    @{ Html.RenderAction("DetalleSimple", "Pacientes", new { Id = ViewBag.Estudio.Paciente.Id }); }
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+     $(document).ready(function () {
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: '@Url.Content("~")Base/Contenido',
+            async: true,
+            success: function (response) {
+                $('.cont').html('');
+                $('.cont').html(response);
+            },
+            error: function (obj, error, objError) {
+                $('.cont').html('');
+                $('.cont').html(obj.responseText);
+
+            }
+        });
+    });
+
+    var ddl1 = $('#PacientesNuevo');
+    $(document).ready(function () {
+
+                                            SearchPaciente();
+
+        $('#Medico').val(@ViewBag.Estudio.Medico.Id);
+        $('#Empresas').val(@ViewBag.Estudio.Organizacion.Id);
+          $('#factura').val(@((int)ViewBag.Estudio.Factura));
+                                        });
+      function SearchPaciente() {
+                                            if ($('#nombre').val().length > 4) {
+            $.ajax({
+                                                    type: "POST",
+                dataType: 'json',
+                data: {
+                                                        Nombre: $('#nombre').val()
+                },
+                url: '@Url.Content("~/")Estudios/GetPacientes',
+                async: true,
+                success: function (response) {
+                                                        ddl1.empty();
+                    $(response).each(function () {
+                                                            var milli = this.FechaNacimiento.replace(/\/Date\((-?\d+)\)\//, '$1');
+                        var d = eval(this.FechaNacimiento.slice(1, -1))
+                        $(document.createElement('option'))
+                            .attr({ 'value': this.Id })
+                            .text(this.NombreCompleto + " - " + this.NumeroSeguroSocial)
+                            .appendTo(ddl1);
+                                                        });
+                                                        ddl1.focus();
+                                                    }
+                                                })
+        }
+
+                                        }
+            function ActualizarSolicitud(id) {
+
+                if (confirm("¿Estas de acuerdo en actualizar la solicitud?")) {
+                    mApp.blockPage({
+                        overlayColor: '#000000',
+                            type: 'loader',
+                            state: 'success',
+                            message: 'Guardando información, por favor espere...'
+                                                        });
+                    $.ajax({
+                                                            type: "POST",
+                        dataType: 'json',
+                        data: {
+                                                                Solicitud: @ViewBag.Estudio.Id,
+                            PaseMedico: $('#pase').val(), Observaciones: $('#indicaciones').val(), Paciente:  @(ViewBag.Estudio.Paciente.Id),
+                            Medico: parseInt($('#Medico').val()), Empresa: parseInt($('#Empresas').val()), Factura: parseInt($('#factura').val()), DatosFactura: $('#datosfactura').val()
+                        },
+                        url: '@Url.Content("~/")Estudios/ActualizarSolicitudGabinete',
+                        async: true,
+                        success: function (response) {
+                                                                window.location.reload();
+                                                            },
+                        error: function (response) {
+                            window.location.reload();
+                        }
+                    });
+                } else {
+
+                }
+            }
+
+
+            var adjuntos = "";
+            function GuardarResultado(id, enviar) {
+                if ($('#observaciones' + id).val() != "") {
+
+                    if (confirm("Al confirmar, se enviará la información de los estudios, ¿desea continuar?")) {
+                        $.ajax({
+                                                                    type: "POST",
+                                dataType: 'json',
+                                data: {
+                                                                        correo: '@ViewBag.Estudio.Paciente.Email', idestudio:@ViewBag.Estudio.Id,
+                                                                        Id: id, Observaciones: $('.observaciones' + id).find('div#editor')[0].innerHTML, adjuntos: adjuntos,
+                                    Enviar : enviar == 0 ? (@ViewBag.Estudio.Interpretacion) : enviar
+                                },
+                                url: '@Url.Content("~")Estudios/CapturaResultado2',
+                                async: true,
+                                success: function (response) {
+                                if (response.Resultado != null) {
+                                    alert('Guardado con exito!')
+                                    window.location.reload();
+                                }
+                                else {
+                                    alert('');
+                                }
+                            },
+                            error: function (response) {
+
+                            },
+                            });
+                    } else {
+
+                    }
+                }
+        else {
+                                                alert('Debe ingresar la interpretación de los estudios.')
+        }
+                                        }
+    @*function GuardarResultado(id) {
+        if ($('#observaciones' + id).val() != "") {
+
+            if (confirm("Al confirmar, se enviará la interpretación de los estudios, ¿desea continuar?")) {
+                $.ajax({
+                    type: "POST",
+                    dataType: 'json',
+                    data: {
+                        correo: '@ViewBag.Estudio.Paciente.Email', idestudio:@ViewBag.Estudio.Id,
+                        Id: id, Observaciones: $('#observaciones' + id).val()
+                    },
+                    url: '@Url.Content("~")Estudios/CapturaResultado',
+                    async: true,
+                    success: function (response) {
+                        if (response.Resultado != null) {
+                            alert('Guardado con exito!')
+                            window.location.reload();
+                        }
+                        else {
+                            alert('');
+                        }
+                    },
+                    error: function (response) {
+
+                    },
+                });
+            } else {
+
+            }
+        }
+        else {
+            alert('Debe ingresar la interpretación de los estudios.')
+        }
+    }
+    function GuardarEnvio(id) {
+        if (adjuntos.includes(".txt") || adjuntos.includes(".dcm") || adjuntos.includes(".dcm30") || adjuntos.includes(".rar") || adjuntos.includes(".zip") || adjuntos.includes(".docx") || adjuntos.includes(".doc") || adjuntos.includes(".mp4") || adjuntos.includes(".avi") || adjuntos.includes(".tif") || adjuntos.includes(".jpg") || adjuntos.includes(".jpeg") || adjuntos.includes(".png") || adjuntos.includes(".TXT") || adjuntos.includes(".DCM") || adjuntos.includes(".DCM30") || adjuntos.includes(".RAR") || adjuntos.includes(".ZIP") || adjuntos.includes(".DOCX") || adjuntos.includes(".DOC") || adjuntos.includes(".MP4") || adjuntos.includes(".avi") || adjuntos.includes(".TIF") || adjuntos.includes(".JPG") || adjuntos.includes(".JPEG") || adjuntos.includes(".PNG")) {
+            debugger;
+                $.ajax({
+                    type: "POST",
+                    dataType: 'json',
+                    data: {
+                        Id: id,Observaciones: $('#observacionestecnico'+id).val(),  adjuntos: adjuntos
+                    },
+                    url: '@Url.Content("~")Estudios/EnvioEstudio',
+                    async: true,
+                    success: function (response) {
+                        if (response.Resultado != null) {
+                            alert('Guardado con exito!')
+                            window.location.reload();
+                        }
+                        else {
+                            alert('');
+                        }
+                    },
+                    error: function (response) {
+                    },
+                });
+        }
+        else{
+            alert('Debe subir al menos una imagen al resultado')
+        }
+    }*@
+
+     function EnviarCorreo(detalle, id) {
+         if ($('#correo').val() != "") {
+
+             if (confirm("¿Deseas enviar por correo electrónico al paciente? (" + $('#correo').val() + ")")) {
+                 $.ajax({
+                     type: "POST",
+                     dataType: 'json',
+                     data: {
+                         receiver: $('#correo').val(),
+                         Detalle: detalle,
+                         Id: id
+                    },
+                     url: '@Url.Content("~/")Estudios/EnvioCorreoInterpretacion',
+                     async: true,
+                     success: function (response) {
+                         window.location.reload();
+                     },
+                     error: function (response) {
+                         window.location.reload();
+                     }
+                 });
+             } else {
+
+             }
+         }
+         else {
+             if (confirm("¿Deseas enviar por correo electrónico al paciente?")) {
+                 $.ajax({
+                     type: "POST",
+                     dataType: 'json',
+                     data: {
+                         receiver: '@ViewBag.Estudio.Paciente.Email',
+                         Detalle: detalle,
+                         Id: id
+                    },
+                     url: '@Url.Content("~/")Estudios/EnvioCorreoInterpretacion',
+                     async: true,
+                     success: function (response) {
+                         window.location.reload();
+                     },
+                     error: function (response) {
+                         window.location.reload();
+                     }
+                 });
+             } else {
+
+             }
+
+         }
+                                        }
+        function GetEstudiosTipo() {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    Tipo: parseInt($('#TipoEstudio').val())
+                },
+                url: '@Url.Content("~/")Estudios/GetEstudiosTipo',
+                async: true,
+                success: function (response) {
+                    ddl3.empty();
+                    $(response).each(function () {
+                        $(document.createElement('option'))
+                            .attr({ 'value': this.Id, 'precio': this.PrecioBase })
+                            .text(this.Nombre)
+                            .appendTo(ddl3);
+                    });
+                    ddl3.focus();
+                    ddl3.change();
+                }
+            })
+
+     }
+
+    function AsignarEstudio() {
+
+        if (confirm("¿Estas de acuerdo en agregar un nuevo estudio a la solicitud?")) {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    Id: ' @ViewBag.Estudio.Id',
+                    ClaveEstudio: $('#Estudios').val(),
+                    Orden: 0
+                },
+                url: '@Url.Content("~/")Estudios/AsignarEstudioSolicitudGabinete',
+                async: true,
+                success: function (response) {
+                    window.location.reload();
+                },
+                error: function (response) {
+                    window.location.reload();
+                }
+            });
+        } else {
+
+        }
+    }
+    function Agregarimagen(url, id, nombre) {
+        $('#listadoimagenes' + id).append($('<a>').append($('<img onclick="javascript:eliminarimagen(this)" title="Eliminar de impresión" name="'+ nombre +'" src="' + url + '" width="80" height="70">')));
+    }
+    function eliminarimagen(elemento) {
+        elemento.remove();
+    }
+    function ImprimirImagenes(id, iddetalle) {
+        var controles = $('#listadoimagenes' + id).find('img');
+        var imagenes = "";
+        if (controles.length > 4 || controles.length == 0) {
+            alert("Solo se pueden agregar hasta 4 imagenes para la impresion");
+        } else {
+            for (var i = 0; i < controles.length; i++) {
+                if (imagenes == "")
+                    imagenes = controles[i].getAttribute('name');
+                else
+                    imagenes = imagenes + "," + controles[i].getAttribute('name');
+
+            }
+            if (confirm("¿Estas de acuerdo en imprimir las imagenes seleccionadas?")) {
+                window.open('@Url.Content("~/")Estudios/ImprimirImagenes?Id=' + id + '&Detalle=' + iddetalle + "&Imagenes=" + imagenes);
+            }
+        }
+    }
+</script>

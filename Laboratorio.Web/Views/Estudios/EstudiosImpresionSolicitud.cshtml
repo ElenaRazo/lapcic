@@ -1,0 +1,156 @@
+﻿
+
+@{
+    ViewBag.Title = "Estudios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="m-portlet__body" id="listado" style="height:auto;">
+    <input id="correo" placeholder="INGRESE CORREO ELECTRONICO" />
+    <table class="table table-striped m-table" id="tblUsuarios">
+        <tbody>
+            @for (int i = 0; i < @ViewBag.EstudiosSolicitud.Count; i++)
+            {
+                <tr>
+                    <td class="resul" fuera="0" captura="NEstud" style="background-color:#35909c; color:white;" titulo="1" unidad="" negrita="1" nombre="@ViewBag.EstudiosSolicitud[i].Nombre" clave="-1" texto="0" max="0" min="0" claveestudio="@ViewBag.EstudiosSolicitud[i].ClaveEstudio" claveEstudioMain="@ViewBag.EstudiosSolicitud[i].ClaveEstudio">
+                        @ViewBag.EstudiosSolicitud[i].Nombre
+                        @{
+                             <input type="checkbox" id="@("id"+ViewBag.EstudiosSolicitud[i].ClaveEstudio)" estudio="@ViewBag.EstudiosSolicitud[i].ClaveEstudio" class="form-check estudio estudio" onclick="seleccionartodos('@ViewBag.EstudiosSolicitud[i].ClaveEstudio')" />
+                            
+                        }
+                        
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        @{ Html.RenderAction("ResultadoImpresion", "Estudios", new { Estudio = ViewBag.EstudiosSolicitud[i].ClaveEstudio, Edad = ViewBag.EstudiosSolicitud[i].Edad, Genero = ViewBag.EstudiosSolicitud[i].Genero, Perfil = ViewBag.EstudiosSolicitud[i].Perfil, Clave = @ViewBag.Solicitud, Nombre = @ViewBag.EstudiosSolicitud[i].Nombre }); }
+                    </td>
+                </tr>
+                            }
+        </tbody>
+    </table>
+</div>
+<div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit" style="padding:20">
+    <div class="m-form__actions m-form__actions--solid">
+        <div class="row">
+            <div class="col-lg-12">
+                <input id="acepto" onclick="Validar()" type="checkbox" />He verificado y estoy de acuerdo con todos los valores registrados en el formulario.</divclass="col-lg-6">
+                <div class="col-lg-12">
+                    <a onclick="javascript:GuardarResultado(1)" style="display:none;" id="divGuardar" class="btn btn-primary">
+                        Imprimir con firma
+                    </a>
+                    <a onclick="javascript:GuardarResultado(0)" style="display:none;" id="divGuardar2" class="btn btn-primary">
+                        Imprimir sin firma
+                    </a>
+                    <a onclick="javascript: EnviarResultado()" style="display:none;" id="divEnviar" class="btn btn-primary">
+                        Enviar por correo
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function Validar() {
+        if ($("#acepto").is(":checked")) {
+            $('#divGuardar').show();
+            $('#divGuardar2').show();
+            $('#divEnviar').show();
+        }
+        else {
+            $('#divGuardar').hide();
+            $('#divGuardar2').hide();
+            $('#divEnviar').hide();
+        }
+    }
+    function VerCampos(clave, edad, genero, p, nombre) {
+        $('#Resultado').html('');
+        $('#Resultado').show();
+        $('#listadoEstudiosSolicitud').hide();
+         $.ajax({
+            type: "POST",
+            dataType: 'json',
+            data: {
+                Estudio: clave, Edad: edad, Genero: genero, Perfil: p == 1 ? true:false, Clave : '@ViewBag.Solicitud', Nombre: nombre
+            },
+            url: '@Url.Content("~/")Estudios/Resultado',
+            async: true,
+            success: function (response) {
+                $('#Resultado').html(response);
+            },
+            error: function (response) {
+                $('#Resultado').html(response.responseText);
+            }
+        });
+    }
+    function seleccionartodos(estudio) {
+        var elementos = $('.claveprincipal'+estudio);
+        for (var i = 0; i < elementos.length; i++) {
+            if (!elementos[i].checked) {
+                elementos[i].checked = "checked"
+            }
+        }
+    }
+        var resultados = new Array();
+        function GuardarResultado(firma) {
+            var imprimir = [];
+            var stringArray = ""
+            var elementos = $('.estudio');
+            for (var i = 0; i < elementos.length; i++) {
+                if (elementos[i].checked) {
+                    if (stringArray != "") {
+                        stringArray = stringArray + "," + elementos[i].attributes.estudio.value;
+                    }
+                    else {
+                        stringArray = elementos[i].attributes.estudio.value;
+                    }
+                }
+
+
+            }
+             $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: '@Url.Content("~/")Estudios/Individual?Solicitud=@ViewBag.IdSolicitud&Clave=@ViewBag.Solicitud&Firma=' + firma + '&estudios=' + stringArray,
+            async: true,
+            success: function (response) {
+                window.open('@Url.Content("~/")' + response.responseText);
+            },
+            error: function (response) {
+                window.open('@Url.Content("~/")' + response.responseText);
+            }
+        });
+            window.open();
+
+    }
+    function EnviarResultado() {
+            var imprimir = [];
+            var stringArray = ""
+            var elementos = $('.estudio');
+            for (var i = 0; i < elementos.length; i++) {
+                if (elementos[i].checked) {
+                    if (stringArray != "") {
+                        stringArray = stringArray + "," + elementos[i].attributes.estudio.value;
+                    }
+                    else {
+                        stringArray = elementos[i].attributes.estudio.value;
+                    }
+                }
+
+
+            }
+             $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: '@Url.Content("~/")Estudios/EnviarIndividual?Solicitud=@ViewBag.IdSolicitud&Clave=@ViewBag.Solicitud&Correo=' + $('#correo').val() + '&estudios=' + stringArray,
+            async: true,
+            success: function (response) {
+                window.open('@Url.Content("~/")' + response.responseText);
+            },
+            error: function (response) {
+                window.open('@Url.Content("~/")' + response.responseText);
+            }
+        });
+
+        }
+</script>

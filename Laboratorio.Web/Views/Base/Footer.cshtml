@@ -1,0 +1,43 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+    <div class="text-center">
+        <center style="font-size: 14px;  font-family: Calibri;"><br /><br />
+            <div id="firma" style="visibility:hidden;">
+                QFB. Yazmin Sanchez Castillo<br />
+                RPF 9048926 SSG2996 Universidad de Guanajuato<br />
+            </div>
+            Página <span id='page'></span> de
+            <span id='topage'></span>
+
+        </center>
+      
+        <script>
+            var vars = {};
+            var x = window.location.search.substring(1).split('&');
+            for (var i in x) {
+                var z = x[i].split('=', 2);
+                vars[z[0]] = unescape(z[1]);
+            }
+
+            document.getElementById('page').innerHTML = vars.page;
+            document.getElementById('topage').innerHTML = vars.topage;
+
+            var signature_div = document.getElementById('firma');
+            if (vars.page == vars.topage) {
+                signature_div.style.visibility = "visible";
+            }
+           
+        </script>
+
+    </div>
+</body>
+</html>

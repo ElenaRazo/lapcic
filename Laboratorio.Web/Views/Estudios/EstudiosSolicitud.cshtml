@@ -1,0 +1,167 @@
+﻿
+@{
+    ViewBag.Title = "Estudios";
+    Layout = null;
+}
+<div class="m-portlet__body" id="listado" style="height:auto;">
+    @*<div class="form-group m-form__group row">
+        <label class="col-form-label col-lg-2 col-sm-12">
+            Estudio
+            <span class="required" aria-required="true"> * </span>
+        </label>
+        <div class="col-lg-6 col-md-9 col-sm-12">
+            @Html.DropDownList("Estudios", null, new { @class = "form-control m-input", @id = "Estudios", @name = "Estudios", @tabindex = "-1" })
+            <span class="" dir="ltr" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-puesto_list-container"><span class="select2-selection__rendered" id="select2-puesto_list-container"><span class="select2-selection__placeholder">Selecciona el estudio que deseas agregar</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+        </div>
+        <div class="col-lg-2">
+            <button class="btn btn-primary">
+                Agregar
+            </button>
+        </div>
+    </div>*@
+    <table class="table table-striped m-table" id="tblUsuarios">
+        @*<thead>
+            <tr style="height: 30px; background-color:darkgray; color:white;">
+                <th style="width:60%"> Nombre </th>
+                <th style="width:40%"> Precio </th>
+                <th style="width:auto;">Resultado </th>
+            </tr>
+        </thead>*@
+        <tbody>
+            @for (int i = 0; i < @ViewBag.EstudiosSolicitud.Count; i++)
+            {
+                <tr>
+                    <td colspan="2" class="res" fuera="0" captura="NEstud" style="background-color:#35909c; color:white;"  titulo="1"unidad="" negrita="1" nombre="@ViewBag.EstudiosSolicitud[i].Nombre" clave="-1" texto="0" max="0" min="0" claveEstudio="@ViewBag.EstudiosSolicitud[i].ClaveEstudio" claveEstudioMain="@ViewBag.EstudiosSolicitud[i].ClaveEstudio">@ViewBag.EstudiosSolicitud[i].Nombre</td>
+                </tr>
+                <tr>
+                    <td>
+                        @{ Html.RenderAction("Resultado", "Estudios", new { Estudio = ViewBag.EstudiosSolicitud[i].ClaveEstudio, Edad = ViewBag.EstudiosSolicitud[i].Edad, Genero = ViewBag.EstudiosSolicitud[i].Genero, Perfil= ViewBag.EstudiosSolicitud[i].Perfil, Clave = @ViewBag.Solicitud, Nombre= @ViewBag.EstudiosSolicitud[i].Nombre }); }
+                    </td>
+                    <td>
+                        @*<a href="@Url.Action("Detalle","Estudios", new { Id = @ViewBag.Estudios[i].Id })" class="btn btn-outline btn-circle dark btn-sm black" title="Detalle">
+                            <i class="fa fa-search"></i>
+                        </a>*@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit" style="padding:20px">
+<div class="m-form__actions m-form__actions--solid">
+    <div class="row">
+        <div class="col-lg-12"><input id="acepto" onclick="Validar()" type="checkbox" />
+        He verificado y estoy de acuerdo con todos los valores registrados en el formulario.
+        </div>
+        <div class="col-lg-12">
+            <a onclick="javascript:GuardarResultado()" style="display:none;" class="col-lg-3 btn btn-primary" id="divGuardar">
+                Guardar
+            </a>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+    function Validar() {
+        if ($("#acepto").is(":checked")) {
+            $('#divGuardar').show();
+        }
+        else {
+            $('#divGuardar').hide();
+        }
+    }
+    function VerCampos(clave, edad, genero, p, nombre) {
+        $('#Resultado').html('');
+        $('#Resultado').show();
+        $('#listadoEstudiosSolicitud').hide();
+         $.ajax({
+            type: "POST",
+            dataType: 'json',
+            data: {
+                Estudio: clave, Edad: edad, Genero: genero, Perfil: p == 1 ? true:false, Clave : '@ViewBag.Solicitud', Nombre: nombre
+            },
+            url: '@Url.Content("~/")Estudios/Resultado',
+            async: true,
+            success: function (response) {
+                $('#Resultado').html(response);
+            },
+            error: function (response) {
+                $('#Resultado').html(response.responseText);
+            }
+        });
+    }
+        var resultados = new Array();
+        function GuardarResultado(mostrar) {
+            var res = $('.res');
+            debugger;
+            for (var r = 0; r < res.length; r++) {
+                var estudio = res[r];
+                var resu = $('#' + estudio.getAttribute('id'));
+                var resu2 = $('#2' + estudio.getAttribute('id'));
+                var resultado = "";
+                if (estudio.getAttribute("captura") == "4")
+                    resultado = $('#' + estudio.getAttribute('id') + ' option:selected').html()
+                else {
+                    resultado = (estudio.getAttribute("captura") == "NEstud") ? "" : resu.val()
+                }
+
+
+                var resultado2 = {
+                    ClaveSolicitud: '@ViewBag.Solicitud',
+                    FueraRango: //estudio.getAttribute("texto") != "" ? ($("#" + estudio.getAttribute('id') + " :selected").text() == estudio.getAttribute("texto") ? true:false) :
+                        (estudio.getAttribute("fuera")),
+                    ClaveEstudio: estudio.getAttribute("claveEstudio"),
+                    ClaveEstudioMain: estudio.getAttribute("claveEstudioMain"),
+                    MAX: estudio.getAttribute("max"),
+                    MIN: estudio.getAttribute("min"),
+                    EstudioComponente: estudio.getAttribute("clave"),
+                    NombreEstudio: estudio.getAttribute("nombre"),
+                    Normal: estudio.getAttribute("textonormal") != "" ? estudio.getAttribute("textonormal") : estudio.getAttribute("min") + "-" + estudio.getAttribute("max"),
+                    Resultado: estudio.getAttribute("captura") == "4" ? $('#' + estudio.getAttribute('id') + ' option:selected').html() : ((estudio.getAttribute("captura") == "NEstud") ? "" : (resultado != undefined ? resultado.replace('\n', '<br/>').replace('\n', '<br/>').replace('\n', '<br/>').replace('\n', '<br/>').replace('\n', '<br/>').replace('\n', '<br/>').replace('\n', '<br/>').replace('\n', '<br/>').replace('\n', '<br/>').replace('\n', '<br/>').replace('\n', '<br/>').replace('\n', '<br/>').replace('\n', '<br/>').replace('\n', '<br/>').replace('\n', '<br/>').replace('\n', '<br/>') : "")),
+                    Imprimir : true,
+                    Negrita: estudio.getAttribute("negrita"),
+                    Referencia: false,
+                    Titulo : estudio.getAttribute("titulo"),
+                    Unidad: estudio.getAttribute("unidad"),
+                    TipoCaptura: estudio.getAttribute("captura"),
+                    LineasImpresion : 0,
+                    Capturado: estudio.getAttribute("capturado") == "1",
+                    Ruta: estudio.getAttribute("idresultado"),
+                    Observaciones: (resu2.val() != undefined ? resu2.val().replace('\n','<br/>').replace('\n', '<br/>').replace('\n', '<br/>').replace('\n', '<br/>').replace('\n', '<br/>').replace('\n', '<br/>').replace('\n', '<br/>').replace('\n', '<br/>').replace('\n', '<br/>').replace('\n', '<br/>').replace('\n', '<br/>').replace('\n', '<br/>').replace('\n', '<br/>').replace('\n', '<br/>').replace('\n', '<br/>').replace('\n', '<br/>') : "")
+                }
+                if (resultado2.EstudioComponente == "-1" || resultado2.Normal == "0-0")
+                    resultado2.Normal = ""
+                resultado2.FueraRango = resultado2.FueraRango == "1" ? true : false
+                resultados.push(resultado2);
+            }
+            mApp.blockPage({
+                overlayColor: '#000000',
+                type: 'loader',
+                state: 'success',
+                message: 'Guardando información, por favor espere...'
+            });
+                $.ajax({
+                    type: "POST",
+                    dataType: 'json',
+                    data: {
+                        Resultados : resultados
+                    },
+                    url: '@Url.Content("~/")Estudios/CapturaResultadosEstudios',
+                    async: true,
+                    success: function (response) {
+                        mApp.unblockPage();
+                        if (mostrar == undefined) {
+                            alert('Resultados ingresados con exito');
+                            window.location.reload();
+                            $('#generalesSolicitud').show();
+                        }
+
+                    },
+                    error: function (response) {
+                        mApp.unblockPage();
+                    }
+                })
+
+        }
+</script>
+    

@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "TipoPago";
+    Layout = null;
+}
+
+<form class="m-form m-form--fit m-form--label-align-right">
+    <div class="m-portlet__body" style="height:inherit; padding:0; font-family:Calibri">
+        <table class="table table-striped m-table">
+            @{
+                foreach (var c in ViewBag.Componentes)
+                {
+                    <tr>
+                        <td style="width:90%" clavecomponente="@c.Id">
+                            @c.Nombre
+
+                        </td>
+                        <td style="width:10%">
+                            @{
+                                if (ViewBag.Perfil)
+                                {
+                                    <input type="checkbox" class="form-check @("claveprincipal" + ViewBag.ClaveEstudio) @(ViewBag.Perfil ? "estudio" : "componente") @("cl" + c.ClaveEstudio)" estudio="@(c.ClaveEstudio + "-" + c.Id)" id="@("chk" + c.Id.ToString())" value="@c.Id" />
+                                }
+                            }
+                           
+                        </td>
+                    </tr>
+                }
+
+            }
+            
+        </table>
+    </div>
+</form>

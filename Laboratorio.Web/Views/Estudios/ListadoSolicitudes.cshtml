@@ -1,0 +1,119 @@
+﻿
+@{
+    ViewBag.Title = "TipoPago";
+    Layout = null;
+}
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<table class="table table-striped m-table" id="tbls" >
+    <thead>
+        <tr style="height: 54px;">
+            <th style="width:2%"> # </th>
+            <th style="width:13%"> Fecha </th>
+            <th style="width:10%"> Clave </th>
+            <th style="width:30%"> Paciente </th>
+            <th style="width:5%"> Edad </th>
+            <th style="width:15%"> Medico/Organización </th>
+            <th style="width:5%"> Precio </th>
+            <th style="width:5%"> Debe </th>
+            <th style="width:3%"> Pagado </th>
+            <th style="width:auto;"> </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < @ViewBag.Solicitudes.Count; i++)
+        {
+        <tr style="background-color:@(ViewBag.Solicitudes[i].TipoUrgencia.ToString() == "HOY" ? "#8a0015": "white");color:@(ViewBag.Solicitudes[i].TipoUrgencia.ToString() == "HOY" ? "white": "black")">
+            <td style="width:2%">@(i+1)</td>
+            <td style="width:13%">@(ViewBag.Solicitudes[i].Fecha.ToString("dd/MM/yyyy HH:mm:ss"))</td>
+            <td style="width:10%">@(ViewBag.Solicitudes[i].ClaveSolicitud)</td>
+            <td style="width:30%">@(ViewBag.Solicitudes[i].Paciente.NombreCompleto.ToUpper())</td>
+            <td style="width:5%">
+                @{var edad = 0; var meses = 0; }
+                @{
+                    var startDate = ViewBag.Solicitudes[i].Paciente.FechaNacimiento;
+                    if (startDate != null && startDate.Year > 1)
+                    {
+                        var endDate = DateTime.Today;
+                        if (startDate > endDate)
+                        {
+                            edad = 0;
+                        }
+                        int years = endDate.Year - startDate.Year;
+                        int months = 0;
+                        if (endDate < startDate.AddYears(years) && years != 0)
+                        {
+                            years--;
+                        }
+                        startDate = startDate.AddYears(years);
+
+                        if (startDate.Year == endDate.Year)
+                        {
+                            months = endDate.Month - startDate.Month;
+                        }
+                        else
+                        {
+                            months = (12 - startDate.Month) + endDate.Month;
+                        }
+                        if (endDate < startDate.AddMonths(months) && months != 0)
+                        {
+                            months--;
+                        }
+                        meses = months;
+                        edad = years;
+                    }
+
+                }
+                @(edad) año(s) @(meses) mes(es)
+            </td>
+            <td style="width:15%">@(ViewBag.Solicitudes[i].Medico.NombreCompleto.ToUpper())<br />@(ViewBag.Solicitudes[i].Empresa.Nombre.ToUpper())</td>
+            <td style="width:10%">@(ViewBag.Solicitudes[i].Total)</td>
+            <td style="width:10%">@(ViewBag.Solicitudes[i].Debe)</td>
+            <td style="width:5%">@(ViewBag.Solicitudes[i].Pagado)</td>
+            <td style="width:auto;">
+                <a onclick="Eliminar(@ViewBag.Solicitudes[i].Id)" class="btn btn-outline btn-circle dark btn-sm black" title="Eliminar" style="display:@(ViewBag.Puesto < 4 ? "block": "none")">
+                    <i class="fa fa-trash-o"></i>
+
+                </a>
+                <a href="@Url.Action("Solicitud","Estudios", new { Id = @ViewBag.Solicitudes[i].Id, Clave = @ViewBag.Solicitudes[i].ClaveSolicitud })" class="btn btn-outline btn-circle dark btn-sm black" title="Ver solicitud" target="_blank">
+                    <i class="fa fa-file-pdf-o"></i>
+                </a>
+                <a href="@Url.Action("DetalleSolicitud","Estudios", new { Id = @ViewBag.Solicitudes[i].Id })" class="btn btn-outline btn-circle dark btn-sm black" title="Detalle">
+                    <i class="fa fa-search"></i>
+                </a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#contadorSolicitudes').text("@(ViewBag.Solicitudes.Count) Solicitudes");
+        $('#tbls').DataTable();
+        $('#tbls').removeClass('dataTable');
+    });
+    function Eliminar(id) {
+        if (confirm("¿Deseas eliminar la solicitud?")) {
+            $.ajax({
+                    type: "POST",
+                    dataType: 'json',
+                    data: {
+                        Id: id
+                    },
+                    url: '@Url.Content("~/")Estudios/EliminarSolicitud',
+                async: true,
+                success: function (response) {
+                    if (response.respuesta)
+                    alert('Solicitud eliminada con éxito');
+                    window.location.reload();
+                },
+                error: function (response) {
+                    if (response.respuesta)
+                    alert('Solicitud eliminada con éxito');
+                    window.location.reload();
+                }
+            });
+        }
+    }
+</script>

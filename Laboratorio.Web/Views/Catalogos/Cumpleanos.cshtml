@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewBag.Title = "Cumpleanos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="portlet-body form">
+    <form class="m-form m-form--fit m-form--label-align-right" action="#" id="submit_form" method="POST" novalidate="novalidate">
+        <div class="form-wizard">
+            <div class="m-portlet__body">
+                <h3 class="block">Carga de imagen de felicitación de cumpleaños</h3>
+                <div class="form-group m-form__group row">
+                    <div class="col-lg-6" style="background-image:url(@Url.Content("~/")Directorio/Imagenes/cumpleanos.png)">
+                    </div>
+                    <div class="col-lg-6 m-dropzone dropzone m-dropzone--primary dz-clickable" action="@Url.Action("Subir", "Multimedia")" id="m-dropzone-two" style="width:100%;">
+                        <div class="m-dropzone__msg dz-message needsclick">
+                            <h3 class="m-dropzone__msg-title">
+                                Arroja aqui los archivos que deseas subir.
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit">
+                <div class="m-form__actions m-form__actions--solid">
+                    <div class="row">
+
+                        <div class="col-lg-2"></div>
+                        <div class="col-lg-10">
+                            <div class="btn btn-success" onclick="javascript:EnviarImagen()">
+                                Guardar
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    var adjuntos = "";
+    function EnviarImagen() {
+        if (confirm("¿Desea guardar la imagen que ha subido para que se envie a los pacientes en su cumpleaños?")) {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    adjuntos: adjuntos
+                },
+                url: '@Url.Content("~/")Catalogos/GuardarCup',
+                async: true,
+                success: function (response) {
+                    window.location.reload();
+                },
+                error: function (response) {
+                    window.location.reload();
+                }
+            });
+        } else {
+
+        }
+    }
+</script>

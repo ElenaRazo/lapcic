@@ -1,0 +1,31 @@
+﻿
+
+@{
+    ViewBag.Title = "Estudios";
+    Layout = null;
+}
+<div class="m-portlet__body" id="listado" style="height:auto !important">
+    <table class="table table-striped m-table" id="tblUsuarios">
+        <thead>
+            <tr style="height: 30px; background-color: darkgray; color: white;">
+                <th style="width:40%"> Nombre </th>
+                <th style="width:30%"> Precio </th>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < @ViewBag.EstudiosSolicitud.Count; i++)
+            {
+                <tr>
+                    <td style="width:40%">@ViewBag.EstudiosSolicitud[i].Nombre</td>
+                    <td style="width:30%">@ViewBag.EstudiosSolicitud[i].PrecioBase</td>
+                    <td>
+                        <a onclick="EliminarEstudio(@ViewBag.EstudiosSolicitud[i].IdDetalle)" class="btn btn-outline btn-circle dark btn-sm black" title="Eliminar">
+                            <i class="fa fa-trash-o"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

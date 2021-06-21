@@ -1,0 +1,97 @@
+﻿
+@{
+    ViewBag.Title = "TipoPago";
+    Layout = null;
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<table class="table table-striped m-table" id="tblUsuarios">
+    <thead>
+        <tr style="height: 54px;">
+            <th style="width:5%">ID</th>
+            <th style="width:5%"> # SOL </th>
+            <th style="width:10%"> Nombre </th>
+            <th style="width:10%"> Paterno </th>
+            <th style="width:10%"> Materno </th>
+            <th style="width:20%"> Email </th>
+            <th style="width:10%"> RFC </th>
+            <th style="width:5%"> Genero </th>
+            <th style="width:10%"> NSS </th>
+            <th style="width:auto;"> </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < @ViewBag.Pacientes.Count; i++)
+        {
+        <tr>
+            <td style="width:5%">@(ViewBag.Pacientes[i].Id)</td>
+            <td style="width:5%">@(ViewBag.Pacientes[i].Curp)</td>
+            <td style="width:10%">@(ViewBag.Pacientes[i].Nombre)</td>
+            <td style="width:10%">@(ViewBag.Pacientes[i].Paterno)</td>
+            <td style="width:10%">@(ViewBag.Pacientes[i].Materno)</td>
+            <td style="width:20%">@(ViewBag.Pacientes[i].Email)</td>
+            <td style="width:10%">@(ViewBag.Pacientes[i].Rfc)</td>
+            <td style="width:5%">@(ViewBag.Pacientes[i].Genero == "M" ? "HOMBRE" : "MUJER")</td>
+            <td style="width:10%">@(ViewBag.Pacientes[i].NumeroSeguroSocial)</td>
+            <td style="width:auto;">
+                <a onclick="EliminarPaciente(@ViewBag.Pacientes[i].Id)" class="btn btn-outline btn-circle dark btn-sm black" title="Eliminar">
+                    <i class="fa fa-trash-o"></i>
+                </a>
+                <a onclick="javascript:Ver(@ViewBag.Pacientes[i].Id)" class="btn btn-outline btn-circle dark btn-sm black" title="Detalle">
+                    <i class="fa fa-search"></i>
+                </a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+<script type="text/javascript">
+    //$(document).ready(function () {
+    //    $('#tblUsuarios').DataTable();
+    //    $('#tblUsuarios').removeClass('dataTable');
+    //});
+    function Ver(id) {
+        $.ajax({
+
+            type: "POST",
+            dataType: 'json',
+            data: { Id: id },
+            url: '@Url.Content("~/")Pacientes/Detalle',
+            async: true,
+            success: function (response) {
+                $('#listadoPacientes').hide();
+                $('#detallePaciente').show();
+                $('#detallePaciente').html(response);
+
+            },
+            error: function (obj, error, objError) {
+                $('#listadoPacientes').hide();
+                $('#detallePaciente').show();
+                $('#detallePaciente').html(obj.responseText);
+            }
+        });
+
+    }
+
+    function EliminarPaciente(id) {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    Id: id
+                },
+                url: '@Url.Content("~/")Pacientes/Eliminar',
+            async: true,
+            success: function (response) {
+                if (response.respuesta)
+                alert('Paciente eliminado con éxito');
+                window.location.reload();
+            },
+            error: function (response) {
+                if (response.respuesta)
+                alert('Paciente eliminado con éxito');
+                window.location.reload();
+            }
+        });
+
+    }
+</script>

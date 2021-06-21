@@ -1,0 +1,160 @@
+﻿
+
+
+@{
+    ViewBag.Title = "Nuevo";
+    Layout = null;
+}
+
+<!--                       -->
+<div class="m-portlet  m-portlet--tabs m-portlet--info m-portlet--head-solid-bg m-portlet--head-sm" id="form_wizard_1">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <i class=" icon-layers font-blue"></i>
+            <span class="caption-subject font-blue bold uppercase" style="color:white;">
+                ALTA DE UNA NUEVA EMPRESA/ORGANIZACION
+            </span>
+        </div>
+    </div>
+    <div class="portlet-body form">
+        <form class="m-form m-form--fit m-form--label-align-right" action="#" id="submit_form" method="POST" novalidate="novalidate">
+            <div class="form-wizard">
+                <div class="m-portlet__body">
+                    <h3 class="block">Datos generales</h3>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Nombre
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-9 col-md-9 col-sm-12">
+                            <input type="text" id="nombre" class="form-control" name="nombre" aria-required="true" aria-invalid="false">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Direccion
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-9 col-md-9 col-sm-12">
+                            <input type="text" id="direccion" class="form-control" name="direccion" aria-required="true" aria-invalid="false">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Colonia
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-9 col-md-9 col-sm-12">
+                            <input type="text" id="colonia" class="form-control" name="colonia" aria-required="true" aria-invalid="false">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Ciudad
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-9 col-md-9 col-sm-12">
+                            <input type="text" id="ciudad" class="form-control" name="ciudad" aria-required="true" aria-invalid="false">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Telefono
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-9 col-md-9 col-sm-12">
+                            <input type="text" id="telefono" class="form-control" name="telefono" aria-required="true" aria-invalid="false">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Telefono 2
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-9 col-md-9 col-sm-12">
+                            <input type="text" id="telefono2" class="form-control" name="telefono2" aria-required="true" aria-invalid="false">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Imprimir precio en recibo
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-9 col-md-9 col-sm-12">
+                            <select id="ImprimirPrecio">
+                                <option value="0">NO</option>
+                                <option value="1">SI</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Generar pago default
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-9 col-md-9 col-sm-12">
+                            <select id="pagoDefault">
+                                <option value="0">NO</option>
+                                <option value="1">SI</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit">
+                    <div class="m-form__actions m-form__actions--solid">
+                        <div class="row">
+                            <div class="col-lg-2"></div>
+                            <div class="col-lg-10">
+                                <a class="btn btn-success" onclick="javascript:Guardar()">
+                                    Guardar
+                                </a>
+                                <a href="@Url.Action("Empresas", "Catalogos")" class="btn btn-secondary m-btn m-btn--air m-btn--custom">Cancelar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function Guardar() {
+        if ($('#nombre').val() != "") {
+            if (empresa == null) {
+                $.ajax({
+                    type: "POST",
+                    dataType: 'json',
+                    data: {
+                        Nombre: $('#nombre').val(), Colonia: $('#colonia').val(), Direccion: $('#direccion').val(), Ciudad: $('#ciudad').val(), Telefono: $('#telefono').val(), Telefono2: $('#telefono2').val(), ImprimirRecibo: parseInt($('#ImprimirPrecio').val()),
+                        PagoDefault: parseInt($('#pagoDefault').val())
+                    },
+                    url: '@Url.Content("~/")Catalogos/CrearEmpresa',
+                    async: true,
+                    success: function (response) {
+                        alert("Datos guardados");
+                        location.reload();
+                    }
+                })
+            } else {
+                 $.ajax({
+                    type: "POST",
+                    dataType: 'json',
+                    data: {
+                        Id : empresa.Id, Nombre: $('#nombre').val(), Colonia: $('#colonia').val(), Direccion: $('#direccion').val(), Ciudad: $('#ciudad').val(), Telefono: $('#telefono').val(), Telefono2: $('#telefono2').val(), ImprimirRecibo: parseInt($('#ImprimirPrecio').val()),
+                        PagoDefault: parseInt($('#pagoDefault').val())
+                    },
+                     url: '@Url.Content("~/")Organizacion/Actualizar',
+                    async: true,
+                    success: function (response) {
+                        alert("Datos guardados");
+                        empresa = null;
+                        location.reload();
+                    }
+                })
+            }
+        }
+    }
+</script>
+
+

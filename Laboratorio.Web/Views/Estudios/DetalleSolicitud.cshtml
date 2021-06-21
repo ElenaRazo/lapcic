@@ -1,0 +1,727 @@
+﻿@using bpac;
+@using System.Configuration;
+@using System.Web.Script.Serialization;
+
+@{
+    ViewBag.Title = "TipoPago";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<div class="m-portlet m-portlet--full-height m-portlet--tabs  ">
+    <a style="font-weight:bold;font-size: 2rem;color: cornflowerblue;float: right;padding-right: 1rem;">
+        @(ViewBag.Solicitud.Paciente.NombreCompleto) -  @(ViewBag.Solicitud.ClaveSolicitud)
+    </a>
+    <div class="row" style="float: right;margin-right: 0px;padding: 5px;width: 100%;">
+
+        <input style="width:100%;" type="email" id="correo" class="form-control m-input" placeholder="Correo electrónico al que se enviarán los resultados" value="@ViewBag.Solicitud.Paciente.Email" />
+        <a href="@Url.Action("Solicitud","Estudios", new { Id = ViewBag.Solicitud.Id, Clave =ViewBag.Solicitud.ClaveSolicitud })" class="btn btn-outline btn-circle dark btn-sm black" title="Ver solicitud" target="_blank">
+            <i class="fa fa-file-pdf-o" style="font-size:2rem"></i>
+        </a>
+        <a target="_blank" href="@Url.Action("ImprimirEtiquetas", "Estudios", new { Clave = ViewBag.Solicitud.ClaveSolicitud })" class="btn btn-outline btn-circle dark btn-sm black" title="Etiquetas">
+            <i class="fa fa-print" style="font-size:2rem"></i>
+        </a>
+        <a target="_blank" href="@Url.Action("ImpresionHoja", "Estudios", new { Solicitud = ViewBag.Solicitud.Id })" class="btn btn-outline btn-circle dark btn-sm black" title="Hoja de Trabajo">
+            <i class="fa fa-file" style="font-size:2rem"></i>
+        </a>
+        <a target="_blank" href="@Url.Action("Resultados", "Estudios", new { Solicitud = ViewBag.Solicitud.Id, Clave = ViewBag.Solicitud.ClaveSolicitud, fs=0 })" class="btn btn-outline btn-circle dark btn-sm black" title="Resultados sin firma">
+            <i class="fa fa-file-pdf-o" style="font-size:2rem"></i>
+        </a>
+        <a target="_blank" href="@Url.Action("Resultados", "Estudios", new { Solicitud = ViewBag.Solicitud.Id, Clave = ViewBag.Solicitud.ClaveSolicitud, fs=1 })" class="btn btn-outline btn-circle dark btn-sm black" title="Resultados con firma">
+            <i class="fa fa-sign-in" style="font-size:2rem"></i>
+        </a>
+        <a onclick="EnviarCorreo()" class="btn btn-outline btn-circle dark btn-sm black" title="Envio por correo">
+            <i class="fa fa-mail-forward" style="font-size:2rem"></i>
+        </a>
+        @*<a href="presentation://c://windows/Etiquetas.exe">Click me</a>*@
+        <a target="_blank" href="@Url.Action("EstudiosImpresionSolicitud","Estudios", new { Solicitud = ViewBag.Solicitud.ClaveSolicitud, IdSolicitud = ViewBag.Solicitud.Id })" class="btn btn-outline btn-circle dark btn-sm black" title="Imprimir resultado individual">
+            <i class="fa fa-file-pdf-o" style="font-size:2rem"></i>
+        </a>
+
+    </div>
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
+                <li class="nav-item m-tabs__item">
+                    <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_user_profile_tab_1" role="tab">
+                        <i class="flaticon-share m--hide"></i>
+                        Datos Generales
+                    </a>
+                </li>
+                <li class="nav-item m-tabs__item">
+                    <a class="nav-link m-tabs__link " data-toggle="tab" href="#m_user_profile_tab_3" role="tab">
+                        <i class="flaticon-share m--hide"></i>
+                        Pagos
+                    </a>
+                </li>
+                <li class="nav-item m-tabs__item">
+                    <a class="nav-link m-tabs__link " data-toggle="tab" href="#m_user_profile_tab_2" role="tab">
+                        <i class="flaticon-share m--hide"></i>
+                        Estudios
+                    </a>
+                </li>
+                <li class="nav-item m-tabs__item">
+                    <a class="nav-link m-tabs__link " data-toggle="tab" href="#m_user_profile_tab_4" role="tab">
+                        <i class="flaticon-share m--hide"></i>
+                        Movimientos
+                    </a>
+                </li>
+                <li class="nav-item m-tabs__item">
+                    <a class="nav-link m-tabs__link " data-toggle="tab" href="#m_user_profile_tab_5" role="tab">
+                        <i class="flaticon-share m--hide"></i>
+                        Datos del paciente
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="tab-content">
+        <div class="tab-pane active" id="m_user_profile_tab_1">
+            <form class="m-form m-form--fit m-form--label-align-right">
+                <div class="m-portlet__body" style="height:inherit;">
+                    <div class="m-alert m-alert--icon alert alert-danger m--hide" role="alert" id="m_form_1_msg">
+                        <div class="m-alert__icon">
+                            <i class="la la-warning"></i>
+                        </div>
+                        <div class="m-alert__text">
+                            Los campos marcados son requeridos, revise y vuelva a intentar.
+                        </div>
+                        <div class="m-alert__close">
+                            <button type="button" class="close" data-close="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Usuario que generó la solicitud
+                        </label>
+                        <div class="col-lg-5 col-md-9 col-sm-12">
+                            <label style="font-weight:bold;">
+                                @(ViewBag.Solicitud.Usuario.NombreCompleto)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Paciente de @(ViewBag.Solicitud.Paciente.Edad + " años")
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-5 col-md-9 col-sm-12">
+                            <label style="font-weight:bold;">
+                                @(ViewBag.Solicitud.Paciente.NombreCompleto)
+                            </label>
+                            <input type="text" hidden="hidden" id="nombre" class="form-control" onchange="SearchPaciente()" value="@(ViewBag.Solicitud.Paciente.NombreCompleto)" aria-required="true" aria-invalid="false">
+                            <select id="PacientesNuevo" disabled="disabled" class="form-control m-input"></select>
+                            <span class="" dir="ltr" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-puesto_list-container"><span class="select2-selection__rendered" id="select2-puesto_list-container"><span class="select2-selection__placeholder">Selecciona el paciente</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Clave
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-4 col-md-9 col-sm-12">
+                            <input type="text" id="clave" disabled="disabled" class="form-control" name="clave" value="@ViewBag.Solicitud.ClaveSolicitud" aria-required="true" aria-invalid="false">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Médico
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-6 col-md-9 col-sm-12">
+                            @Html.DropDownList("Medicos", null, new { @class = "form-control m-input", @id = "Medico", @name = "Medico", @tabindex = "-1" })
+                            <span class="" dir="ltr" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-puesto_list-container"><span class="select2-selection__rendered" id="select2-puesto_list-container"><span class="select2-selection__placeholder">Selecciona el médico</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Empresa
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-6 col-md-9 col-sm-12">
+                            @Html.DropDownList("Empresas", null, new { @class = "form-control m-input", @id = "Empresas", @name = "Empresas", @tabindex = "-1" })
+                            <span class="" dir="ltr" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-puesto_list-container"><span class="select2-selection__rendered" id="select2-puesto_list-container"><span class="select2-selection__placeholder">Selecciona la empresa</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Pase médico o documento
+                        </label>
+                        <div class="col-lg-4 col-md-9 col-sm-12">
+                            <input type="text" id="pase" class="form-control" name="pase" value="@ViewBag.Solicitud.Folio" aria-required="true" aria-invalid="false">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Observaciones
+                        </label>
+                        <div class="col-lg-6 col-md-9 col-sm-12">
+                            <textarea class="form-control m-input" rows="3" name="remarks" id="indicaciones">@ViewBag.Solicitud.Observaciones</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Entrega
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-6 col-md-9 col-sm-12">
+                            <select id="Urgencia" class="form-control m-input">
+                                <option value="0">NORMAL</option>
+                                <option value="1">DÍAS</option>
+                                <option value="2">MAÑANA</option>
+                                <option value="3">HOY</option>
+                                <option value="4">URGENCIA</option>
+                            </select>
+                            <span class="" dir="ltr" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-puesto_list-container"><span class="select2-selection__rendered" id="select2-puesto_list-container"><span class="select2-selection__placeholder">Selecciona la empresa</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Observaciones Urgencia
+                        </label>
+                        <div class="col-lg-6 col-md-9 col-sm-12">
+                            <textarea class="form-control m-input" rows="3" name="remarks" id="observaciones">@ViewBag.Solicitud.ObservacionUrgencia</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Factura
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-6 col-md-9 col-sm-12">
+                            <select id="factura" class="form-control m-input">
+                                <option value="0">NO</option>
+                                <option value="1">SI</option>
+                            </select>
+                            <span class="" dir="ltr" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-puesto_list-container"><span class="select2-selection__rendered" id="select2-puesto_list-container"><span class="select2-selection__placeholder">Selecciona si se factura</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Datos Factura
+                        </label>
+                        <div class="col-lg-6 col-md-9 col-sm-12">
+                            <textarea class="form-control m-input" rows="3" name="remarks" id="datosfactura">@ViewBag.Solicitud.DatosFactura</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit">
+                    <div class="m-form__actions m-form__actions--solid">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <a class="btn btn-primary m-btn m-btn--air m-btn--custom" onclick="javascript:ActualizarSolicitud()">
+                                    Guardar
+                                </a>
+                                <a class="btn btn-secondary m-btn m-btn--air m-btn--custom" onclick=" window.history.back();">
+                                    Cancelar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <div class="tab-pane" id="m_user_profile_tab_2">
+            <div class="portlet">
+                <div class="form-group m-form__group row" style="padding:2.2rem">
+                    <label class="col-form-label col-lg-3 col-sm-12">
+                        Estatus de la solicitud
+                        <span class="required" aria-required="true"> * </span>
+                    </label>
+                    <div class="col-lg-6 col-md-9 col-sm-12">
+                        <select id="estatus" class="form-control" onchange="javascript: CambiarEstatus()">
+                            <option value="1">SOLICITADO</option>
+                            <option value="2">EN PROCESO</option>
+                            <option value="3">ESTUDIO FINALIZADO SIN CAPTURA DE RESULTADOS</option>
+                            <option value="4">RESULTADOS CAPTURADOS</option>
+                            <option value="5">ENTREGADO AL CLIENTE</option>
+                            <option value="6">RESULTADOS PARCIALES</option>
+                        </select>
+                        <span class="" dir="ltr" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-puesto_list-container"><span class="select2-selection__rendered" id="select2-puesto_list-container"><span class="select2-selection__placeholder">Selecciona el estatus de la solicitud</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                    </div>
+                </div>
+
+                <div class="form-group m-form__group row" style="padding:2.2rem">
+                    <label class="col-form-label col-lg-3 col-sm-12">
+                        Estudios
+                        <span class="required" aria-required="true"> * </span>
+                    </label>
+                    <div class="col-lg-9 col-md-9 col-sm-12">
+                        <input id="txtEstudio" class="form-control m-input" type="text" onchange="javascript:SearchEstudio2()" />
+                        <select id="Estudios" onchange="setPrecioEstudio(this.options[this.selectedIndex].getAttribute('precio'))" class="form-control m-input"></select><a onclick="javascript:AsignarEstudio()" class="btn btn-secondary m-btn m-btn--air m-btn--custom">Agregar</a>
+                        <span class="" dir="ltr" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-puesto_list-container"><span class="select2-selection__rendered" id="select2-puesto_list-container"><span class="select2-selection__placeholder">Selecciona el estudio</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="lista">
+                <a class="btn btn-primary m-btn m-btn--air m-btn--custom" id="btnCapturar" style="color:white;margin-bottom:2rem;margin-right:2rem; float:right;" onclick="javascript:VerCampos()">
+                    Capturar resultados
+                </a>
+                @{ Html.RenderAction("EstudiosSolicitudListado", "Estudios", new { Solicitud = ViewBag.Solicitud.ClaveSolicitud }); }
+            </div>
+            <div id="listadoEstudiosSolicitud" style="height:auto !important">
+
+                @*@{ Html.RenderAction("EstudiosSolicitud", "Estudios", new { Solicitud = ViewBag.Solicitud.ClaveSolicitud }); }*@
+            </div>
+
+            <div id="Resultado"></div>
+        </div>
+        <div class="tab-pane" id="m_user_profile_tab_3">
+            @{ Html.RenderAction("PagosSolicitud", "Estudios", new { ClaveSolicitud = ViewBag.Solicitud.ClaveSolicitud, Descuento = ViewBag.Solicitud.Descuento, CostoUrgencia = ViewBag.Solicitud.CostoUrgencia }); }
+            <div class="m-portlet__body" style="height:inherit;" id="listado">
+                <table class="table table-striped m-table" id="tblUsuarios">
+                    <thead>
+                        <tr style="height: 30px; background-color:darkgray; color:white;">
+                            <th style="width:5%"> Tipo </th>
+                            <th style="width:8%"> Monto </th>
+                            <th style="width:20%"> Fecha </th>
+                            <th style="width:12%"> # Tarjeta </th>
+                            <th style="width:30%"> Observacion </th>
+                            <th style="width:auto;"> </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < @ViewBag.Solicitud.Pagos.Count; i++)
+                        {
+                        <tr>
+                            <td style="width:5%">@(ViewBag.Solicitud.Pagos[i].ClavePago)</td>
+                            <td style="width:8%">@(ViewBag.Solicitud.Pagos[i].Monto)</td>
+                            <td style="width:20%">@(ViewBag.Solicitud.Pagos[i].Fecha)</td>
+                            <td style="width:12%">@(ViewBag.Solicitud.Pagos[i].Adicional)</td>
+                            <td style="width:30%">@(ViewBag.Solicitud.Pagos[i].Observacion)</td>
+                            <td style="width:auto;">
+                                <textarea id="txtObservaciones" style="display:@(ViewBag.Solicitud.Pagos[i].Monto > 0 ? "block" : "none")"></textarea>
+
+                                <a style="display:@(ViewBag.Solicitud.Pagos[i].Monto > 0 ? "block" : "none")" onclick="EliminarPago(@(ViewBag.Solicitud.Pagos[i].Id))" class="btn btn-outline btn-circle dark btn-sm black" title="Eliminar">
+                                    <i class="fa fa-trash-o"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        }
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>Total a pagar</td>
+                            <td>
+                                <span style="font-weight:bold;font-size:15px; float:right;">$ @(ViewBag.Solicitud.Total)</span>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>Descuento</td>
+                            <td>
+                                <span id="descuentosolicitud" style="font-weight:bold;font-size:15px; float:right;"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>Costo urgencia</td>
+                            <td>
+                                <span id="urgenciacosto" style="font-weight:bold;font-size:15px; float:right;"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>A cuenta</td>
+                            <td>
+                                <span id="acuenta" style="font-weight:bold;font-size:15px; float:right;">$ @(ViewBag.Solicitud.Acuenta)</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>Restante</td>
+                            <td>
+                                <span id="debe" style="font-weight:bold;font-size:15px; float:right;">$ @(ViewBag.Solicitud.Total - ViewBag.Solicitud.Acuenta)</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div class="tab-pane" id="m_user_profile_tab_4">
+            @{ Html.RenderAction("MovimientosSolicitud", "Estudios", new { ClaveSolicitud = ViewBag.Solicitud.ClaveSolicitud }); }
+
+
+        </div>
+        <div class="tab-pane" id="m_user_profile_tab_5">
+            @{ Html.RenderAction("DetalleSimple", "Pacientes", new { Id = ViewBag.Solicitud.Paciente.Id }); }
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    var ddl3 = $('#Estudios');
+    var empresa = @ViewBag.Solicitud.Empresa.Id;
+    var estudios = [];
+    var precioactual = 0;
+    var total = 0;
+    $(document).ready(function () {
+        $('#Medico').val(@ViewBag.Solicitud.Medico.Id);
+        $('#Empresas').val(@ViewBag.Solicitud.Empresa.Id);
+        $('#Urgencia').val(@((int)ViewBag.Solicitud.TipoUrgencia));
+        $('#factura').val(@((int)ViewBag.Solicitud.Factura));
+        var estatus = @((int)ViewBag.Solicitud.EstatusSolicitud);
+        if (estatus == 5 && '@(ViewBag.Solicitud.Pagado)' != "True")
+            estatus = 6;
+        $('#estatus').val(estatus);
+
+    });
+    function VerCampos() {
+        mApp.blockPage({
+            overlayColor: '#000000',
+            type: 'loader',
+            state: 'success',
+            message: 'Recuperando componentes, por favor espere...'
+        });
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+
+                    Solicitud: '@ViewBag.Solicitud.ClaveSolicitud'
+                },
+                url: '@Url.Content("~/")Estudios/EstudiosSolicitud',
+                async: true,
+                success: function (response) {
+                    $('#listadoEstudiosSolicitud').html(response);
+                    $('#btnCapturar').hide();
+                    mApp.unblockPage();
+                },
+                error: function (response) {
+                    $('#listadoEstudiosSolicitud').html(response.responseText);
+                    $('#btnCapturar').hide();
+                    mApp.unblockPage();
+                }
+            })
+    }
+    function actualizarprecio() {
+        var total = @(ViewBag.Solicitud.Total);
+        var acuenta = @(ViewBag.Solicitud.Acuenta);
+        var descuento = parseFloat($('#descuento').val());
+        var urgencia = parseFloat($('#urgencias').val());
+        var monto = parseFloat($('#monto').val());
+        var debe = total + urgencia - descuento - acuenta - monto;
+        $('#debe').html('$ ' + debe);
+        $('#descuentosolicitud').html($('#descuento').val());
+        $('#urgenciacosto').html($('#urgencias').val());
+        $('#acuenta').html('$ ' + (@(ViewBag.Solicitud.Acuenta) + monto));
+    }
+    function setPrecioEstudio(precio) {
+        precioactual = precio;
+    }
+    var ddl1 = $('#PacientesNuevo');
+   // var ddl2 = $('#Medicos');
+    $(document).ready(function () {
+        estudios = [];
+         SearchPaciente();
+         //SearchTextMedico();
+    });
+      function SearchPaciente() {
+          if ($('#nombre').val().length > 4) {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    Nombre: $('#nombre').val()
+                },
+                url: '@Url.Content("~/")Estudios/GetPacientes',
+                async: true,
+                success: function (response) {
+                    ddl1.empty();
+                    $(response).each(function () {
+                         @{var edad = ""; }
+                                        @{
+                                            var startDate = ViewBag.Solicitud.Paciente.FechaNacimiento;
+                                            if (startDate != null && startDate.Year > 1)
+                                            {
+
+                                                var endDate = DateTime.Today;
+
+                                                if (startDate > endDate)
+                                                {
+                                                    edad = "";
+                                                }
+
+                                                int years = endDate.Year - startDate.Year;
+                                                int months = 0;
+                                                int days = 0;
+
+                                                // Check if the last year, was a full year.
+                                                if (endDate < startDate.AddYears(years) && years != 0)
+                                                {
+                                                    years--;
+                                                }
+
+                                                // Calculate the number of months.
+                                                startDate = startDate.AddYears(years);
+
+                                                if (startDate.Year == endDate.Year)
+                                                {
+                                                    months = endDate.Month - startDate.Month;
+                                                }
+                                                else
+                                                {
+                                                    months = (12 - startDate.Month) + endDate.Month;
+                                                }
+
+                                                // Check if last month was a complete month.
+                                                if (endDate < startDate.AddMonths(months) && months != 0)
+                                                {
+                                                    months--;
+                                                }
+
+                                                // Calculate the number of days.
+                                                startDate = startDate.AddMonths(months);
+
+                                                days = (endDate - startDate).Days;
+
+                                                edad = years + " anio(s) - " + months + " mes(es)";
+                                            }
+
+                                        }
+                        var edad = '@edad';
+
+
+                        $(document.createElement('option'))
+                            .attr({ 'value': this.Id })
+                            .text(this.NombreCompleto + " - " + edad)
+                            .appendTo(ddl1);
+                    });
+                    ddl1.focus();
+                }
+            })
+        }
+
+    }
+    function CambiarEstatus() {
+
+        if (confirm("¿Deseas cambiar el estatus de la solicitud? (al marcar resultado capturado, se enviará una notificación al paciente)")) {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    Id : @ViewBag.Solicitud.Id,
+                    Clave: '@ViewBag.Solicitud.ClaveSolicitud',
+                    Pagado: '@ViewBag.Solicitud.Pagado' == "True" ? true : false,
+                    Estatus: parseInt($('#estatus').val())
+                },
+                url: '@Url.Content("~/")Estudios/CambiarEstatus',
+                async: true,
+                success: function (response) {
+                    window.location.reload();
+                },
+                error: function (response) {
+                    window.location.reload();
+                }
+            });
+        } else {
+
+        }
+    }
+
+     function EliminarPago(id) {
+
+        if (confirm("¿Deseas eliminar el pago de la solicitud?")) {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    Id : id,
+                    Observaciones: $('#txtObservaciones').val()
+                },
+                url: '@Url.Content("~/")Estudios/EliminarPago',
+                async: true,
+                success: function (response) {
+                    window.location.reload();
+                },
+                error: function (response) {
+                    window.location.reload();
+                }
+            });
+        } else {
+
+        }
+    }
+
+     function EnviarCorreo() {
+         if ($('#correo').val() != "") {
+
+             if (confirm("¿Deseas enviar por correo electrónico al paciente? (" + $('#correo').val() + ")")) {
+                 $.ajax({
+                     type: "POST",
+                     dataType: 'json',
+                     data: {
+                         receiver: $('#correo').val(),
+                         Solicitud: @ViewBag.Solicitud.Id,
+                         Clave: '@ViewBag.Solicitud.ClaveSolicitud'
+                },
+                     url: '@Url.Content("~/")Estudios/EnvioCorreo',
+                     async: true,
+                     success: function (response) {
+
+                         if (response.status == 200)
+                             alert('Solicitud enviada con éxito');
+                     },
+                     error: function (response) {
+
+                         if (response.status == 200)
+                             alert('Solicitud enviada con éxito');
+                     }
+                 });
+             } else {
+
+             }
+         }
+         else {
+             alert('No ha ingresado un correo valido para enviar el correo electrónico');
+
+         }
+    }
+
+    function AsignarEstudio() {
+
+        if (confirm("¿Estas de acuerdo en agregar un nuevo estudio a la solicitud?")) {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    ClaveSolicitud: '@ViewBag.Solicitud.ClaveSolicitud',
+                    ClaveEstudio: $('#Estudios').val(),
+                    Orden: 0
+                },
+                url: '@Url.Content("~/")Estudios/AsignarEstudioSolicitud',
+                async: true,
+                success: function (response) {
+                    window.location.reload();
+                },
+                error: function (response) {
+                    window.location.reload();
+                }
+            });
+        } else {
+
+        }
+    }
+     function EliminarEstudio(id) {
+
+        if (confirm("¿Estas de acuerdo en eliminar el estudio de la solicitud?")) {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    Id: id,
+                },
+                url: '@Url.Content("~/")Estudios/EliminarEstudioSolicitud',
+                async: true,
+                success: function (response) {
+                    window.location.reload();
+                },
+                error: function (response) {
+                    window.location.reload();
+                }
+            });
+        } else {
+
+        }
+    }
+    function SearchEstudio2() {
+        if ($('#txtEstudio').val().length > 2) {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    Nombre: $('#txtEstudio').val()
+                },
+                url: '@Url.Content("~/")Estudios/GetEstudios',
+                async: true,
+                success: function (response) {
+                    ddl3.empty();
+                    $(response).each(function () {
+                        $(document.createElement('option'))
+                            .attr({ 'value': this.ClaveEstudio, 'precio': this.PrecioBase })
+                            .text(this.Nombre)
+                            .appendTo(ddl3);
+                    });
+                    ddl3.focus();
+                    ddl3.change();
+                }
+            })
+        }
+     }
+    function imprimir() {
+         @*@{
+            for (int i = 0; i < (@ViewBag.Muestras.Count); i++)
+            {
+                bpac.Document doc = new bpac.Document();
+                if (doc.Open(ConfigurationManager.ConnectionStrings["Etiqueta"].ToString()) != false) {
+                    doc.GetObject("Clave").Text = @ViewBag.Muestras[i].Solicitud;
+
+                    doc.GetObject("Muestras").Text = @ViewBag.Muestras[i].Muestra;
+                    doc.GetObject("Paciente").Text = @ViewBag.Muestras[i].Paciente;
+                    doc.GetObject("Depositos").Text = @ViewBag.Muestras[i].TipoDeposito;
+                    doc.GetObject("Estudios").Text = @ViewBag.Muestras[i].Descripcion;
+                    doc.GetObject("Fecha").Text = (DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
+                    doc.DoPrint(0, "0");
+                    doc.StartPrint("asdasd", PrintOptionConstants.bpoDefault);
+                    doc.PrintOut(1, PrintOptionConstants.bpoDefault);
+                    doc.EndPrint();
+                    doc.Close();
+                }
+
+            }
+        }*@
+    }
+     function ActualizarSolicitud(id) {
+
+         if (confirm("¿Estas de acuerdo en actualizar la solicitud?")) {
+             mApp.blockPage({
+                 overlayColor: '#000000',
+                 type: 'loader',
+                 state: 'success',
+                 message: 'Guardando información, por favor espere...'
+             });
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    Solicitud: @ViewBag.Solicitud.Id,
+                    PaseMedico: $('#pase').val(), Observaciones: $('#indicaciones').val(), Paciente: @(ViewBag.Solicitud.Paciente.Id), /* parseInt($('#PacientesNuevo').val()),*/
+                    Medico: parseInt($('#Medico').val()), Empresa: parseInt($('#Empresas').val()),
+                    Urgencia: parseInt($('#Urgencia').val()), ObservacionesUrgencia: $('#observaciones').val(),
+                    Factura: parseInt($('#factura').val()), DatosFactura: $('#datosfactura').val()
+                },
+                url: '@Url.Content("~/")Estudios/ActualizarSolicitud',
+                async: true,
+                success: function (response) {
+                    window.location.reload();
+                },
+                error: function (response) {
+                    window.location.reload();
+                }
+            });
+        } else {
+
+        }
+     }
+    function abrir() {
+        var child = require('child_process').execFile;
+        var executablePath = "C:\\Windows\\Etiquetas.exe";
+        child(executablePath, function (err, data) {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            console.log(data.toString());
+        });
+    }
+
+</script>

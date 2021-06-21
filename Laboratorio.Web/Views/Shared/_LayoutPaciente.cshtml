@@ -1,0 +1,146 @@
+﻿<html lang="en" class="wf-poppins-n3-active wf-poppins-n4-active wf-poppins-n5-active wf-poppins-n6-active wf-poppins-n7-active wf-roboto-n3-active wf-roboto-n4-active wf-roboto-n5-active wf-roboto-n6-active wf-roboto-n7-active wf-active">
+<!-- begin::Head -->
+<head>
+    <meta charset="utf-8">
+    <title>
+    Control de Laboratorio
+    </title>
+    <meta name="description" content="Advanced portlet examples">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--begin::Web font -->
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700%7CRoboto:300,400,500,600,700" media="all">
+    <script>
+        WebFont.load({
+            google: { "families": ["Poppins:300,400,500,600,700", "Roboto:300,400,500,600,700"] },
+            active: function () {
+                sessionStorage.fonts = true;
+            }
+        });
+    </script>
+    <!--end::Web font -->
+    <!--begin::Base Styles -->
+    <link href="~/assets/vendors/base/vendors.bundle.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/demo/default/base/style.bundle.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/jquery.dataTables.min.css" rel="stylesheet" />
+    <!--end::Base Styles -->
+    <link rel="shortcut icon" href="~/assets/demo/default/media/img/logo/tja2.ico">
+    <style type="text/css">
+.im-caret {
+	-webkit-animation: 1s blink step-end infinite;
+	animation: 1s blink step-end infinite;
+}
+
+
+.im-static {
+	color: grey;
+}
+        .loading-pj {
+            background-color: rgba(255, 255, 255, 0.34);
+            width: 100%;
+            height: 100vh;
+        }
+
+        .logo-pj {
+            height: 109px;
+            width: 131px;
+            bottom: 25px;
+            margin-left: -100px;
+            right: 10px;
+            z-index: 2;
+            position: fixed;
+            background-image: url(assets/app/media/img/misc/cargando.gif);
+        }
+
+    </style>
+</head>
+<!-- end::Head -->
+<!-- end::Body -->
+<body class="m-page--fluid m--skin- m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default m-scroll-top--shown" ng-app="MyApp">
+    <!-- begin:: Page -->
+
+    <div id="cargando" style="display:none;z-index:2;position:fixed; top:0px; bottom:0px;left:0px;right:0px;background-color:#bdc3d4;opacity:0.1">
+        <div class="loading-pj"></div>
+        <div class="logo-pj"></div>
+    </div>
+    <div class="m-grid m-grid--hor m-grid--root m-page">
+        <!-- begin::Body -->
+        <div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body" style="padding-top:0px !important;">
+            <!-- BEGIN: Left Aside background-image: url(../assets/demo/default/media/img/misc/back3.jpg); background-position:center;-->
+            <button class="m-aside-left-close  m-aside-left-close--skin-dark " id="m_aside_left_close_btn">
+                <i class="la la-close"></i>
+            </button>
+            <div class="m-grid__item m-grid__item--fluid m-wrapper" style="    margin-bottom: 40px;" @*style="background-image: url(../../assets/demo/default/media/img/misc/bg_familia.jpg); background-position:center; background-size:cover; background-repeat:no-repeat;"*@>
+                <!-- BEGIN: Subheader -->
+                <!-- END: Subheader -->
+                <div class="m-content" style="padding:30px 20px 10px 20px; background: url(imagenes/fondo.png);">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+        <!-- end:: Body -->
+        <!-- begin::Footer -->
+        <footer class="m-grid__item		m-footer " style="margin-left:0px;">
+            <span class="m-footer__copyright">
+                Laboratorios LAPCIC
+            </span>
+            <span class="m-footer__copyright" style="float:right">
+                2018 © Desarrollado por
+                <a href="https://www.rushtecnologias.com" class="m-link">
+                    Rush Tecnologías
+                </a>
+            </span>
+        </footer>
+        <!-- end::Footer -->
+    </div>
+    <div class="modal fade show" id="m_modal_5" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" style="display: none;">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        Nuevo
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">
+                            ×
+                        </span>
+                    </button>
+                </div>
+                <div class="modal-body" style="background-color: #efefef;">
+                    @*@if (ViewBag.Registro != null && ViewBag.Registro)
+                    {
+                        Html.RenderAction("Nueva", "Notificacion", new { IdAcuerdo = 0, IdExpediente = (ViewBag.Expediente.Id) });
+                    }*@
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Cerrar
+                    </button>
+                    <button type="button" class="btn btn-primary">
+                        Enviar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="m-scroll-top m-scroll-top--skin-top" data-toggle="m-scroll-top" data-scroll-offset="500" data-scroll-speed="300">
+        <i class="la la-arrow-up"></i>
+    </div>
+    <!--begin::Base Scripts -->
+    <script src="~/Scripts/linq.min.js"></script>
+    <!--end::Base Scripts -->
+    <!-- end::Body -->
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/assets/demo/demo3/base/scripts.bundle.js"></script>
+    <script src="~/assets/vendors/base/vendors.bundle.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    @*@Scripts.Render("~/Scripts/jquery-1.10.2.min.js")
+    @Scripts.Render("~/Content/global.js")
+    @Scripts.Render("~/assets/vendors/base/vendors.bundle.js")
+    @Scripts.Render("~/assets/demo/default/base/scripts.bundle.js")
+    @RenderSection("scripts", false)*@
+
+
+</body>
+</html>

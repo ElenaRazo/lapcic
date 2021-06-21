@@ -1,0 +1,129 @@
+﻿
+@{
+    ViewBag.Title = "Solicitudes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}<div class="m-portlet m-portlet--tabs m-portlet--accent m-portlet--head-solid-bg m-portlet--head-sm">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <i class="icon-layers font-blue"></i>
+            <span class="caption-subject bold uppercase m--font-metal" id="contadorSolicitudes">
+                Solicitudes
+            </span>
+        </div>
+        <div class="m-portlet__head-tools">
+            <ul class="m-portlet__nav">
+                <li class="m-portlet__nav-item m-portlet__nav-item--last">
+                    <div class="m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" data-dropdown-toggle="hover" aria-expanded="true">
+                        <a onclick="javascript:$('#nuevaSolicitud').show();$('#listadoSolicitudes').hide();" class="m-portlet__nav-link btn btn-lg btn-secondary  m-btn m-btn--icon m-btn--icon-only m-btn--pill  m-dropdown__toggle" title="Nuevo registro">
+                            <i class="la la-plus"></i>
+                        </a>
+
+                    </div>
+                
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div>
+        <div class="form-group m-form__group row">
+            <div class="col-lg-1 col-md-9 col-sm-12"></div>
+            <div class="col-lg-10 col-md-9 col-sm-12">
+                <input id="textBusqueda" class="form-control m-input" type="text" onchange="javascript:Search()" />
+          </div>
+        </div>
+    </div>
+     
+     <div class="m-portlet__body" id="listadoSolicitudes" style="overflow-x:scroll">
+
+         @{ Html.RenderAction("ListadoSolicitudes", "Estudios", new { Id = ViewBag.Id, Puesto = ViewBag.Usuario.Puesto.Id }); }
+     </div>
+
+    <div id="nuevaSolicitud" style="display:none;">
+        @{ Html.RenderAction("NuevaSolicitud", "Estudios", new { Id = ViewBag.Id }); }
+    </div>
+</div>
+<div class="m-portlet m-portlet--tabs m-portlet--accent m-portlet--head-solid-bg m-portlet--head-sm" style="display:none;" id="detalleSolicitud">
+</div>
+
+<script>
+    $(document).ready(function () {
+            var ddl = $('#labs');
+
+        ddl.empty();
+        var labs = @Html.Raw(Json.Encode(ViewBag.Labs));
+        $(labs).each(function () {
+            $(document.createElement('option'))
+                .attr({ 'value': this.Id })
+                .text(this.Nombre)
+                .appendTo(ddl);
+        });
+        });
+    $(document).ready(function () {
+        SearchText();
+    });
+    function SearchText() {
+        if ($('#txtPaciente').val().length > 4) {
+            $('#listado').html('');
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    Nombre: $('#txtPaciente').val()
+                },
+                url: '@Url.Content("~/")Pacientes/ListadoPacientes',
+            async: true,
+            success: function (response) {
+                $('#listado').html(response);
+            },
+            error: function (response) {
+                $('#listado').html(response.responseText);
+            }
+        });
+
+        }
+
+    }
+
+     function EliminarSolicitud(id) {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    Id: id
+                },
+                url: '@Url.Content("~/")Estudios/EliminarSolicitud',
+            async: true,
+            success: function (response) {
+                if (response.respuesta)
+                alert('Solicitud eliminada con éxito');
+                window.location.reload();
+            },
+            error: function (response) {
+                if (response.respuesta)
+                alert('Solicitud eliminada con éxito');
+                window.location.reload();
+            }
+        });
+
+    }
+    function Search() {
+        if ($('#textBusqueda').val().length > 4) {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    texto: $('#textBusqueda').val(),
+                    Puesto: @ViewBag.Usuario.Puesto.Id
+                },
+                url: '@Url.Content("~/")Estudios/ListadoSolicitudesBusqueda',
+                async: true,
+                success: function (response) {
+                    $('#listadoSolicitudes').html(response);
+                },
+                error: function (response) {
+                    $('#listadoSolicitudes').html(response.responseText);
+                }
+            })
+        }
+    }
+</script>

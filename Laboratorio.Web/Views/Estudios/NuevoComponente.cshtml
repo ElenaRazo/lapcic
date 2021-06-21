@@ -1,0 +1,107 @@
+﻿
+
+
+@{
+    ViewBag.Title = "Nuevo";
+    Layout = null;
+}
+
+<!--                       -->
+<div class="m-portlet  m-portlet--tabs m-portlet--info m-portlet--head-solid-bg m-portlet--head-sm" id="form_wizard_1">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <i class=" icon-layers font-blue"></i>
+            <span class="caption-subject font-blue bold uppercase" style="color:white;">
+                ALTA DE UN NUEVO COMPONENTE EN EL ESTUDIO
+            </span>
+        </div>
+    </div>
+    <div class="portlet-body form">
+        <form class="m-form m-form--fit m-form--label-align-right" action="#" id="submit_form" method="POST" novalidate="novalidate">
+            <div class="form-wizard">
+                <div class="m-portlet__body">
+                    <h3 class="block">Datos generales</h3>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Abreeviatura
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-9 col-md-9 col-sm-12">
+                            <input type="text" id="abreviatura" class="form-control" name="abreviatura" aria-required="true" aria-invalid="false">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Nombre
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-9 col-md-9 col-sm-12">
+                            <input type="text" id="nombre" class="form-control" name="nombre" aria-required="true" aria-invalid="false">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Unidad
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-9 col-md-9 col-sm-12">
+                            <input type="text" id="unidad" class="form-control" name="unidad" aria-required="true" aria-invalid="false">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Orden
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-9 col-md-9 col-sm-12">
+                            <input type="number" id="orden" class="form-control" name="orden" aria-required="true" aria-invalid="false">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Tipo de Captura
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-6 col-md-9 col-sm-12">
+                            @Html.DropDownList("TipoCaptura", null, new { @class = "form-control m-input", @id = "TipoCaptura", @name = "TipoCaptura", @tabindex = "-1" })
+                            <span class="" dir="ltr" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-puesto_list-container"><span class="select2-selection__rendered" id="select2-puesto_list-container"><span class="select2-selection__placeholder">Selecciona el tipo de captura</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit">
+                    <div class="m-form__actions m-form__actions--solid">
+                        <div class="row">
+                            <div class="col-lg-2"></div>
+                            <div class="col-lg-10">
+                                <button type="reset" class="btn btn-success" onclick="javascript:Guardar()">
+                                    Guardar
+                                </button>
+                                <a onclick="javascript:$('#nuevoComponente').hide(); $('#Componentes').show(); $('#detalleComponente').show();" class="btn btn-secondary m-btn m-btn--air m-btn--custom">Cancelar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function Guardar() {
+        if ($('#nombre').val() != "") {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: { ClaveEstudio: '@ViewBag.ClaveEstudio', Nombre: $('#nombre').val(), Unidad: $('#unidad').val(), Abreviatura: $('#abreviatura').val(), Orden: parseInt($('#orden').val()), TipoCaptura: parseInt($('#TipoCaptura').val())  },
+                url: '@Url.Content("~/")Estudios/CrearComponente',
+                async: true,
+                success: function (response) {
+                    alert("Datos guardados");
+                    location.reload();
+                }
+            })
+        }
+    }
+</script>
+
+

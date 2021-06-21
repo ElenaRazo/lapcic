@@ -1,0 +1,120 @@
+﻿
+@{
+    ViewBag.Title = "TipoPago";
+    Layout = null;
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<div class="m-portlet m-portlet--full-height m-portlet--tabs  ">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-tools">
+            <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
+                <li class="nav-item m-tabs__item">
+                    <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_datos" role="tab">
+                        <i class="flaticon-share m--hide"></i>
+                        Datos Generales
+                    </a>
+                </li>
+                <li class="nav-item m-tabs__item">
+                    <a class="nav-link m-tabs__link " data-toggle="tab" href="#m_estudios" role="tab">
+                        <i class="flaticon-share m--hide"></i>
+                        Estudios
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="tab-content">
+        <div class="tab-pane active" id="m_datos">
+            <form class="m-form m-form--fit m-form--label-align-right">
+                <div class="m-portlet__body" style="height:inherit;">
+                    <div class="m-alert m-alert--icon alert alert-danger m--hide" role="alert" id="m_form_1_msg">
+                        <div class="m-alert__icon">
+                            <i class="la la-warning"></i>
+                        </div>
+                        <div class="m-alert__text">
+                            Los campos marcados son requeridos, revise y vuelva a intentar.
+                        </div>
+                        <div class="m-alert__close">
+                            <button type="button" class="close" data-close="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Clave
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-4 col-md-9 col-sm-12">
+                            <input type="text" id="clave" disabled="disabled" class="form-control" name="clave" value="@ViewBag.Solicitud.ClaveSolicitud" aria-required="true" aria-invalid="false">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Médico
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-6 col-md-9 col-sm-12">
+                            @Html.DropDownList("Medicos", null, new { @class = "form-control m-input", @id = "Medico", @name = "Medico", @tabindex = "-1", @style = "disabled='disabled'" })
+                            <span class="" dir="ltr" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-puesto_list-container"><span class="select2-selection__rendered" id="select2-puesto_list-container"><span class="select2-selection__placeholder">Selecciona el médico</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Empresa
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-6 col-md-9 col-sm-12">
+                            @Html.DropDownList("Empresas", null, new { @class = "form-control m-input", @id = "Empresas", @name = "Empresas", @tabindex = "-1", @style = "disabled='disabled'" })
+                            <span class="" dir="ltr" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-puesto_list-container"><span class="select2-selection__rendered" id="select2-puesto_list-container"><span class="select2-selection__placeholder">Selecciona la empresa</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Pase médico o documento
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-4 col-md-9 col-sm-12">
+                            <input type="text" disabled="disabled" id="pase" class="form-control" name="pase" value="@ViewBag.Solicitud.Folio" aria-required="true" aria-invalid="false">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Observaciones
+                        </label>
+                        <div class="col-lg-6 col-md-9 col-sm-12">
+                            <textarea class="form-control m-input"disabled="disabled" rows="3" name="remarks" id="indicaciones">@ViewBag.Solicitud.Observaciones</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit">
+                    <div class="m-form__actions m-form__actions--solid">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <a class="btn btn-secondary m-btn m-btn--air m-btn--custom"  onclick="$('#detalleEstudioPaciente').hide();$('#listadoEstudioPaciente').show();">
+                                    Cancelar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <div class="tab-pane" id="m_estudios">
+            <div id="listadoEstudiosSolicitud">
+                @{ Html.RenderAction("EstudiosSolicitudPaciente", "Estudios", new { Solicitud = ViewBag.Solicitud.ClaveSolicitud }); }
+            </div>
+            <div id="Resultado"></div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#Medico').val(@ViewBag.Solicitud.Medico.Id);
+         $('#Empresas').val(@ViewBag.Solicitud.Empresa.Id);
+    });
+</script>
+
+

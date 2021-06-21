@@ -1,0 +1,439 @@
+﻿
+@{
+    ViewBag.Title = "TipoPago";
+    Layout = null;
+}
+<h2> @ViewBag.Componente.Nombre</h2>
+<form class="m-form m-form--fit m-form--label-align-right">
+    <div class="m-portlet__body" style="height:inherit;">
+        <div class="m-alert m-alert--icon alert alert-danger m--hide" role="alert" id="m_form_1_msg">
+            <div class="m-alert__icon">
+                <i class="la la-warning"></i>
+            </div>
+            <div class="m-alert__text">
+                Los campos marcados son requeridos, revise y vuelva a intentar.
+            </div>
+            <div class="m-alert__close">
+                <button type="button" class="close" data-close="alert" aria-label="Close"></button>
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label class="col-form-label col-lg-3 col-sm-12">
+                Tipo de Captura
+                <span class="required" aria-required="true"> * </span>
+            </label>
+            <div class="col-lg-6 col-md-9 col-sm-12">
+                @Html.DropDownList("TipoCaptura", null, new { @class = "form-control m-input", @id = "TipoCaptura", @name = "TipoCaptura", @tabindex = "-1", @style ="disabled=disabled" })
+                <span class="" dir="ltr" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-puesto_list-container"><span class="select2-selection__rendered" id="select2-puesto_list-container"><span class="select2-selection__placeholder">Selecciona el tipo de captura</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label class="col-form-label col-lg-3 col-sm-12">
+                Unidad
+                <span class="required" aria-required="true"> * </span>
+            </label>
+            <div class="col-lg-4 col-md-9 col-sm-12">
+                <input type="text" id="unidad1" class="form-control" espacio() name="unidad" aria-required="true" aria-invalid="false" value="@ViewBag.Componente.Unidad">
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label class="col-form-label col-lg-3 col-sm-12">
+                Abreviatura
+                <span class="required" aria-required="true"> * </span>
+            </label>
+            <div class="col-lg-4 col-md-9 col-sm-12">
+                <input type="text" id="abreviatura" class="form-control" name="abreviatura" aria-required="true" aria-invalid="false" value="@ViewBag.Componente.Abreviatura">
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label class="col-form-label col-lg-3 col-sm-12">
+                Nombre
+                <span class="required" aria-required="true"> * </span>
+            </label>
+            <div class="col-lg-6 col-md-9 col-sm-12">
+                <input type="text" id="nombre" class="form-control" name="nombre" aria-required="true" aria-invalid="false" value="@ViewBag.Componente.Nombre">
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label class="col-form-label col-lg-3 col-sm-12">
+                Orden
+                <span class="required" aria-required="true"> * </span>
+            </label>
+            <div class="col-lg-4 col-md-9 col-sm-12">
+                <input type="text" id="orden" class="form-control" name="orden" aria-required="true" aria-invalid="false" value="@ViewBag.Componente.Orden">
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label class="col-form-label col-lg-3 col-sm-12">
+                ¿Usar valores generales?
+                <span class="required" aria-required="true"> * </span>
+            </label>
+            <div class="col-lg-1">
+                <input class="form-control m-input" type="checkbox" id="Valores">
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label class="col-form-label col-lg-3 col-sm-12">
+                Indicaciones
+            </label>
+            <div class="col-lg-6 col-md-9 col-sm-12">
+                <textarea class="form-control m-input" rows="3" name="remarks" id="indicacionesComponente">@ViewBag.Componente.Indicaciones</textarea>
+            </div>
+        </div>
+    </div>
+    <div class="m-portlet__body" style="height:inherit; display:BLOCK;" id="OpcionNumero">
+        <div class="m-alert m-alert--icon alert alert-danger m--hide" role="alert" id="m_form_1_msg">
+            <div class="m-alert__icon">
+                <i class="la la-warning"></i>
+            </div>
+            <div class="m-alert__text">
+                Los campos marcados son requeridos, revise y vuelva a intentar.
+            </div>
+            <div class="m-alert__close">
+                <button type="button" class="close" data-close="alert" aria-label="Close"></button>
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label class="col-form-label col-lg-12" style="text-align:left;">
+                NIVELES NORMALES
+            </label>
+            <label class="col-form-label col-lg-4">
+                General
+                <span class="required" aria-required="true"> * </span>
+            </label>
+            <label class="col-form-label col-lg-2" style="color:darkslategrey; font-weight:bold"> Bajo </label>
+            <div class="col-lg-2">
+                <input type="text" id="MinG" placeholder="MIN" class="form-control" style="background-color:#d3f3f5" aria-required="true" aria-invalid="false" value="@ViewBag.Componente.MinG">
+            </div>
+            <label class="col-form-label col-lg-2" style="color:darkred; font-weight:bold"> Alto </label>
+            <div class="col-lg-2">
+                <input type="text" id="MaxG" placeholder="MIN" class="form-control" style="background-color:#f5adab" aria-required="true" aria-invalid="false" value="@ViewBag.Componente.MaxG">
+            </div>
+            <label class="col-form-label col-lg-4">
+                Hombres
+                <span class="required" aria-required="true"> * </span>
+            </label>
+            <label class="col-form-label col-lg-2" style="color:darkslategrey; font-weight:bold"> Bajo </label>
+            <div class="col-lg-2">
+                <input type="text" id="MinH" placeholder="MIN" class="form-control" style="background-color:#d3f3f5" aria-required="true" aria-invalid="false" value="@ViewBag.Componente.MinH">
+            </div>
+            <label class="col-form-label col-lg-2" style="color:darkred; font-weight:bold"> Alto </label>
+            <div class="col-lg-2">
+                <input type="text" id="MaxH" placeholder="MIN" class="form-control" style="background-color:#f5adab" aria-required="true" aria-invalid="false" value="@ViewBag.Componente.MaxH">
+            </div>
+            <label class="col-form-label col-lg-4">
+                Mujeres
+                <span class="required" aria-required="true"> * </span>
+            </label>
+            <label class="col-form-label col-lg-2" style="color:darkslategrey; font-weight:bold"> Bajo </label>
+            <div class="col-lg-2">
+                <input type="text" id="MinM" placeholder="MIN" class="form-control" style="background-color:#d3f3f5" aria-required="true" aria-invalid="false" value="@ViewBag.Componente.MinM">
+            </div>
+            <label class="col-form-label col-lg-2" style="color:darkred; font-weight:bold"> Alto </label>
+            <div class="col-lg-2">
+                <input type="text" id="MaxM" placeholder="MIN" class="form-control" style="background-color:#f5adab" aria-required="true" aria-invalid="false" value="@ViewBag.Componente.MaxM">
+            </div>
+            <label class="col-form-label col-lg-4">
+                Niños
+                <span class="required" aria-required="true"> * </span>
+            </label>
+            <label class="col-form-label col-lg-2" style="color:darkslategrey; font-weight:bold"> Bajo </label>
+            <div class="col-lg-2">
+                <input type="text" id="MinN" placeholder="MIN" class="form-control" style="background-color:#d3f3f5" aria-required="true" aria-invalid="false" value="@ViewBag.Componente.MinN">
+            </div>
+            <label class="col-form-label col-lg-2" style="color:darkred; font-weight:bold"> Alto </label>
+            <div class="col-lg-2">
+                <input type="text" id="MaxN" placeholder="MIN" class="form-control" style="background-color:#f5adab" aria-required="true" aria-invalid="false" value="@ViewBag.Componente.MaxN">
+            </div>
+            <label class="col-form-label col-lg-4">
+                Recien nacidos
+                <span class="required" aria-required="true"> * </span>
+            </label>
+            <label class="col-form-label col-lg-2" style="color:darkslategrey; font-weight:bold"> Bajo </label>
+            <div class="col-lg-2">
+                <input type="text" id="MinRN" placeholder="MIN" class="form-control" style="background-color:#d3f3f5" aria-required="true" aria-invalid="false" value="@ViewBag.Componente.MinRN">
+            </div>
+            <label class="col-form-label col-lg-2" style="color:darkred; font-weight:bold"> Alto </label>
+            <div class="col-lg-2">
+                <input type="text" id="MaxRN" placeholder="MIN" class="form-control" style="background-color:#f5adab" aria-required="true" aria-invalid="false" value="@ViewBag.Componente.MaxRN">
+            </div>
+            <label class="col-form-label col-lg-5 col-sm-12" style="text-align:left;">
+                ¿Permitir desface de valores durante la captura?
+            </label>
+            <div class="col-lg-1">
+                <input class="form-control m-input" type="checkbox" id="PermiteDesfaseValores">
+            </div>
+            <label class="col-form-label col-lg-12" style="text-align:left;">
+                TEXTOS NORMALES
+            </label>
+            <label class="col-form-label col-lg-2" style="font-weight:bold"> General </label>
+            <div class="col-lg-10">
+                <input type="text" id="TextoNormalGeneral" placeholder="General" class="form-control" style="background-color:#fff8d9" aria-required="true" aria-invalid="false" value="@ViewBag.Componente.TextoNormalGeneral">
+            </div>
+            <label class="col-form-label col-lg-2" style="font-weight:bold"> Hombre </label>
+            <div class="col-lg-10">
+                <input type="text" id="TextoNormalHombres" placeholder="MIN" class="form-control" style="background-color:#fff8d9" aria-required="true" aria-invalid="false" value="@ViewBag.Componente.TextoNormalHombres">
+            </div>
+            <label class="col-form-label col-lg-2" style="font-weight:bold"> Mujeres </label>
+            <div class="col-lg-10">
+                <input type="text" id="TextoNormalMujeres" placeholder="Mujeres" class="form-control" style="background-color:#fff8d9" aria-required="true" aria-invalid="false" value="@ViewBag.Componente.TextoNormalMujeres">
+            </div>
+            <label class="col-form-label col-lg-2" style="font-weight:bold"> Niños </label>
+            <div class="col-lg-10">
+                <input type="text" id="TextoNormalNiños" placeholder="Niños" class="form-control" style="background-color:#fff8d9" aria-required="true" aria-invalid="false" value="@ViewBag.Componente.TextoNormalNiños">
+            </div>
+            <label class="col-form-label col-lg-2" style="font-weight:bold"> Recien Nacido </label>
+            <div class="col-lg-10">
+                <input type="text" id="TextoNormalRecienNacido" placeholder="Texto Normal Recien Nacido" class="form-control" style="background-color:#fff8d9" aria-required="true" aria-invalid="false" value="@ViewBag.Componente.TextoNormalRecienNacido">
+            </div>
+        </div>
+    </div>
+    <div class="m-portlet__body" style="height:inherit; display:BLOCK;" id="OpcionPersonalizado">
+        <div class="form-group m-form__group row">
+            <label class="col-form-label col-lg-4" style="text-align:left;">
+                Texto de Referencia
+            </label>
+            <div class="col-lg-6 col-md-9 col-sm-12">
+                <textarea class="form-control m-input" rows="3" name="remarks" id="indicacionComponente">@(ViewBag.Componente.TextoNormalGeneral != "" ? ViewBag.Componente.TextoNormalGeneral.Replace("<br />", "\n") : "")</textarea>
+            </div>
+        </div>
+    </div>
+    <div class="m-portlet__body" style="height:inherit; display:BLOCK;" id="OpcionElementos">
+        <table class="table table-striped m-table" id="tblUsuarios">
+            <thead>
+                <tr style="height: 54px;">
+                    <th style="width:60%"> Descripcion </th>
+                    <th style="width:10%"> Orden </th>
+                    <th style="width:auto;"> </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < @ViewBag.Elementos.Count; i++)
+                {
+                    <tr ondblclick="javascript:ActualizarGeneralComponente('@(ViewBag.Elementos[i].Nombre)')" onclick="javascript: $('#modificalista').show(); $('#cancela').show(); $('#agregarlista').hide(); $('#ordenelemento').val(@ViewBag.Elementos[i].Orden); $('#descripcion').val('@(ViewBag.Elementos[i].Nombre)'); $('#idelemento').val(@ViewBag.Elementos[i].Id);" style="background-color:@(ViewBag.Componente.TextoNormalGeneral == ViewBag.Elementos[i].Nombre ? "aqua" : "white")">
+                        <td style="width:60%">@(ViewBag.Elementos[i].Nombre)</td>
+                        <td style="width:10%">@(ViewBag.Elementos[i].Orden)</td>
+                        <td style="width:auto;">
+                            <a onclick="EiminarComponenteLista(@ViewBag.Elementos[i].Id)" class="btn btn-outline btn-circle dark btn-sm black" title="Eliminar">
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="form-group m-form__group row" id="nuevoC" style="display:none;">
+            <input type="text" id="idelemento" hidden="hidden" class="form-control" style="background-color:#fff8d9" aria-required="true" aria-invalid="false">
+            <label class="col-form-label col-lg-1" style="text-align:left;">
+                Descripcion
+            </label>
+            <div class="col-lg-4 col-sm-12">
+                <input type="text" id="descripcion" placeholder="Descripción" class="form-control" style="background-color:#fff8d9" aria-required="true" aria-invalid="false">
+            </div>
+            <label class="col-form-label col-lg-1" style="text-align:left;">
+                Orden
+            </label>
+            <div class="col-lg-2 col-sm-12">
+                <input type="text" id="ordenelemento" placeholder="Orden" class="form-control" style="background-color:#fff8d9" aria-required="true" aria-invalid="false">
+            </div>
+            <div class="col-lg-2 col-sm-12">
+                <button class="btn btn-accent" type="reset" id="agregarlista" onclick="javascript:GuardarElementoComponente()">
+                    Agregar
+                </button>
+                <button class="btn btn-accent" type="reset" id="modificalista" style="display:none;" onclick="javascript:ActualizarComponenteLista()">
+                    Modificar
+                </button>
+                <a class="btn btn-accent" id="cancela" style="display:none;" onclick="javascript: $(this).hide(); $('#modificalista').hide(); $('#agregarlista').show();">
+                    Cancelar
+                </a>
+            </div>
+
+        </div>
+    </div>
+    <div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit">
+        <div class="m-form__actions m-form__actions--solid">
+            <div class="row">
+                <div class="col-lg-6">
+                    <a class="btn btn-primary" onclick="ActualizarComponente()" >
+                        Guardar
+                    </a>
+                    <a class="btn btn-secondary m-btn m-btn--air m-btn--custom" onclick=" javascript:$('#Componentes').show();
+        $('#detalleComponente').hide();">
+                        Cancelar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+     $(document).ready(function () {
+         $("#TipoCaptura").val(@(ViewBag.Componente.TipoCaptura.Id))
+         if ("@(ViewBag.Componente.PermiteDesfaseValores)" == "True") {
+             $("#PermiteDesfaseValores").click();
+         }
+          if ("@(ViewBag.Componente.UsarValoresGenerales)" == "True") {
+             $("#Valores").click();
+         }
+         switch (@ViewBag.Componente.TipoCaptura.Id) {
+             case 1:
+                 $('#OpcionNumero').show();
+                 $('#nuevoC').hide();
+                 $('#OpcionElementos').hide();
+                 $('#OpcionPersonalizado').hide();
+                 break;
+             case 4:
+                 $('#nuevoC').show();
+                 $('#OpcionElementos').show();
+                 $('#OpcionPersonalizado').hide();
+                 $('#OpcionNumero').hide();
+                 break;
+             case 3:
+                 $('#OpcionPersonalizado').show();
+                 $('#OpcionNumero').hide();
+                 $('#nuevoC').hide();
+                 $('#OpcionElementos').hide();
+                 break;
+             default:
+                 break;
+         }
+    });
+     function ActualizarComponente() {
+         debugger;
+         var componente = {
+             Id: @(ViewBag.Componente.Id),
+             Nombre: $('#nombre').val(),
+             Orden: $('#orden').val(),
+             Unidad: $('#unidad1').val(),
+             Abreviatura: $('#abreviatura').val(),
+             UsarValoresGenerales: $("#Valores").is(':checked') ? 1 : 0,
+             PermiteDesfaseValores: $("#PermiteDesfaseValores").is(':checked') ? 1 : 0 ,
+             Indicaciones: $('#indicacionesComponente').val(),
+             MinG: $('#MinG').val() != "" ? parseFloat($('#MinG').val()) : null,
+             MaxG: $('#MaxG').val() != "" ? parseFloat($('#MaxG').val()) : null,
+             MinH: $('#MinH').val() != "" ? parseFloat($('#MinH').val()) : null,
+             MaxH: $('#MaxH').val() != "" ? parseFloat($('#MaxH').val()) : null,
+             MinM: $('#MinM').val() != "" ? parseFloat($('#MinM').val()) : null,
+             MaxM: $('#MaxM').val() != "" ? parseFloat($('#MaxM').val()) : null,
+             MinN: $('#MinN').val() != "" ? parseFloat($('#MinN').val()) : null,
+             MaxN: $('#MaxN').val() != "" ? parseFloat($('#MaxN').val()) : null,
+             MinRN: $('#MinRN').val() != "" ? parseFloat($('#MinRN').val()) : null,
+             MaxRN: $('#MaxRN').val() != "" ? parseFloat($('#MaxRN').val()) : null,
+             TextoNormalHombres: $('#TextoNormalHombres').val(),
+             TextoNormalMujeres: $('#TextoNormalMujeres').val(),
+             TextoNormalNiños: $('#TextoNormalNiños').val(),
+             TextoNormalRecienNacido: $('#TextoNormalRecienNacido').val()
+         }
+          switch (@ViewBag.Componente.TipoCaptura.Id) {
+              case 1: //numero
+                  TextoNormalGeneral: $('#TextoNormalGeneral').val(),
+                  $.ajax({
+                      type: "POST",
+                      dataType: 'json',
+                      data: { Componente : componente, tipo  : @ViewBag.Componente.TipoCaptura.Id, Texto:""},
+                      url: '@Url.Content("~/")Estudios/ActualizarComponente',
+                      async: true,
+                      success: function (response) {
+                          alert("Datos guardados");
+                          location.reload();
+                      }
+                  });
+                 break;
+              case 4: //elementos
+                  TextoNormalGeneral: $('#TextoNormalGeneral').val(),
+                   $.ajax({
+                      type: "POST",
+                      dataType: 'json',
+                      data: { Componente : componente, tipo  : @ViewBag.Componente.TipoCaptura.Id, Texto : "" },
+                      url: '@Url.Content("~/")Estudios/ActualizarComponente',
+                      async: true,
+                      success: function (response) {
+                          alert("Datos guardados");
+                          location.reload();
+                      }
+                  });
+                 break;
+              case 3: //personalizado
+                   $.ajax({
+                      type: "POST",
+                      dataType: 'json',
+                       data: { Componente: componente, tipo: @ViewBag.Componente.TipoCaptura.Id, Texto: $('#indicacionComponente').val().replace('\n', '<br />').replace('\n', '<br />').replace('\n', '<br />').replace('\n', '<br />').replace('\n', '<br />').replace('\n', '<br />').replace('\n', '<br />').replace('\n', '<br />').replace('\n', '<br />').replace('\n', '<br />').replace('\n\n', '<br />')},
+                      url: '@Url.Content("~/")Estudios/ActualizarComponente',
+                      async: true,
+                      success: function (response) {
+                          alert("Datos guardados");
+                          location.reload();
+                      }
+                  });
+                 break;
+             default:
+                 break;
+         }
+     }
+     function GuardarElementoComponente() {
+        if ($('#descripcion').val() != "") {
+            $.ajax({
+
+                type: "POST",
+                dataType: 'json',
+                data: { Componente: @ViewBag.Componente.Id, Descripcion: $('#descripcion').val(), Orden: $('#ordenelemento').val() },
+                url: '@Url.Content("~/")Estudios/CrearElementoComponente',
+                async: true,
+                success: function (response) {
+                    alert("Datos guardados");
+                    location.reload();
+                }
+            })
+        }
+    }
+    function ActualizarComponenteLista(id) {
+        if ($('#descripcion').val() != "") {
+            $.ajax({
+
+                type: "POST",
+                dataType: 'json',
+                data: { Id: parseInt($('#idelemento').val()), Nombre: $('#descripcion').val(), Orden: $('#ordenelemento').val() },
+                url: '@Url.Content("~/")Estudios/ActualizarComponenteLista',
+                async: true,
+                success: function (response) {
+                    alert("Datos guardados");
+                    location.reload();
+                }
+            })
+        }
+    }
+
+    function ActualizarGeneralComponente(nombre) {
+            $.ajax({
+
+                type: "POST",
+                dataType: 'json',
+                data: { Id: @ViewBag.Componente.Id, General: nombre },
+                url: '@Url.Content("~/")Estudios/ActualizarGeneralComponente',
+                async: true,
+                success: function (response) {
+                    alert("Datos guardados");
+                    location.reload();
+                }
+            })
+        
+    }function EiminarComponenteLista(id) {
+        if ($('#descripcion').val() != "") {
+            $.ajax({
+
+                type: "POST",
+                dataType: 'json',
+                data: { Id: id },
+                url: '@Url.Content("~/")Estudios/EiminarComponenteLista',
+                async: true,
+                success: function (response) {
+                    alert("Datos guardados");
+                    location.reload();
+                }
+            })
+        }
+    }
+</script>
+
+

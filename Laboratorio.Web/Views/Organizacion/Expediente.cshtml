@@ -1,0 +1,119 @@
+﻿
+
+@{
+    ViewBag.Title = "Estudios";
+    Layout = null;
+}
+<div class="m-portlet__body" id="listadoEstudioPaciente">
+
+    <div class="col-lg-12" style="height: 27rem;overflow: overlay;">
+        <a class="btn btn-secondary m-btn m-btn--air m-btn--custom" onclick="tableToExcel('tbls', 'Exportar')" value="Exportar to Excel">Exportar a excel</a>
+        <input placeholder="Ingresa texto para realizar busqueda" id="textBusqueda" class="form-control m-input" type="text" onchange="javascript:myFunction('textBusqueda','tbls')" />
+
+        <table class="table table-striped m-table" style="width:100%" id="tbls">
+            <thead>
+                <tr style="height: 30px; background-color:#4c9a79; color:white;">
+                    <th style="width:80%"> Datos generales </th>
+                    <th style="width:auto;"> </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < @ViewBag.Solicitudes.Count; i++)
+                {
+                    <tr>
+                        <td style="width:80%">
+                            @(ViewBag.Solicitudes[i].ClaveSolicitud)<br />
+                            @(ViewBag.Solicitudes[i].Laboratorio.Nombre)<br />
+                            @(ViewBag.Solicitudes[i].Paciente.NombreCompleto)<br />
+                            @(ViewBag.Solicitudes[i].Fecha)
+                        </td>
+                        <td style="width:auto;">
+                            <a onclick="javascript:VerEstudio(@ViewBag.Solicitudes[i].Id, '@ViewBag.Solicitudes[i].ClaveSolicitud', @(ViewBag.Solicitudes[i].Debe <= 0 ? 1 : 0), @((int)ViewBag.Solicitudes[i].EstatusSolicitud))" style="display:block" title="Detalle" class="btn btn-icon btn-outline-success">
+                                <i class="fa fa-search"></i>
+                            </a>
+                            <a target="_blank" href="@Url.Action("ResultadosPacientePortal", "Estudios", new { Solicitud = ViewBag.Solicitudes[i].Id, Clave = ViewBag.Solicitudes[i].ClaveSolicitud, Id= ViewBag.Solicitudes[i].Paciente.Id})" style="display:@(ViewBag.Solicitudes[i].Pagado ? "block": "none")" title="Descargar resultados" class="btn btn-icon btn-outline-success">
+                                <i class="fa fa-file-pdf-o"></i>
+                            </a>
+                            @*<a target="_blank" href="@Url.Action("Envio", "Estudios", new { receiver = ViewBag.Solicitudes[i].Paciente.Email, Solicitud = ViewBag.Solicitudes[i].Id, Clave = ViewBag.Solicitudes[i].ClaveSolicitud })" class="btn btn-outline btn-circle dark btn-sm black" title="Enviar a mi correo electrónico">
+                                    <i class="fa fa-mail-forward"></i>
+                                </a>*@
+                            @*<a href="@Url.Action("Emitir","Facturacion", new { Id = @ViewBag.Solicitudes[i].Id })" class="btn btn-outline btn-circle dark btn-sm black" title="Facturar">
+                                    <i class="fa fa-file-word-o"></i>
+                                </a>*@
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            @*@(ViewBag.Solicitudes[i].NombreEstudio)*@
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div id="detalleEstudioPaciente" style="display:none; padding-bottom: 50px;">
+
+</div>
+<script>
+    function VerEstudio(id, clave, pagado, estatus) {
+        $.ajax({
+
+            type: "POST",
+            dataType: 'json',
+            data: { Solicitud: id, Clave: clave, Pagado: pagado == 1 ? true:false, EstatusSolicitud : estatus },
+            url: '@Url.Content("~/")Estudios/DetalleS',
+            async: true,
+            success: function (response) {
+                $('#listadoEstudioPaciente').hide();
+                $('#detalleEstudioPaciente').show();
+                $('#detalleEstudioPaciente').html(response);
+
+            },
+            error: function (obj, error, objError) {
+                $('#listadoEstudioPaciente').hide();
+                $('#detalleEstudioPaciente').show();
+                $('#detalleEstudioPaciente').html(obj.responseText);
+            }
+        });
+    }
+
+</script>
+<script type="text/javascript">
+    var tableToExcel = (function () {
+        var uri = 'data:application/vnd.ms-excel;base64,'
+            , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>'
+            , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+            , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+        return function (table, name) {
+            if (!table.nodeType) table = document.getElementById(table)
+            var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
+            window.location.href = uri + base64(format(template, ctx))
+        }
+    })()
+    function myFunction(caja, tabla) {
+        debugger;
+        var input, filter, table, tr, td, td2, i, txtValue;
+        input = document.getElementById(caja);
+        filter = input.value.toUpperCase();
+        table = document.getElementById(tabla);
+        tr = table.getElementsByTagName("tr");
+        for (i = 1; i < tr.length; i++) {
+            var mostrar = 0;
+            for (var a = 0; a < tr[i].getElementsByTagName("td").length; a++) {
+                txtValue = (tr[i].getElementsByTagName("td")[a].textContent || tr[i].getElementsByTagName("td")[a].innerText)
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    mostrar += 1;
+                }
+            }
+
+            if (mostrar > 0) {
+                tr[i].style.display = "";
+            }
+            else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+</script>

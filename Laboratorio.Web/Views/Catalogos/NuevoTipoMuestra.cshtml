@@ -1,0 +1,78 @@
+﻿
+
+@{
+    ViewBag.Title = "Nuevo";
+    Layout = null;
+}
+
+<!--                       -->
+<div class="m-portlet  m-portlet--tabs m-portlet--info m-portlet--head-solid-bg m-portlet--head-sm" id="form_wizard_1">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <i class=" icon-layers font-blue"></i>
+            <span class="caption-subject font-blue bold uppercase" style="color:white;">
+                ALTA DE UN NUEVO TIPO DE MUESTRA
+            </span>
+        </div>
+    </div>
+    <div class="portlet-body form">
+        <form class="m-form m-form--fit m-form--label-align-right" action="#" id="submit_form" method="POST" novalidate="novalidate">
+            <div class="form-wizard">
+                <div class="m-portlet__body">
+                    <h3 class="block">Datos generales</h3>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Nombre
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-9 col-md-9 col-sm-12">
+                            <input type="text" id="nombre" class="form-control" name="nombre" aria-required="true" aria-invalid="false">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Indicaciones
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-9 col-md-9 col-sm-12">
+                            <textarea class="form-control m-input" rows="3" name="remarks" id="indicaciones"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit">
+                    <div class="m-form__actions m-form__actions--solid">
+                        <div class="row">
+                            <div class="col-lg-2"></div>
+                            <div class="col-lg-10">
+                                <button type="reset" class="btn btn-success" onclick="javascript:Guardar()">
+                                    Guardar
+                                </button>
+                                <a href="@Url.Action("TipoMuestra", "Catalogos")" class="btn btn-secondary m-btn m-btn--air m-btn--custom">Cancelar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function Guardar() {
+        if ($('#nombre').val() != "") {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: { Nombre: $('#nombre').val(),  Indicaciones : $('#indicaciones').val() },
+                url: '@Url.Content("~/")Catalogos/CrearTipoMuestra',
+                async: true,
+                success: function (response) {
+                    alert("Datos guardados");
+                    location.reload();
+                }
+            })
+        }
+    }
+</script>
+
+

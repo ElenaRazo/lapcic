@@ -1,0 +1,39 @@
+﻿
+
+@{
+    ViewBag.Title = "Nuevo";
+    Layout = null;
+}
+<div class="m-portlet__body" id="listado">
+    <table class="table table-striped m-table" id="tblUsuarios">
+        <thead>
+            <tr style="height: 30px; background-color:darkgray; color:white;">
+                <th style="width:5%"> Tipo </th>
+                <th style="width:10%"> Monto </th>
+                <th style="width:30%"> Fecha </th>
+                <th style="width:auto;"> </th>
+            </tr>
+        </thead>
+        <tbody>
+            @*@for (int i = 0; i < @ViewBag.Pagos.Count; i++)
+                {
+                    <tr>
+                        <td style="width:5%">@(ViewBag.Pagos[i].Clave)</td>
+                        <td style="width:10%">@(ViewBag.Pagos[i].Medico)</td>
+                        <td style="width:30%">@(ViewBag.Pagos[i].Organizacion)</td>
+                        <td style="width:10%">@(ViewBag.Pagos[i].Nombre)</td>
+                        <td style="width:10%">@(ViewBag.Pagos[i].Total)</td>
+                        <td style="width:10%">@(ViewBag.Pagos[i].Debe)</td>
+                        <td style="width:20%">@(ViewBag.Pagos[i].Estatus)</td>
+                        <td style="width:10%">@(ViewBag.Pagos[i].Fecha)</td>
+                        <td style="width:auto;">
+                            <a onclick="Eliminar(@ViewBag.Pagos[i].Id)" class="btn btn-outline btn-circle dark btn-sm black" title="Eliminar">
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }*@
+        </tbody>
+    </table>
+</div>
+

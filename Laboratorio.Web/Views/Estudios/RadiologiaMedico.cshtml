@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Resultado";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/dropzone.js"></script>
+
+
+<div class="m-portlet m-portlet--tabs m-portlet--accent m-portlet--head-solid-bg m-portlet--head-sm">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <i class="icon-layers font-blue"></i>
+            <span class="caption-subject bold uppercase m--font-metal">
+                Solicitudes de Gabinete
+            </span>
+        </div>
+    </div>
+    <div class="m-portlet__body" id="listado">
+        @{ Html.RenderAction("ListadoRadiologiaMedico", "Estudios"); }
+    </div>
+</div>

@@ -1,0 +1,195 @@
+﻿
+
+@{
+    ViewBag.Title = "TipoPago";
+    Layout = "~/Views/Shared/_LayoutPaciente.cshtml";
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<div class="m-portlet" id="form_wizard_1" style="background-color: #ffffff;">
+    <div class="m-portlet__head" style="background-color: #00BCD4;color: white;">
+        <div class="m-portlet__head-caption">
+            <i class=" icon-layers font-blue"></i>
+            <span class="caption-subject font-blue bold uppercase">
+               COTIZADOR
+            </span>
+        </div>
+    </div>
+    <div class="portlet-body form">
+        <form class="m-form m-form--fit m-form--label-align-right">
+            <div class="m-portlet__body" style="height:inherit;padding:2.2rem">
+                <div class="col-lg-12">
+                    <div class="form-group m-form__group row" style="padding-top:2.2rem; padding-left:2.2rem">
+                        <label>Datos del usuario que solicita cotización</label>
+                    </div>
+                    <div class="form-group m-form__group row" style="padding:2.2rem">
+                        <div class="col-lg-4 col-md-4 col-sm-12">
+                            <label class="col-form-label col-lg-3 col-sm-12" style="font-size:14px; font-weight:bold;">
+                                Nombre
+                            </label>
+                            <input id="txtNombre" class="form-control m-input" placeholder="Nombre" />
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12">
+                            <label class="col-form-label col-lg-3 col-sm-12" style="font-size:14px; font-weight:bold;">
+                                Paterno
+                            </label>
+                            <input id="txtPaterno" class="form-control m-input" placeholder="Paterno" />
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12">
+                            <label class="col-form-label col-lg-3 col-sm-12" style="font-size:14px; font-weight:bold;">
+                                Materno
+                            </label>
+                            <input id="txtMaterno" class="form-control m-input" placeholder="Materno" />
+                        </div>
+                        <div class="col-lg-12 col-md-4 col-sm-12">
+                            <label class="col-form-label col-lg-3 col-sm-12" style="font-size:14px; font-weight:bold;">
+                                Email
+                            </label>
+                            <input id="txtEmail" class="form-control m-input" placeholder="correo electrónico" />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group m-form__group row" style="padding:2.2rem">
+                        <label class="col-form-label col-lg-3 col-sm-12" style="font-size:14px; font-weight:bold;">
+                            Estudios
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-9 col-md-9 col-sm-12">
+                            <input id="txtEstudio" placeholder="Ingresa el nombre del estudio que buscas" class="form-control m-input" type="text" onchange="javascript:SearchEstudio()" />
+                            <select id="Estudios" onchange="setPrecioEstudio(this.options[this.selectedIndex].getAttribute('precio'))" class="form-control m-input"></select><a onclick="javascript:Agregar()" class="btn btn-secondary m-btn m-btn--air m-btn--custom">Agregar</a>
+                            <span class="" dir="ltr" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-puesto_list-container"><span class="select2-selection__rendered" id="select2-puesto_list-container"><span class="select2-selection__placeholder">Selecciona el estudio</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                        </div>
+                    </div>
+                    <table class="table table-striped m-table" id="tblEstudios">
+                        <thead>
+                            <tr style="height: 54px;">
+                                <th style="width:80%"> Nombre </th>
+                                <th style="width:15%"> Precio </th>
+                                <th style="width:5%"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyEstudios"></tbody>
+                    </table>
+                    <div id="total" style="text-align:right; font-weight:bold;background-color: #36919d;color: white; padding:10px; font-size:19px">
+
+                    </div>
+                </div>
+            </div>
+            <div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit">
+                <div class="m-form__actions m-form__actions--solid">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <a class="btn btn-metal m-btn m-btn--air m-btn--custom" onclick="javasccript: Guardar()">
+                                Guardar
+                            </a>
+                            <a class="btn btn-secondary m-btn m-btn--air m-btn--custom">
+                                Cancelar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    </div>
+        <script>
+    var ddl3 = $('#Estudios');
+    var estudios = [];
+    var precioactual = 0;
+
+    function Agregar() {
+        if (ddl3.val() != 0) {
+            $('#tbodyEstudios').html($('#tbodyEstudios').html() +
+                '<tr class="estudio" clave="' + ddl3.val() + '" id="tr' + ddl3.val()+'"><td style="width:80%">' +
+                $("#Estudios option:selected").text() +
+                '</th><td style= "width:15%" class="precio" >' +
+                precioactual +
+                '</td><td style="width:5%"> <a onclick=EliminarEstudio("' + ddl3.val() + '") class="btn btn-outline btn-circle dark btn-sm black" title="Eliminar"><i class="fa fa-trash-o"></i></a></td></tr>');
+            var total = 0;
+            for (var i = 0; i < $('.precio').length; i++) {
+                var d = $('.precio')[i];
+                total = total + parseInt(d.innerHTML);
+            }
+            $('#total').html("$ " + total);
+        }
+    }
+    function setPrecioEstudio(precio) {
+        precioactual = precio;
+    }
+        function Guardar() {
+            estudios = [];
+        for (var i = 0; i < $('.estudio').length; i++) {
+            var d = $('.estudio')[i].getAttribute("clave")
+            estudios.push(d);
+        }
+        if ($('#txtNombre').val() != "") {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    Nombre: $('#txtNombre').val(), Paterno: $('#txtPaterno').val(), Materno: $('#txtMaterno').val(),
+                    Email: $('#txtEmail').val(),
+                    Estudios: estudios
+                },
+                url: '@Url.Content("~/")Estudios/CrearCotizacionEstudioGeneral',
+                async: true,
+                success: function (response) {
+                    window.open('@Url.Content("~/")Estudios/ImprimirCotizacion?ClaveCotizacion=' + response.Resultado, '_blank');
+                    window.location.reload();
+                }
+            })
+        }
+        else {
+            alert("Debe ingresar por lo menos el nombre del paciente que solicita una cotización")
+        }
+    }
+
+    function EliminarEstudio(id) {
+        var tr = $("#tr" + id);
+        tr.remove();
+        var total = 0;
+        for (var i = 0; i < $('.precio').length; i++) {
+            var d = $('.precio')[i];
+            total = total + parseInt(d.innerHTML);
+        }
+        $('#total').html(total);
+    }
+     $(document).ready(function () {
+         SearchEstudio();
+    });
+    function SearchEstudio() {
+        if ($('#txtEstudio').val().length > 2) {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    Nombre: $('#txtEstudio').val()
+                },
+                url: '@Url.Content("~/")Estudios/GetEstudios',
+                async: true,
+                success: function (response) {
+                    ddl3.empty();
+                    $(response).each(function () {
+                        $(document.createElement('option'))
+                            .attr({ 'value': this.ClaveEstudio, 'precio': this.PrecioBase })
+                            .text(this.Nombre)
+                            .appendTo(ddl3);
+                    });
+                    ddl3.focus();
+                    ddl3.change();
+                }
+            })
+        }
+    }
+             $(document).ready(function () {
+            var ddl = $('#labs');
+
+        ddl.empty();
+        var labs = @Html.Raw(Json.Encode(ViewBag.Labs));
+        $(labs).each(function () {
+            $(document.createElement('option'))
+                .attr({ 'value': this.Id })
+                .text(this.Nombre)
+                .appendTo(ddl);
+        });
+        });
+        </script>

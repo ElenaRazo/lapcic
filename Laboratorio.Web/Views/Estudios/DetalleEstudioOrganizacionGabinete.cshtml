@@ -1,0 +1,108 @@
+﻿
+@{
+    ViewBag.Title = "DetalleEstudioPacienteGabinete";
+    Layout = null;
+}
+
+<style>
+    div.gallery {
+        border: 1px solid #ccc;
+    }
+
+        div.gallery:hover {
+            border: 1px solid #777;
+        }
+
+        div.gallery img {
+            width: 100%;
+            height: auto;
+        }
+
+    div.desc {
+        padding: 15px;
+        text-align: center;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    .clearfix:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+</style>
+<script type="text/javascript"
+        src="https://slideshow.triptracker.net/slide.js"></script>
+            <table class="table table-striped m-table" id="tblEstudioGabinete">
+                    <tbody>
+                        @for (int i = 0; i < @ViewBag.Estudio.Estudios.Count; i++)
+                        {
+                            <tr>
+                                <td>
+                                    <a target="_blank" href="@Url.Action("Interpretacion", "Estudios", new { Detalle = ViewBag.Estudio.Estudios[i].IdDetalle, Id =  ViewBag.Estudio.Id  })" class="btn btn-outline btn-circle dark btn-sm black" title="Descargar interpretación">
+                                        <i class="fa fa-file"></i>
+                                    </a>
+                                    <a onclick="EnviarCorreo(@ViewBag.Estudio.Estudios[i].IdDetalle,  @ViewBag.Estudio.Id)" class="btn btn-outline btn-circle dark btn-sm black" title="Envio por correo">
+                                        <i class="fa fa-mail-forward"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @if (ViewBag.Estudio.Estudios[i].Adjunto != null @*&& ViewBag.Estudio.EstatusSolicitud == Laboratorio.Administracion.EstatusSolicitudGabinete.RESULTADOPAGADO*@)
+                                    {
+                                        <div class="m-portlet">
+                                            <div class="col-lg-12">
+                                                @for (int a = 0; a < @ViewBag.Estudio.Estudios[i].Adjunto.Count; a++)
+                                                {
+                                                    if (ViewBag.Estudio.Estudios[i].Adjunto[a].Contains("mp4"))
+                                                    {
+                                                        <a target="_blank" href="@Url.Content("~/")Directorio@(ViewBag.Estudio.Estudios[i].Adjunto[a])" style="width:160px; height:110px">
+                                                            <img width="200" src="~/assets/demo/default/media/img/misc/play.png">
+                                                        </a>
+                                                    }
+                                                    else if (ViewBag.Estudio.Estudios[i].Adjunto[a].Contains("pdf"))
+                                                    {
+                                                        <a target="_blank" href="@Url.Content("~/")Directorio@(ViewBag.Estudio.Estudios[i].Adjunto[a])" style="width:160px; height:110px">
+                                                            <img width="200" src="https://lh3.googleusercontent.com/W1Jwfw3dKIo8BsQFaLc0y4UflpgSUlDKiWn4LgjKXFW1Uxj1t8qfwYu987CnBDWdsENT">
+                                                        </a>
+                                                    }
+                                                    else if (ViewBag.Estudio.Estudios[i].Adjunto[a].Contains("doc") || ViewBag.Estudio.Estudios[i].Adjunto[a].Contains("docx"))
+                                                    {
+                                                        <a target="_blank" href="@Url.Content("~/")Directorio@(ViewBag.Estudio.Estudios[i].Adjunto[a])" style="width:160px; height:110px">
+                                                            <img width="200" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Microsoft_Office_Word_%282018–present%29.svg/1200px-Microsoft_Office_Word_%282018–present%29.svg.png">
+                                                        </a>
+                                                    }
+                                                    else if (ViewBag.Estudio.Estudios[i].Adjunto[a].Contains("zip") || ViewBag.Estudio.Estudios[i].Adjunto[a].Contains("rar"))
+                                                    {
+                                                        <a target="_blank" href="@Url.Content("~/")Directorio@(ViewBag.Estudio.Estudios[i].Adjunto[a])" style="width:160px; height:110px">
+                                                            <img width="200" src="https://www.nchsoftware.com/zip/images/zip_files.png">
+                                                        </a>
+                                                    }
+                                                    else if (ViewBag.Estudio.Estudios[i].Adjunto[a].Contains("dcm") || ViewBag.Estudio.Estudios[i].Adjunto[a].Contains("dcm30"))
+                                                    {
+                                                        <a target="_blank" href="@Url.Content("~/")Directorio@(ViewBag.Estudio.Estudios[i].Adjunto[a])" style="width:160px; height:110px">
+                                                            <img width="200" src="https://blog.nema.org/wp-content/uploads/2016/11/DICOM-logo-e1479849233486.jpg">
+                                                        </a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a target="_blank" href="@Url.Content("~/")Directorio@(ViewBag.Estudio.Estudios[i].Adjunto[a])">
+                                                            <img src="@Url.Content("~/")Directorio@(ViewBag.Estudio.Estudios[i].Adjunto[a])" width="160" height="110">
+                                                        </a>
+                                                    }
+
+                                                }
+                                            </div>
+
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+     

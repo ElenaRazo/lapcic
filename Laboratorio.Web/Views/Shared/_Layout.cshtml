@@ -1,0 +1,659 @@
+﻿<html lang="en" class="wf-poppins-n3-active wf-poppins-n4-active wf-poppins-n5-active wf-poppins-n6-active wf-poppins-n7-active wf-roboto-n3-active wf-roboto-n4-active wf-roboto-n5-active wf-roboto-n6-active wf-roboto-n7-active wf-active">
+<!-- begin::Head -->
+<head  runat="server">
+    <meta charset="utf-8">
+    <title>
+    Control de Laboratorio
+    </title>
+    <meta name="description" content="Advanced portlet examples">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--begin::Web font -->
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700%7CRoboto:300,400,500,600,700" media="all">
+    <script>
+        WebFont.load({
+            google: { "families": ["Poppins:300,400,500,600,700", "Roboto:300,400,500,600,700"] },
+            active: function () {
+                sessionStorage.fonts = true;
+            }
+        });
+    </script>
+    <!--end::Web font -->
+    <!--begin::Base Styles -->
+    <link href="~/assets/vendors/base/vendors.bundle.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/demo/default/base/style.bundle.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Scripts/dropzone.css" rel="stylesheet" />
+    <!--end::Base Styles -->
+    <link rel="shortcut icon" href="~/assets/demo/default/media/img/logo/logo1.png">
+    <style type="text/css">
+.im-caret {
+	-webkit-animation: 1s blink step-end infinite;
+	animation: 1s blink step-end infinite;
+}
+
+
+.im-static {
+	color: grey;
+}
+        .loading-pj {
+            background-color: rgba(255, 255, 255, 0.34);
+            width: 100%;
+            height: 100vh;
+        }
+
+        .logo-pj {
+            height: 109px;
+            width: 131px;
+            bottom: 25px;
+            margin-left: -100px;
+            right: 10px;
+            z-index: 2;
+            position: fixed;
+            background-image: url(assets/app/media/img/misc/cargando.gif);
+        }
+
+    </style>
+</head>
+<!-- end::Head -->
+<!-- end::Body -->
+<body class="m-page--fluid m--skin- m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default m-scroll-top--shown" ng-app="MyApp">
+    <!-- begin:: Page -->
+
+    <div id="cargando" style="display:none;z-index:2;position:fixed; top:0px; bottom:0px;left:0px;right:0px;background-color:#bdc3d4;opacity:0.1">
+        <div class="loading-pj"></div>
+        <div class="logo-pj"></div>
+    </div>
+    <div class="m-grid m-grid--hor m-grid--root m-page">
+        <!-- BEGIN: Header -->
+        <header class="m-grid__item    m-header " data-minimize-offset="200" data-minimize-mobile-offset="200">
+            <div class="m-container m-container--fluid m-container--full-height">
+                <div class="m-stack m-stack--ver m-stack--desktop">
+                    <!-- BEGIN: Brand -->
+                    <div class="m-stack__item m-brand  m-brand--skin-dark ">
+                        <div class="m-stack m-stack--ver m-stack--general">
+                            <div class="m-stack__item m-stack__item--middle m-brand__logo">
+                                <a href="@Url.Action("Index", "Panel")" class="m-brand__logo-wrapper">
+                                    <img alt="" src="~/assets/demo/default/media/img/logo/logo.png" style="height:65%;">
+                                </a>
+                            </div>
+                            <div class="m-stack__item m-stack__item--middle m-brand__tools">
+                                <!-- BEGIN: Left Aside Minimize Toggle -->
+                                <a href="javascript:;" id="m_aside_left_minimize_toggle" class="m-brand__icon m-brand__toggler m-brand__toggler--left m--visible-desktop-inline-block">
+                                    <span></span>
+                                </a>
+                                <!-- END -->
+                                <!-- BEGIN: Responsive Aside Left Menu Toggler -->
+                                <a href="javascript:;" id="m_aside_left_offcanvas_toggle" class="m-brand__icon m-brand__toggler m-brand__toggler--left m--visible-tablet-and-mobile-inline-block">
+                                    <span></span>
+                                </a>
+                                <!-- END -->
+                                <!-- BEGIN: Responsive Header Menu Toggler -->
+                                <a id="m_aside_header_menu_mobile_toggle" href="javascript:;" class="m-brand__icon m-brand__toggler m--visible-tablet-and-mobile-inline-block">
+                                    <span></span>
+                                </a>
+                                <!-- END -->
+                                <!-- BEGIN: Topbar Toggler -->
+                                <a id="m_aside_header_topbar_mobile_toggle" href="javascript:;" class="m-brand__icon m--visible-tablet-and-mobile-inline-block">
+                                    <i class="flaticon-more"></i>
+                                </a>
+                                <!-- BEGIN: Topbar Toggler -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END: Brand -->
+                    <div class="m-stack__item m-stack__item--fluid m-header-head" id="m_header_nav" style="background-size: contain; background-image:url(/Directorio/Imagenes/biopo.jpg)">
+                        <!-- BEGIN: Horizontal Menu -->
+                        <button class="m-aside-header-menu-mobile-close  m-aside-header-menu-mobile-close--skin-dark " id="m_aside_header_menu_mobile_close_btn">
+                            <i class="la la-close"></i>
+                        </button>						<!-- BEGIN: Topbar -->
+                        <div id="m_header_topbar" class="m-topbar  m-stack m-stack--ver m-stack--general" style="background-color:white;opacity:0.9;padding-left:10px;">
+                            <div class="m-stack__item m-topbar__nav-wrapper">
+                                <span class="m-card-user__name m--font-weight-500" style="color:#024c7c; display:inline-block;">
+                                   @ViewBag.Usuario.NombreCompleto
+                                    <br />
+                                    @ViewBag.Usuario.Puesto.Nombre
+                                    <br />
+                                    @ViewBag.Laboratorio.Nombre
+                                </span>
+                                <ul class="m-topbar__nav m-nav m-nav--inline">
+                                    <li class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light" data-dropdown-toggle="click" aria-expanded="true">
+                                       
+                                        <a href="#" class="m-nav__link m-dropdown__toggle">
+                                            <span class="m-topbar__userpic">
+                                                <img src="@Url.Content("~/")Directorio/Users/User.png" class="m--img-rounded m--marginless m--img-centered" alt="">
+                                            </span>
+                                            <span class="m-topbar__username m--hide">
+                                                Nick
+                                            </span>
+                                        </a>
+                                        <div class="m-dropdown__wrapper">
+                                            <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust" style="left: auto; right: 12.6666px;"></span>
+                                            <div class="m-dropdown__inner">
+                                                <div class="m-dropdown__header m--align-center" style="background-color:#f6f5f5;">
+                                                    <div class="m-card-user m-card-user--skin-dark">
+                                                        <div class="m-card-user__pic">
+                                                            <img src="/TribunalAdministrativo//Directorio/Users/User.png" class="m--img-rounded m--marginless" alt="">
+                                                        </div>
+                                                        <div class="m-card-user__details">
+                                                            <span class="m-card-user__name m--font-weight-500" style="color:#024c7c">
+                                                                @ViewBag.Usuario.NombreCompleto
+                                                                <br />
+                                                                @ViewBag.Usuario.Puesto.Nombre                                                                
+                                                            </span>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="m-dropdown__body">
+                                                    <div class="m-dropdown__content">
+                                                        <ul class="m-nav m-nav--skin-light">
+                                                            <li class="m-nav__item">
+                                                                <a href="@Url.Content("~/")Seguridad/Index" class="btn m-btn--pill    btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">
+                                                                    Cerrar sesión
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- END: Topbar -->
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- END: Header -->
+        <!-- begin::Body -->
+        <div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body">
+            <!-- BEGIN: Left Aside -->
+            <button class="m-aside-left-close  m-aside-left-close--skin-dark " id="m_aside_left_close_btn">
+                <i class="la la-close"></i>
+            </button>
+            <div id="m_aside_left" class="m-grid__item	m-aside-left  m-aside-left--skin-dark m-aside-left- " style="background-image:url('https://lapcic.com.mx/img/3396/006.jpg?sitetimestamp=636766851490000000')">
+                <!-- BEGIN: Aside Menu -->
+                <div id="m_ver_menu" class="m-aside-menu  m-aside-menu--skin-dark m-aside-menu--submenu-skin-dark " data-menu-vertical="true" data-menu-scrollable="false" data-menu-dropdown-timeout="500" style="position: fixed;width: inherit;">
+                    <input type="password" id="pass" class="form-control m-input" placeholder="Ingresa tu nueva contraseña" /><button type="reset" class="btn btn-primary m-btn m-btn--air m-btn--custom" onclick="CambiarPass()">Cambiar contraseña</button>
+                    <ul class="m-menu__nav  m-menu__nav--dropdown-submenu-arrow ">
+                        <li class="m-menu__item m-menu__item--submenu m-menu__item" aria-haspopup="true" data-menu-submenu-toggle="hover" style="display:@(ViewBag.Usuario.Puesto.Id < 4 ? "block" : "none")">
+                            <select id="labs" class="form-control" onchange="javascript: CambiarLaboratorio()"></select>
+                        </li>
+                        <li class="m-menu__item m-menu__item--submenu m-menu__item" aria-haspopup="true" data-menu-submenu-toggle="hover" style="display:@(ViewBag.Usuario.Puesto.Id < 4 ? "block" : "none")">
+                            <a href="#" class="m-menu__link m-menu__toggle">
+                                <i class="m-menu__link-icon flaticon-network"></i>
+                                <span class="m-menu__link-text">
+                                    Administración
+                                </span>
+                                <i class="m-menu__ver-arrow la la-angle-right"></i>
+                            </a>
+                            <div class="m-menu__submenu" style="display: block;">
+                                <span class="m-menu__arrow"></span>
+                                <ul class="m-menu__subnav">
+                                    <li class="m-menu__item " aria-haspopup="true">
+                                        <a href="@Url.Action("Laboratorios","Catalogos")" class="m-menu__link ">
+                                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="m-menu__link-text">
+                                                Laboratorios
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="m-menu__item " aria-haspopup="true">
+                                        <a href="@Url.Action("Index","Usuarios")" class="m-menu__link ">
+                                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="m-menu__link-text">
+                                                Usuarios
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="m-menu__item " aria-haspopup="true">
+                                        <a href="@Url.Action("Promocion","Catalogos")" class="m-menu__link ">
+                                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="m-menu__link-text">
+                                                Enviar promociones
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="m-menu__item " aria-haspopup="true">
+                                        <a href="@Url.Action("Accesos","Catalogos")" class="m-menu__link ">
+                                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="m-menu__link-text">
+                                                Checkin
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="m-menu__item m-menu__item--submenu m-menu__item" aria-haspopup="true" data-menu-submenu-toggle="hover" style="display:@(ViewBag.Usuario.Puesto.Id < 4 ? "block" : "none")">
+                            <a href="#" class="m-menu__link m-menu__toggle">
+                                <i class="m-menu__link-icon flaticon-network"></i>
+                                <span class="m-menu__link-text">
+                                    Compras
+                                </span>
+                                <i class="m-menu__ver-arrow la la-angle-right"></i>
+                            </a>
+                            <div class="m-menu__submenu" style="display: block;">
+                                <span class="m-menu__arrow"></span>
+                                <ul class="m-menu__subnav">
+                                    <li class="m-menu__item " aria-haspopup="true">
+                                        <a href="@Url.Action("Proveedores","Catalogos")" class="m-menu__link ">
+                                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="m-menu__link-text">
+                                                Proveedores
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="m-menu__item " aria-haspopup="true">
+                                        <a href="@Url.Action("Insumos","Catalogos")" class="m-menu__link ">
+                                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="m-menu__link-text">
+                                                Insumos
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="m-menu__item " aria-haspopup="true">
+                                        <a href="@Url.Action("TipoPago","Catalogos")" class="m-menu__link ">
+                                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="m-menu__link-text">
+                                                Tipo de Pago
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="m-menu__item m-menu__item--submenu m-menu__item" aria-haspopup="true" data-menu-submenu-toggle="hover" style="display:@(ViewBag.Usuario.Puesto.Id != 6 ? "block" : "none")">
+                            <a href="#" class="m-menu__link m-menu__toggle">
+                                <i class="m-menu__link-icon flaticon-network"></i>
+                                <span class="m-menu__link-text">
+                                    General
+                                </span>
+                                <i class="m-menu__ver-arrow la la-angle-right"></i>
+                            </a>
+                            <div class="m-menu__submenu" style="display: block;">
+                                <span class="m-menu__arrow"></span>
+                                <ul class="m-menu__subnav">
+
+                                    <li class="m-menu__item " aria-haspopup="true">
+                                        <a href="@Url.Action("Index", "Pacientes")" class="m-menu__link ">
+                                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="m-menu__link-text">
+                                                Clientes
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="m-menu__item " aria-haspopup="true">
+                                        <a href="@Url.Action("Empresas", "Catalogos")" class="m-menu__link ">
+                                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="m-menu__link-text">
+                                                Empresas
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="m-menu__item " aria-haspopup="true">
+                                        <a href="@Url.Action("Index", "Medicos")" class="m-menu__link ">
+                                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="m-menu__link-text">
+                                                Médicos
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="m-menu__item m-menu__item--submenu m-menu__item" aria-haspopup="true" data-menu-submenu-toggle="hover" style="display:@(ViewBag.Usuario.Puesto.Id < 4 ? "block" : "none")">
+                            <a href="#" class="m-menu__link m-menu__toggle">
+                                <i class="m-menu__link-icon flaticon-network"></i>
+                                <span class="m-menu__link-text">
+                                    Laboratorio
+                                </span>
+                                <i class="m-menu__ver-arrow la la-angle-right"></i>
+                            </a>
+                            <div class="m-menu__submenu" style="display: block;">
+                                <span class="m-menu__arrow"></span>
+                                <ul class="m-menu__subnav">
+                                    <li class="m-menu__item " aria-haspopup="true">
+                                        <a href="@Url.Action("Perfiles", "Catalogos")" class="m-menu__link ">
+                                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="m-menu__link-text">
+                                                Perfiles
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="m-menu__item " aria-haspopup="true">
+                                        <a href="@Url.Action("Estudios", "Catalogos")" class="m-menu__link ">
+                                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="m-menu__link-text">
+                                                Estudios
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="m-menu__item " aria-haspopup="true">
+                                        <a href="@Url.Action("TipoCaptura", "Catalogos")" class="m-menu__link ">
+                                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="m-menu__link-text">
+                                                Tipo de Captura
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="m-menu__item " aria-haspopup="true">
+                                        <a href="@Url.Action("TipoMuestra", "Catalogos")" class="m-menu__link ">
+                                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="m-menu__link-text">
+                                                Tipo de Muestra
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="m-menu__item " aria-haspopup="true">
+                                        <a href="@Url.Action("TipoDeposito", "Catalogos")" class="m-menu__link ">
+                                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="m-menu__link-text">
+                                                Tipo de Deposito
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="m-menu__item " aria-haspopup="true">
+                                        <a href="@Url.Action("Departamento", "Catalogos")" class="m-menu__link ">
+                                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="m-menu__link-text">
+                                                Áreas
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="m-menu__item m-menu__item--submenu m-menu__item" aria-haspopup="true" data-menu-submenu-toggle="hover"  style="display:@(ViewBag.Usuario.Puesto.Id < 6 ? "block" : "none")">
+                            <a href="#" class="m-menu__link m-menu__toggle">
+                                <i class="m-menu__link-icon flaticon-network"></i>
+                                <span class="m-menu__link-text">
+                                    Reportes
+                                </span>
+                                <i class="m-menu__ver-arrow la la-angle-right"></i>
+                            </a>
+                            <div class="m-menu__submenu" style="display: block;">
+                                <span class="m-menu__arrow"></span>
+                                <ul class="m-menu__subnav">
+                                    <li class="m-menu__item " aria-haspopup="true">
+                                        <a href="@Url.Action("ReporteSolicitudes", "Estudios")" class="m-menu__link ">
+                                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="m-menu__link-text">
+                                               Solicitudes
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="m-menu__item " aria-haspopup="true">
+                                        <a href="@Url.Action("ReporteEstadistica", "Estudios")" class="m-menu__link ">
+                                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="m-menu__link-text">
+                                                Estadistica
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="m-menu__item " aria-haspopup="true">
+                                        <a href="@Url.Action("ReporteDepositos", "Estudios")" class="m-menu__link ">
+                                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="m-menu__link-text">
+                                                Insumos utilizados
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="m-menu__item m-menu__item--submenu m-menu__item" aria-haspopup="true" data-menu-submenu-toggle="hover" style="display:@(ViewBag.Usuario.Puesto.Id != 6 ? "block" : "none")">
+                            <a href="@Url.Action("Cotizar", "Estudios")" class="m-menu__link m-menu__toggle">
+                                <i class="m-menu__link-icon flaticon-network"></i>
+                                <span class="m-menu__link-text">
+                                    Cotizar
+                                </span>
+                            </a>
+                        </li>
+                        <li class="m-menu__item m-menu__item--submenu m-menu__item" aria-haspopup="true" data-menu-submenu-toggle="hover" style="display:@(ViewBag.Usuario.Puesto.Id != 6 ? "block" : "none")">
+                            <a href="@Url.Action("Solicitudes", "Estudios", new { Id = ViewBag.Laboratorio.Id })" class="m-menu__link ">
+                                <i class="m-menu__link-icon flaticon-network">
+                                    <span></span>
+                                </i>
+                                <span class="m-menu__link-text">
+                                    Solicitudes de Estudio
+                                </span>
+                            </a>
+                        </li>
+                        <li class="m-menu__item m-menu__item--submenu m-menu__item" aria-haspopup="true" data-menu-submenu-toggle="hover" style="display:@(ViewBag.Usuario.Puesto.Id != 6 ? "block" : "none")">
+                            <a href="#" class="m-menu__link m-menu__toggle">
+                                <i class="m-menu__link-icon flaticon-network"></i>
+                                <span class="m-menu__link-text">
+                                    Estudios de Gabinete
+                                </span>
+                                <i class="m-menu__ver-arrow la la-angle-right"></i>
+                            </a>
+                            <div class="m-menu__submenu" style="display: block;">
+                                <span class="m-menu__arrow"></span>
+                                <ul class="m-menu__subnav">
+                                    <li class="m-menu__item " aria-haspopup="true">
+                                        <a href="@Url.Action("EstudiosGabinete","Estudios")" class="m-menu__link ">
+                                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="m-menu__link-text">
+                                                Catalogo
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="m-menu__item " aria-haspopup="true">
+                                        <a href="@Url.Action("Gabinete","Estudios")" class="m-menu__link ">
+                                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="m-menu__link-text">
+                                                Solicitudes
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="m-menu__item m-menu__item--submenu m-menu__item" aria-haspopup="true" data-menu-submenu-toggle="hover"  style="display:@(ViewBag.Usuario.Puesto.Id > 5 ? "block" : "none")">
+                            <a href="@Url.Action("Gabinete", "Estudios")" class="m-menu__link m-menu__toggle">
+                                <i class="m-menu__link-icon flaticon-network"></i>
+                                <span class="m-menu__link-text">
+                                    Estudios a realizar
+                                </span>
+                            </a>
+                        </li>
+                       
+
+                    </ul>
+                </div>
+                <!-- END: Aside Menu -->
+            </div>
+            <!-- END: Left Aside -->
+            <div class="m-grid__item m-grid__item--fluid m-wrapper">
+                <!-- BEGIN: Subheader -->
+                <!-- END: Subheader -->
+                <div class="m-content">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+        <!-- end:: Body -->
+        <!-- begin::Footer -->
+        <footer class="m-grid__item		m-footer " style="height:fit-content;">
+            <div class="m-container m-container--fluid m-container--full-height m-page__container">
+                <div class="m-stack m-stack--flex-tablet-and-mobile m-stack--ver m-stack--desktop">
+                    <div class="m-stack__item m-stack__item--left m-stack__item--middle m-stack__item--last">
+                        <span class="m-footer__copyright">
+                            2018 © powered by
+                            <a href="#" class="m-link">
+                                RushTec
+                            </a>
+                        </span>
+                    </div>
+                    <div class="m-stack__item m-stack__item--right m-stack__item--middle m-stack__item--first">
+                        <ul class="m-footer__nav m-nav m-nav--inline m--pull-right">
+                            <li class="m-nav__item">
+                                <a href="#" class="m-nav__link">
+                                    <span class="m-nav__link-text">
+                                        About
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- end::Footer -->
+    </div>
+    <div class="modal fade show" id="m_modal_5" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" style="display: none;">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        Nuevo
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">
+                            ×
+                        </span>
+                    </button>
+                </div>
+                <div class="modal-body" style="background-color: #efefef;">
+                    @*@if (ViewBag.Registro != null && ViewBag.Registro)
+                    {
+                        Html.RenderAction("Nueva", "Notificacion", new { IdAcuerdo = 0, IdExpediente = (ViewBag.Expediente.Id) });
+                    }*@
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Cerrar
+                    </button>
+                    <button type="button" class="btn btn-primary">
+                        Enviar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="m-scroll-top m-scroll-top--skin-top" data-toggle="m-scroll-top" data-scroll-offset="500" data-scroll-speed="300">
+        <i class="la la-arrow-up"></i>
+    </div>
+    <!--begin::Base Scripts -->
+    <script src="~/Scripts/linq.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var ddl = $('#labs');
+
+            ddl.empty();
+            var labs = @Html.Raw(Json.Encode(ViewBag.Labs));
+        $(labs).each(function () {
+            $(document.createElement('option'))
+                .attr({ 'value': this.Id })
+                .text(this.Nombre)
+                .appendTo(ddl);
+        });
+        });
+          function CambiarPass() {
+        if ($('#pass').val() != "") {
+            
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    Pass: $('#pass').val()
+                },
+                url: '@Url.Content("~/")Usuarios/ActualizarPass',
+                async: true,
+                success: function (response) {
+                    if (response.Resultado) {
+                        alert("Por seguridad, será redigirido a la pagina de inicio de sesión");
+                        window.location.replace('@Url.Content("~/")Seguridad/Index');
+                    }
+                }
+            })
+        }
+    }
+         function CambiarLaboratorio() {
+            if (confirm("Al confirmar, se cambiará de laboratorio, ¿desea continuar?")) {
+                $.ajax({
+                    type: "POST",
+                    dataType: 'json',
+                    data: {
+                        Laboratorio: parseInt($('#labs').val())
+                    },
+                    url: '@Url.Content("~")Seguridad/CambiarLaboratorio',
+                    async: true,
+                    success: function (response) {
+                            alert('Cambio de laboratorio con exito!')
+                            window.location.reload();
+                    },
+                    error: function (response) {
+                        window.location.reload();
+                    },
+                });
+            } else {
+
+             }
+    }
+    </script>
+    <!--end::Base Scripts -->
+    <!-- end::Body -->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    
+    <script src="~/assets/demo/demo3/base/scripts.bundle.js"></script>
+    <script src="~/assets/vendors/base/vendors.bundle.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    @Scripts.Render("~/Scripts/jquery-1.10.2.min.js")
+    @Scripts.Render("~/assets/vendors/base/vendors.bundle.js")
+    @Scripts.Render("~/assets/vendors/base/vendors.bundle.js")
+    @Scripts.Render("~/assets/demo/default/base/scripts.bundle.js")
+    @Scripts.Render("~/assets/vendors/bootstrap-wysiwyg.j")
+    @RenderSection("scripts", false)
+
+
+</body>
+</html>

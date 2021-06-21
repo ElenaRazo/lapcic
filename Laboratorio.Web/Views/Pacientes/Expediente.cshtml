@@ -1,0 +1,77 @@
+﻿
+@{
+    ViewBag.Title = "Estudios";
+    Layout = null;
+}
+<div class="m-portlet__body" id="listadoEstudioPaciente">
+    <div class="col-lg-12"style="height: 27rem;overflow: overlay;">
+        <table class="table table-striped m-table" style="width:100%">
+            <thead>
+                <tr style="height: 30px; background-color:#4c9a79; color:white;">
+                    <th style="width:80%"> Datos generales </th>
+                    <th style="width:auto;"> </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < @ViewBag.Solicitudes.Count; i++)
+                {
+                    <tr>
+                        <td style="width:80%">
+                            @(ViewBag.Solicitudes[i].ClaveSolicitud)<br />
+                            @(ViewBag.Solicitudes[i].Laboratorio.Nombre)<br />
+                            @(ViewBag.Solicitudes[i].Medico.NombreCompleto)<br />
+                            @(ViewBag.Solicitudes[i].Fecha)
+                        </td>
+                        <td style="width:auto;">
+                            <a onclick="javascript:VerEstudio(@ViewBag.Solicitudes[i].Id, '@ViewBag.Solicitudes[i].ClaveSolicitud', @(ViewBag.Solicitudes[i].Debe <= 0 ? 1 : 0), @((int)ViewBag.Solicitudes[i].EstatusSolicitud))" style="display:block" title="Detalle" class="btn btn-icon btn-outline-success">
+                                <i class="fa fa-search"></i>
+                            </a>
+                            <a target="_blank" href="@Url.Action("ResultadosPacientePortal", "Estudios", new { Solicitud = ViewBag.Solicitudes[i].Id, Clave = ViewBag.Solicitudes[i].ClaveSolicitud, Id =  ViewBag.Solicitudes[i].Paciente.Id })" style="display:@(ViewBag.Solicitudes[i].Pagado ? "block": "none")" title="Descargar resultados" class="btn btn-icon btn-outline-success">
+                                <i class="fa fa-file-pdf-o"></i>
+                            </a>
+                            @*<a target="_blank" href="@Url.Action("Envio", "Estudios", new { receiver = ViewBag.Solicitudes[i].Paciente.Email, Solicitud = ViewBag.Solicitudes[i].Id, Clave = ViewBag.Solicitudes[i].ClaveSolicitud })" class="btn btn-outline btn-circle dark btn-sm black" title="Enviar a mi correo electrónico">
+            <i class="fa fa-mail-forward"></i>
+        </a>*@
+                            @*<a href="@Url.Action("Emitir","Facturacion", new { Id = @ViewBag.Solicitudes[i].Id })" class="btn btn-outline btn-circle dark btn-sm black" title="Facturar">
+            <i class="fa fa-file-word-o"></i>
+        </a>*@
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            @*@(ViewBag.Solicitudes[i].NombreEstudio)*@
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div id="detalleEstudioPaciente" style="display:none; padding-bottom: 50px;">
+
+</div>
+<script>
+    function VerEstudio(id, clave, pagado, estatus) {
+        $.ajax({
+
+            type: "POST",
+            dataType: 'json',
+            data: { Solicitud: id, Clave: clave, Pagado: pagado == 1 ? true:false, EstatusSolicitud : estatus },
+            url: '@Url.Content("~/")Estudios/DetalleS',
+            async: true,
+            success: function (response) {
+                $('#listadoEstudioPaciente').hide();
+                $('#detalleEstudioPaciente').show();
+                $('#detalleEstudioPaciente').html(response);
+
+            },
+            error: function (obj, error, objError) {
+                $('#listadoEstudioPaciente').hide();
+                $('#detalleEstudioPaciente').show();
+                $('#detalleEstudioPaciente').html(obj.responseText);
+            }
+        });
+    }
+   
+</script>

@@ -1,0 +1,62 @@
+﻿
+@{
+    ViewBag.Title = "Etiquetas";
+    Layout = null;
+}
+
+<table style="width:100%">
+    @{
+        if (@ViewBag.Muestras.Count <= 4)
+        {
+            <tr>
+                @for (int i = 0; i < (@ViewBag.Muestras.Count); i++)
+                {
+
+                    <td style="width:170px;">
+                        <div style="font-size:11px;height:85px; width:190px;margin-bottom: 10px;border:1px solid #ccc">
+                            Clave: @ViewBag.Muestras[i].Solicitud    &nbsp; Muestra: @ViewBag.Muestras[i].Muestra<br />
+                            @ViewBag.Muestras[i].Paciente<br />
+                            Edad: @ViewBag.Muestras[i].Edad &nbsp;<br />
+                            @ViewBag.Muestras[i].TipoDeposito<br />
+                            @ViewBag.Muestras[i].Descripcion.Substring(0, (ViewBag.Muestras[i].Descripcion.Length < 100 ? ViewBag.Muestras[i].Descripcion.Length - 1 : 100))<br />
+                            Fecha: @(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"))
+                        </div>
+                    </td>
+
+                }
+
+            </tr>
+        }
+        else
+        {
+            for (int a = 0; a < @ViewBag.Muestras.Count; a++)
+            {
+                if ((a == 3 || a == 7 || a == 11 || a == 15) || a == (@ViewBag.Muestras.Count - 1))
+                {
+                    <tr>
+                        @for (int i = (a - 3); i < (a + 1); i++)
+                        {
+
+                            <td style="width:170px;">
+                                <div style="font-size:11px;height:85px;width:190px;margin-bottom: 10px;border:1px solid #ccc">
+                                    Clave: @ViewBag.Muestras[i].Solicitud    &nbsp; Muestra: @ViewBag.Muestras[i].Muestra<br />
+                                    @ViewBag.Muestras[i].Paciente<br />
+                                    Edad: @ViewBag.Muestras[i].Edad &nbsp;<br />
+                                    @ViewBag.Muestras[i].TipoDeposito<br />
+                                    @ViewBag.Muestras[i].Descripcion.Trim().Substring(0, (ViewBag.Muestras[i].Descripcion.Length < 70 ? ViewBag.Muestras[i].Descripcion.Length - 1 : 70))<br />
+                                    Fecha: @(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"))
+                                </div>
+                            </td>
+
+                        }
+
+                    </tr>
+                }
+            }
+        }
+    }
+</table>
+<script language="javascript" type="text/javascript">
+    if (window.print())
+        window.close();
+</script>

@@ -1,0 +1,202 @@
+﻿
+@{
+    ViewBag.Title = "Nuevo";
+    Layout = null;
+}
+
+<!--                       -->
+<div class="m-portlet  m-portlet--tabs m-portlet--info m-portlet--head-solid-bg m-portlet--head-sm" id="form_wizard_1">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <i class=" icon-layers font-blue"></i>
+            <span class="caption-subject font-blue bold uppercase" style="color:white;">
+                ALTA DE UN NUEVO ESTUDIO DE GABINETE
+            </span>
+        </div>
+    </div>
+    <div class="portlet-body form">
+        <form class="m-form m-form--fit m-form--label-align-right" action="#" id="submit_form" method="POST" novalidate="novalidate">
+            <div class="form-wizard">
+                <div class="m-portlet__body">
+                    <h3 class="block">Datos generales</h3>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Área
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-9 col-md-9 col-sm-12">
+                            <select id="Departamentos" class="form-control m-input">
+                                <option value="16">Radiología</option>
+                                <option value="17">Ultrasonido</option>
+                            </select>
+                            <span class="" dir="ltr" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-puesto_list-container"><span class="select2-selection__rendered" id="select2-puesto_list-container"><span class="select2-selection__placeholder">Selecciona el área</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Muestra
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-9 col-md-9 col-sm-12">
+                            <select id="Muestras" class="form-control m-input">
+                                <option value="75">N/A</option>
+                            </select>
+                            <span class="" dir="ltr" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-puesto_list-container"><span class="select2-selection__rendered" id="select2-puesto_list-container"><span class="select2-selection__placeholder">Selecciona el tipo de muestra</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Deposito
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-9 col-md-9 col-sm-12">
+                            <select id="Deposito" class="form-control m-input">
+                                <option value="41">N/A</option>
+                            </select>
+                            <span class="" dir="ltr" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-puesto_list-container"><span class="select2-selection__rendered" id="select2-puesto_list-container"><span class="select2-selection__placeholder">Selecciona el tipo de depósito</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Clave
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-4 col-md-9 col-sm-12">
+                            <input disabled="disabled" type="text" id="clave" class="form-control" espacio() name="clave" aria-required="true" aria-invalid="false">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Abreviatura
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-4 col-md-9 col-sm-12">
+                            <input type="text" id="abreviatura" class="form-control" name="abreviatura" aria-required="true" aria-invalid="false">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Nombre
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-9 col-md-9 col-sm-12">
+                            <input type="text" id="nombre" class="form-control" name="nombre" aria-required="true" aria-invalid="false">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Precio
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-4 col-md-9 col-sm-12">
+                            <input type="text" id="precio" class="form-control" name="precio" aria-required="true" aria-invalid="false">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Número de muestras
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-4 col-md-9 col-sm-12">
+                            <input type="text" id="numero" class="form-control" name="numero" aria-required="true" aria-invalid="false">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Volumen
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-4 col-md-9 col-sm-12">
+                            <input type="text" id="volumen" class="form-control" name="volumen" aria-required="true" aria-invalid="false">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Unidad de muestras
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-4 col-md-9 col-sm-12">
+                            <input type="text" id="unidad" class="form-control" name="unidad" aria-required="true" aria-invalid="false">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Urgencia
+                            <span class="required" aria-required="true"> * </span>
+                        </label>
+                        <div class="col-lg-9 col-md-9 col-sm-12">
+                            <input type="text" id="urgencia" class="form-control" name="urgencia" aria-required="true" aria-invalid="false">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label">
+                            Permite
+                        </label>
+                        <div class="col-7">
+                            <input class="form-control m-input" type="checkbox" id="Permite">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-3 col-sm-12">
+                            Indicaciones
+                        </label>
+                        <div class="col-lg-9 col-md-9 col-sm-12">
+                            <textarea class="form-control m-input" rows="3" name="remarks" id="indicaciones"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit">
+                    <div class="m-form__actions m-form__actions--solid">
+                        <div class="row">
+                            <div class="col-lg-2"></div>
+                            <div class="col-lg-10">
+                                <button type="reset" class="btn btn-success" onclick="javascript:Guardar()">
+                                    Guardar
+                                </button>
+                                <a href="@Url.Action("EstudiosGabinete", "Catalogos")" class="btn btn-secondary m-btn m-btn--air m-btn--custom">Cancelar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function validarTexto(e) {
+
+        tecla = (document.all) ? e.keyCode : e.which;
+
+        if (tecla==8) return true;
+
+            patron =/[A-Za-z\s]/;
+
+            te = String.fromCharCode(tecla);
+
+            return patron.test(te);
+
+}
+    function Guardar() {
+        if ($('#nombre').val() != "") {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    IdDepartamento: parseInt($('#Departamentos').val()), IdMuestra: parseInt($('#Muestras').val()), IdDeposito: parseInt($('#Deposito').val()), Nombre: $('#nombre').val(), Clave: $('#clave').val(),
+                    Abreviatura: $('#abreviatura').val(), Precio: parseFloat($('#precio').val()), Unidad: parseFloat($('#unidad').val()),
+                    Volumen: $('#volumen').val(), Numero: $('#numero').val(), Urgencia: $('#urgencia').val(),
+                    Indicaciones: $('#indicaciones').text(), Clave: $('#clave').val(),
+                    PermiteDescuento: $("#Permite").is(':checked') ? 1 : 0 },
+                url: '@Url.Content("~/")Estudios/Crear',
+                async: true,
+                success: function (response) {
+                    alert("Datos guardados");
+                    location.reload();
+                }
+            })
+        }
+    }
+</script>
+
+

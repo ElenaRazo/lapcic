@@ -1,0 +1,156 @@
+﻿
+
+@{
+    ViewBag.Title = "ReporteSolicitudes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="m-portlet m-portlet--tabs m-portlet--accent m-portlet--head-solid-bg m-portlet--head-sm">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <i class="icon-layers font-blue"></i>
+            <span class="caption-subject bold uppercase m--font-metal">
+                REPORTE DE SOLICITUDES DE ESTUDIOS
+            </span>
+        </div>
+    </div>
+    <div class="m-portlet__body">
+        <div class="form-group m-form__group row">
+            <label class="col-form-label col-lg-2 col-sm-12">
+                Laboratorio
+                <span class="required" aria-required="true"> * </span>
+            </label>
+            <div class="col-lg-3 col-md-9 col-sm-12">
+                @Html.DropDownList("Laboratorios", null, new { @class = "form-control m-input", @id = "Laboratorios", @name = "Laboratorios", @tabindex = "-1" })
+            </div>
+            <label class="col-form-label col-lg-2 col-sm-12">
+                Estudios
+                <span class="required" aria-required="true"> * </span>
+            </label>
+            <div class="col-lg-3 col-md-9 col-sm-12">
+                @Html.DropDownList("Estudios", null, new { @class = "form-control m-input", @id = "Estudios", @name = "Estudios", @tabindex = "-1" })
+            </div>
+
+            <div class="col-lg-3 col-md-9 col-sm-12">
+                <select id="mes" class="form-control m-input">
+                    <option value="1">ENERO</option>
+                    <option value="2">FEBRERO</option>
+                    <option value="3">MARZO</option>
+                    <option value="4">ABRIL</option>
+                    <option value="5">MAYO</option>
+                    <option value="6">JUNIO</option>
+                    <option value="7">JULIO</option>
+                    <option value="8">AGOSTO</option>
+                    <option value="9">SEPTIEMBRE</option>
+                    <option value="10">OCTUBRE</option>
+                    <option value="11">NOVIEMBRE</option>
+                    <option value="12">DICIEMBRE</option>
+                </select>
+            </div>
+            <div class="col-lg-2 col-md-9 col-sm-12">
+                <input class="form-control m-input" placeholder="Año" id="anio" value="@DateTime.Now.Year" />
+            </div>
+            <div class="col-lg-3 col-md-9 col-sm-12">
+                @Html.DropDownList("Estado", null, new { @class = "form-control m-input", @id = "Estado", @name = "Estado", @tabindex = "-1", @onchange = "CallChangeEstado()" })
+            </div>
+            <div class="col-lg-3 col-md-9 col-sm-12">
+                <select id="Municipio" class="form-control m-input" onchange="CallChangeMunicipio()">
+                    <option value="0">Seleccione una opcion</option>
+                </select>
+            </div>
+            <div class="col-lg-3 col-md-9 col-sm-12">
+                <select id="Colonia" class="form-control m-input">
+                    <option value="0">Seleccione una opcion</option>
+                </select>
+            </div>
+            <div class="col-lg-2 col-md-9 col-sm-12">
+                <a class="btn btn-secondary m-btn m-btn--air m-btn--custom" onclick="Buscar()">Buscar</a>
+            </div>
+
+        </div>
+    </div>
+    <div class="m-portlet__body" id="resultadoBusqueda">
+
+    </div>
+</div>
+<script>
+     $(document).ready(function () {
+            var ddl = $('#labs');
+
+        ddl.empty();
+        var labs = @Html.Raw(Json.Encode(ViewBag.Labs));
+        $(labs).each(function () {
+            $(document.createElement('option'))
+                .attr({ 'value': this.Id })
+                .text(this.Nombre)
+                .appendTo(ddl);
+        });
+        });
+    function Buscar() {
+        $('#resultadoBusqueda').html('');
+        $('#resultadoBusqueda').show();
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            data: {
+                Laboratorio: parseInt($('#Laboratorios').val()), Estudio: $('#Estudios').val(), Mes: parseInt($('#mes').val()), Anio: parseInt($('#anio').val()),
+                Colonia: parseInt($('#Colonia').val()) != NaN ? parseInt($('#Colonia').val()) : 0,
+                Ciudad: parseInt($('#Municipio').val()) != NaN ? parseInt($('#Municipio').val()) : 0,
+                Estado: parseInt($('#Estado').val())
+            },
+            url: '@Url.Content("~/")Estudios/ResultadoEstudios',
+            async: true,
+            success: function (response) {
+                $('#resultadoBusqueda').html(response);
+            },
+            error: function (response) {
+                $('#resultadoBusqueda').html(response.responseText);
+            }
+        });
+    }
+      function CallChangeEstado() {
+        var ddl = $('#Municipio');
+
+        ddl.empty();
+        var ddl2 = $('#Colonia');
+        ddl2.empty();
+        if (parseInt($('#Estado').val()) != 0) {
+            $.getJSON('@Url.Content("~/")Catalogos/GetMunicipiosPorEstado', { Id: parseInt($('#Estado').val()) }, function (result) {
+                $(result).each(function () {
+                    $(document.createElement('option'))
+                        .attr('value', this.Id)
+                        .text(this.Nombre)
+                        .appendTo(ddl);
+                });
+                $('#Municipio').selectedIndex = "1";
+            });
+
+        }
+
+    };
+    function CallChangeMunicipio() {
+        var ddl2 = $('#Colonia');
+        ddl2.empty();
+        if (parseInt($('#Municipio').val()) != 0) {
+            $.getJSON('@Url.Content("~/")Catalogos/GetColoniasPorMunicipio', { Id: parseInt($('#Municipio').val()) }, function (result) {
+                $(document.createElement('option'))
+                    .attr({ 'value': 0 })
+                    .text('TODOS')
+                    .appendTo(ddl2);
+                $(result).each(function () {
+                    $(document.createElement('option'))
+                        .attr({ 'value': this.Id })
+                        .text(this.Nombre)
+                        .appendTo(ddl2);
+                });
+                $('#Colonia').selectedIndex = "1";
+
+            });
+        }
+    };
+    $(document).ready(function () {
+        $('#Estado').val(416);
+        CallChangeEstado();
+    });
+</script>

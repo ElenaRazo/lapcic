@@ -1,0 +1,123 @@
+﻿
+
+@{
+    ViewBag.Title = "TipoPago";
+    Layout = null;
+}
+<div class="m-portlet m-portlet--full-height m-portlet--tabs  ">
+    <form class="m-form m-form--fit m-form--label-align-right">
+        <table cellspacing="0" border="0" id="FormView1" style="border-collapse:collapse;">
+            <tbody>
+                <tr>
+                    <td colspan="2">
+                        <table border="0" cellpadding="0" cellspacing="0">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <img src="~/assets/demo/default/media/img/logo/logo.png" style="width:40%" />
+                                    </td>
+                                    <td align="right">
+                                        <strong>Clave: </strong>
+                                        <span id="FormView1_Label5">@ViewBag.Cotizacion.ClaveCotizacion</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <table style="border-bottom: black 1px solid">
+                                            <tbody>
+                                                <tr>
+                                                    <td align="right" style="font-weight: bold; font-size: 11px; width: 69px;">
+                                                        Paciente:
+                                                    </td>
+                                                    <td style="width: 300px">
+                                                        <span id="FormView1_PACIENTELabel" style="font-size: 11px; ">@(ViewBag.Cotizacion.Nombre + " " + ViewBag.Cotizacion.Paterno + " " + ViewBag.Cotizacion.Materno)</span>
+                                                    </td>
+                                                    <td align="right" style="font-weight: bold;font-size: 11px; ">
+                                                        Usuario:
+                                                    </td>
+                                                    <td style="width: 284px">
+                                                        <span id="FormView1_EMPRESALabel" style="font-size: 11px; ">@(ViewBag.Cotizacion.Usuario.Nombre + " " + ViewBag.Cotizacion.Usuario.Paterno + " " + ViewBag.Cotizacion.Usuario.Materno)</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="right" style="font-weight: bold; font-size: 11px; width: 69px;">
+                                                        Fecha de cotización:
+                                                    </td>
+                                                    <td style="width: 300px">
+                                                        <span id="FormView1_PACIENTELabel" style="font-size: 11px; ">@(ViewBag.Cotizacion.Fecha.ToString("dd/MM/yyyy HH:mm:ss"))</span>
+                                                    </td>
+                                                    <td align="right" style="font-weight: bold;font-size: 11px; ">
+                                                        Teléfono:
+                                                    </td>
+                                                    <td style="width: 284px"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+                        <center id="FormView1_LABORATORIOLabel" style="font-size: 11px">@ViewBag.Cotizacion.Laboratorio.Nombre</center>
+                        <br />
+                    </td>
+                </tr>
+                <tr style="height:230px; vertical-align:top">
+                    <td style="width:50%"></td>
+                    <td style="width:50%">
+                        <table class="table table-striped m-table" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th style="width:70%;text-align:left;font-size: 11px;"> Nombre </th>
+                                    <th style="width:30%;font-size: 11px;"> Precio </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    var total = 0.0;
+                                    for (int i = 0; i < @ViewBag.Cotizacion.Estudios.Count; i++)
+                                    {
+
+                                        total = total + ViewBag.Cotizacion.Estudios[i].PrecioBase;
+                                        <tr>
+                                            <td style="width:40%;font-size: 10px;">@ViewBag.Cotizacion.Estudios[i].Nombre</td>
+                                            <td style="width:30%; text-align:right;font-size: 10px;">@ViewBag.Cotizacion.Estudios[i].PrecioBase</td>
+                                        </tr>
+                                        if (i == ViewBag.Cotizacion.Estudios.Count - 1)
+                                        {
+                                            <tr>
+                                                <td style="width:40%;font-size: 10px;text-align:right;">TOTAL</td>
+                                                <td style="width:30%; text-align:right;font-size: 10px;">@total</td>
+                                            </tr>
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table>
+            <tr>
+                <td>
+                    <div class="col-lg-12 col-md-4 col-sm-12">
+                        <input id="txtEmailDetalle" class="form-control m-input" placeholder="correo electrónico" />
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script>
+    cotizacion = '@ViewBag.Cotizacion.ClaveCotizacion'
+    function EnviarCorreo() {
+        if ($('#txtEmail').val() != "") {
+            window.open('@Url.Content("~/")Estudios/EnvioCotizacion?Clave=' + cotizacion + "&receiver=" + $('#txtEmail').val(), '_blank');
+        }
+        else {
+            alert("Para enviar por correo esta cotización debe ingresar un correo válido");
+        }
+       
+    }
+</script>

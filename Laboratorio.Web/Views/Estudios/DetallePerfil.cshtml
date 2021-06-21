@@ -1,0 +1,193 @@
+﻿
+
+@{
+    ViewBag.Title = "TipoPago";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<div class="m-portlet" id="form_wizard_1">
+    <div class="m-portlet__head  m-accent">
+        <div class="m-portlet__head-caption">
+            <i class=" icon-layers font-blue"></i>
+
+            <label class="m--font-metal m--font-bold m--icon-font-size-lg1">
+
+            </label>
+            <span class="caption-subject font-blue bold uppercase  m--font-metal">
+
+            </span>
+        </div>
+        <div class="m-portlet__head-tools">
+            <ul class="m-portlet__nav">
+                <li class="m-portlet__nav-item">
+                    <a href="@Url.Action("Perfiles","Catalogos")" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                        <i class="la la-arrow-left"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="portlet-body form" style="background-color:#f2f3f8">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12">
+                <div class="m-portlet m-portlet--full-height m-portlet--tabs  ">
+                    <div class="m-portlet__head">
+                        <div class="m-portlet__head-tools">
+                            <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
+                                <li class="nav-item m-tabs__item">
+                                    <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_estudio_profile_tab_1" role="tab">
+                                        <i class="flaticon-share m--hide"></i>
+                                        Datos Generales
+                                    </a>
+                                </li>
+                                <li class="nav-item m-tabs__item">
+                                    <a class="nav-link m-tabs__link " data-toggle="tab" href="#m_estudio_profile_tab_2" role="tab">
+                                        <i class="flaticon-share m--hide"></i>
+                                        Estudios
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="m-portlet__head-tools">
+                        </div>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="m_estudio_profile_tab_1">
+                            <form class="m-form m-form--fit m-form--label-align-right" id="submit-actualizarDatos">
+                                <div class="m-portlet__body" style="height:inherit;">
+                                    <div class="m-alert m-alert--icon alert alert-danger m--hide" role="alert" id="m_form_1_msg">
+                                        <div class="m-alert__icon">
+                                            <i class="la la-warning"></i>
+                                        </div>
+                                        <div class="m-alert__text">
+                                            Los campos marcados son requeridos, revise y vuelva a intentar.
+                                        </div>
+                                        <div class="m-alert__close">
+                                            <button type="button" class="close" data-close="alert" aria-label="Close"></button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group m-form__group row">
+                                        <label class="col-form-label col-lg-3 col-sm-12">
+                                            Departamento
+                                            <span class="required" aria-required="true"> * </span>
+                                        </label>
+                                        <div class="col-lg-9 col-md-9 col-sm-12">
+                                            @Html.DropDownList("Departamentos", null, new { @class = "form-control m-input", @id = "Departamentos", @name = "Departamento", @tabindex = "-1" })
+                                            <span class="" dir="ltr" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-puesto_list-container"><span class="select2-selection__rendered" id="select2-puesto_list-container"><span class="select2-selection__placeholder">Selecciona el departamento</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group m-form__group row">
+                                        <label class="col-form-label col-lg-3 col-sm-12">
+                                            Clave
+                                            <span class="required" aria-required="true"> * </span>
+                                        </label>
+                                        <div class="col-lg-4 col-md-9 col-sm-12">
+                                            <input type="text" id="clave" class="form-control" espacio() name="clave" aria-required="true" aria-invalid="false" value="@ViewBag.Perfil.ClaveEstudio">
+                                        </div>
+                                    </div>
+                                    <div class="form-group m-form__group row">
+                                        <label class="col-form-label col-lg-3 col-sm-12">
+                                            Abreviatura
+                                            <span class="required" aria-required="true"> * </span>
+                                        </label>
+                                        <div class="col-lg-4 col-md-9 col-sm-12">
+                                            <input type="text" id="abreviatura" class="form-control" name="abreviatura" aria-required="true" aria-invalid="false" value="@ViewBag.Perfil.Abreviatura">
+                                        </div>
+                                    </div>
+                                    <div class="form-group m-form__group row">
+                                        <label class="col-form-label col-lg-3 col-sm-12">
+                                            Nombre
+                                            <span class="required" aria-required="true"> * </span>
+                                        </label>
+                                        <div class="col-lg-6 col-md-9 col-sm-12">
+                                            <input type="text" id="nombre" class="form-control" name="nombre" aria-required="true" aria-invalid="false" value="@ViewBag.Perfil.Nombre">
+                                        </div>
+                                    </div>
+                                    <div class="form-group m-form__group row">
+                                        <label class="col-form-label col-lg-3 col-sm-12">
+                                            Precio
+                                            <span class="required" aria-required="true"> * </span>
+                                        </label>
+                                        <div class="col-lg-4 col-md-9 col-sm-12">
+                                            <input type="text" id="precio" class="form-control" name="precio" aria-required="true" aria-invalid="false" value="@ViewBag.Perfil.PrecioBase">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group m-form__group row">
+                                        <label class="col-form-label col-lg-3 col-sm-12">
+                                            Permite
+                                            <span class="required" aria-required="true"> * </span>
+                                        </label>
+                                        <div class="col-lg-1">
+                                            <input class="form-control m-input" type="checkbox" id="Permite">
+                                        </div>
+                                    </div>
+                                    <div class="form-group m-form__group row">
+                                        <label class="col-form-label col-lg-3 col-sm-12">
+                                            Indicaciones
+                                        </label>
+                                        <div class="col-lg-6 col-md-9 col-sm-12">
+                                            <textarea class="form-control m-input" rows="3" name="remarks" id="indicaciones">@ViewBag.Perfil.Indicaciones</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit">
+                                    <div class="m-form__actions m-form__actions--solid">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <a class="btn btn-primary m-btn m-btn--air m-btn--custom" onclick="ActualizarPerfil()" class="btn btn-primary">
+                                                    Guardar
+                                                </a>
+                                                <a href="@Url.Action("Perfiles","Catalogos")" class="btn btn-secondary m-btn m-btn--air m-btn--custom">
+                                                    Cancelar
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane" id="m_estudio_profile_tab_2">
+                            <form class="m-form m-form--fit m-form--label-align-right" id="submit-actualizarDatosDomicilio">
+                                <div class="m-portlet__body" style="height:inherit;padding-left:20px;padding-right:20px;">
+                                    @{ Html.RenderAction("ListadoEstudiosPerfil", "Estudios", new { ClaveEstudio = ViewBag.Perfil.ClaveEstudio }); }
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+           $("#Departamentos").val(@(ViewBag.Perfil.Departamento.Id));
+         if ("@(ViewBag.Perfil.PermiteDescuento)" == "True") {
+             $("#Permite").click();
+         }
+    });
+
+    function ActualizarPerfil() {
+        if ($('#nombre').val() != "") {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    IdEstudio:@(ViewBag.Perfil.Id),
+                    IdDepartamento: parseInt($('#Departamentos').val()), Nombre: $('#nombre').val(), Clave: $('#clave').val(),
+                    Abreviatura: $('#abreviatura').val(), Precio: parseFloat($('#precio').val()),
+                    Indicaciones: $('#indicaciones').text(), Clave: $('#clave').val(),
+                    PermiteDescuento: $("#Permite").is(':checked') ? 1 : 0
+                },
+                url: '@Url.Content("~/")Estudios/ActualizarPerfil',
+                async: true,
+                success: function (response) {
+                    alert("Estudio actualizado con éxito");
+                    location.reload();
+                }
+            })
+        }
+    }
+</script>

@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "TipoPago";
+    Layout = null;
+}
+<table class="table table-striped m-table">
+    <thead>
+        <tr style="height: 54px;">
+            <th style="width:5%"></th>
+            <th style="width:50%"> Usuario </th>
+            <th style="width:25%"> Movimiento </th>
+            <th style="width:20%"> Fecha </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < @ViewBag.Movimientos.Count; i++)
+        {
+            <tr>
+                <td style="width:10%"></td>
+                <td style="width:10%">@(ViewBag.Movimientos[i].Usuario.NombreCompleto)</td>
+                <td style="width:10%">@(ViewBag.Movimientos[i].TipoMovimiento.Nombre)</td>
+                <td style="width:40%">@(ViewBag.Movimientos[i].Fecha)</td>
+            </tr>
+        }
+    </tbody>
+</table>

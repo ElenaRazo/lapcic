@@ -1,0 +1,126 @@
+﻿
+@using Laboratorio.Administracion
+@model Usuario
+@{
+    Layout = null;
+}
+
+<html lang="en">
+<!--<![endif]--><!-- BEGIN HEAD -->
+<head>
+    <meta charset="utf-8">
+    <title>Laboratorio</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta content="" name="author">
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="~/assets/vendors/base/vendors.bundle.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/demo/default/base/style.bundle.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="favicon.ico">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <style type="text/css">
+        .green {
+            color: white;
+            font-weight: bold;
+        }
+        .P100 {
+            background-color: rgb(115, 174, 60);
+        }
+    </style>
+</head>
+<!-- END HEAD -->
+<body class=" login">
+    <!-- BEGIN : LOGIN PAGE 5-1 -->
+    <div class="m-grid m-grid--hor m-grid--root m-page">
+        <div class="m-grid__item m-grid__item--fluid m-grid m-grid--hor m-login m-login--singin m-login--2 m-login-2--skin-2" id="m_login" style="background-image: url(../assets/demo/default/media/img/misc/bg.jpg);">
+            <div class="m-grid__item m-grid__item--fluid	m-login__wrapper" style="background-color: #ffffff8f;margin:0 0 0 auto;padding:5% 2rem 1rem 2rem;">
+                <div class="m-login__container">
+                    <div class="m-login__logo">
+                        <a href="#">
+                            <img src="~/assets/demo/default/media/img/logo/logo.png"  />
+                        </a>
+                    </div>
+                    <div class="m-login__signin">
+    <div class="m-login__head">
+        <h3 class="m-login__title">
+            CONTROL DE LABORATORIO
+        </h3>
+    </div>
+        @using (Html.BeginForm("Loguear", "Seguridad", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "m-login__form m-form", role = "form" }))
+        {
+                <input type="hidden" id="extraValue" />
+                <center>
+                    @for (int l = 0; l < ViewBag.Laboratorios.Count; l++)
+                    {
+                    <a class="btn btn-circle btn-sm  boton P100" style="color:white; margin:5px;" id="bolita-@ViewBag.Laboratorios[l].Id" onclick="javascript: AsignarValor(@ViewBag.Laboratorios[l].Id);$('#divDetalle').removeClass('text-danger');$('#divDetalle').addClass('green');$('#info').html('@ViewBag.Laboratorios[l].Nombre') ">
+                        @ViewBag.Laboratorios[l].Nombre
+                    </a>
+                    }
+                    <br /><br />
+                    <label style="font-weight:bold;color:black;display:none;" id="info">SELECCIONE UN LABORATORIO</label>
+                </center>
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group m-form__group">
+
+                    @Html.HiddenFor(model => model.Laboratorio)
+                    @Html.TextBoxFor(m => m.Nick, new { @class = "form-control m-input requiered", @placeholder = "Usuario" })
+                    @Html.ValidationMessageFor(m => m.Nick, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group m-form__group">
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control m-input m-login__form-input--last requiered", @placeholder = "Contraseña" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                </div>
+
+                <div id="divDetalle" class="text-danger m--align-center" style="padding-top:-10px;">@ViewBag.Error</div>
+                <div class="m-login__form-action">
+                    <button id="m_login_signin_submit" class="btn btn-success m-btn m-btn--pill m-btn--custom m-btn--air">
+                        Iniciar sesión
+                    </button>
+                    <a onclick="javascript:CheckIn()" class="btn btn-primary m-btn m-btn--pill m-btn--custom m-btn--air" style="color:white;">
+                        Check In
+                    </a>
+                </div>
+                }
+
+            </div>
+        </div>
+        <a onclick="window.open('www.rushtecnologias.com','_blank')" style="position:fixed;bottom:10px;right:10px;">
+            Rush Tecnologías S.A. de C.V. 2018
+        </a>
+    </div>
+</div>
+</div>
+    <script>
+    function AsignarValor(valor) {
+        $('#Laboratorio').val(valor);
+        $('.P100').css('background-color', 'rgb(115, 174, 60)');
+        $('#bolita-' + valor).css('background-color', '#0299cf');
+    }
+    function CheckIn() {
+        $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    Inicio: { Nick: $('#Nick').val(), Password: $('#Password').val(), Laboratorio : $('#Laboratorio').val() }
+                },
+            url: '@Url.Content("~/")Seguridad/Chekin',
+                async: true,
+                success: function (response) {
+                    alert('Has registrado acceso/salida');
+                },
+            error: function (response) {
+                    if (response != "") {
+
+                        alert('error');
+                    } else {
+                        alert('Has registrado acceso/salida');
+                    }
+                }
+            });
+    }
+    </script>
+    @*@Scripts.Render("~/Scripts/jquery-1.10.2.min.js")
+    @Scripts.Render("~/assets/vendors/base/vendors.bundle.js")
+    @Scripts.Render("~/assets/demo/default/base/scripts.bundle.js")*@
+</body>
+</html>

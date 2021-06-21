@@ -1,0 +1,420 @@
+﻿
+@{
+    Layout = null;
+}
+
+<div class="m-portlet" id="form_wizard_1">
+    <div class="m-portlet__head" style="background-color: #00BCD4;color: white;">
+        <div class="m-portlet__head-caption">
+            <i class=" icon-layers font-blue"></i>
+            <span class="caption-subject font-blue bold uppercase">
+                @(ViewBag.Paciente.Nombre + " " + ViewBag.Paciente.Paterno + " " + ViewBag.Paciente.Materno)
+            </span>
+        </div>
+    </div>
+    <div class="portlet-body form">
+        <div class="row">
+            @*<div class="col-xl-3 col-lg-4">
+                <div class="m-portlet m-portlet--full-height  ">
+                    <div class="m-portlet__body">
+                        <div class="m-card-profile">
+                            <div class="m-card-profile__details">
+                                <span class="m-card-profile__name">
+                                    @(ViewBag.Paciente.Nombre + " " + ViewBag.Paciente.Paterno + " " + ViewBag.Paciente.Materno)
+                                </span>
+                                <a href="" class="m-card-profile__email m-link">
+                                    @(ViewBag.Paciente.Rfc)
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+            <div class="col-xl-12 col-lg-8">
+                <div class="m-portlet m-portlet--full-height m-portlet--tabs  ">
+                    <div class="m-portlet__head">
+                        <div class="m-portlet__head-tools">
+                            <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
+                                <li class="nav-item m-tabs__item">
+                                    <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_user_profile_tab_1" role="tab">
+                                        <i class="flaticon-share m--hide"></i>
+                                        Perfil
+                                    </a>
+                                </li>
+                                <li class="nav-item m-tabs__item">
+                                    <a class="nav-link m-tabs__link " data-toggle="tab" href="#m_user_profile_tab_2" role="tab">
+                                        <i class="flaticon-share m--hide"></i>
+                                        Expediente
+                                    </a>
+                                </li>
+                                <li class="nav-item m-tabs__item">
+                                    <a class="nav-link m-tabs__link " data-toggle="tab" href="#m_user_profile_tab_3" role="tab">
+                                        <i class="flaticon-share m--hide"></i>
+                                        Estudios de Gabinete
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="m-portlet__head-tools">
+                        </div>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="m_user_profile_tab_1">
+                            <form class="m-form m-form--fit m-form--label-align-right">
+                                <div class="m-portlet__body" style="height:inherit;">
+
+                                    <div class="form-group m-form__group row">
+                                        <label for="example-text-input" class="col-2 col-form-label">
+                                            Nombre(s)
+                                        </label>
+                                        <div class="col-7">
+                                            <input class="form-control m-input" type="text" name="nombre1" value="@(ViewBag.Paciente.Nombre)" id="nombre1">
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group m-form__group row">
+                                        <label for="example-text-input" class="col-2 col-form-label">
+                                            Apellido Paterno
+                                        </label>
+                                        <div class="col-7">
+                                            <input class="form-control m-input" type="text" value="@(ViewBag.Paciente.Paterno)" id="paterno1">
+                                        </div>
+                                    </div>
+                                    <div class="form-group m-form__group row">
+                                        <label for="example-text-input" class="col-2 col-form-label">
+                                            Apellido Materno
+                                        </label>
+                                        <div class="col-7">
+                                            <input class="form-control m-input" type="text" value="@(ViewBag.Paciente.Materno)" id="materno1">
+                                        </div>
+                                    </div>
+                                    <div class="form-group m-form__group row">
+                                        <label for="example-text-input" class="col-2 col-form-label">
+                                            Genero
+                                        </label>
+                                        <div class="col-7">
+                                            <select id="Genero1" class="form-control m-input">
+                                                <option value="M">Masculino</option>
+                                                <option value="F">Femenino</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group m-form__group row">
+                                        <label for="example-text-input" class="col-2 col-form-label">
+                                            RFC
+                                        </label>
+                                        <div class="col-7">
+                                            <input class="form-control m-input" type="text" value="@(ViewBag.Paciente.Rfc)" id="rfc1" onkeypress="return validarRFC(event)" maxlength="10">
+                                        </div>
+                                    </div>
+                                    <div class="form-group m-form__group row">
+                                        <label for="example-text-input" class="col-2 col-form-label">
+                                            Email
+                                        </label>
+                                        <div class="col-7">
+                                            <input class="form-control m-input" type="text" value="@(ViewBag.Paciente.Email)" id="email1">
+                                        </div>
+                                    </div>
+                                    <div class="form-group m-form__group row">
+                                        <label for="example-text-input" class="col-2 col-form-label">
+                                            Fecha de nacimiento
+                                        </label>
+                                        <div class="col-7">
+                                            <input class="form-control m-input" type="date" id="fecha1" value=" @(ViewBag.Paciente.FechaNacimiento.ToString("yyyy-MM-dd"))" onfocusout="CalcularEdad()">
+                                        </div>
+                                    </div>
+                                    <div class="form-group m-form__group row">
+                                        <label for="example-text-input" class="col-2 col-form-label">
+                                            Edad
+                                        </label>
+                                        <div class="col-7">
+                                            @{var edad = 0; }
+                                            @{
+                                                var startDate = ViewBag.Paciente.FechaNacimiento;
+                                                if (startDate != null && startDate.Year > 1)
+                                                {
+
+                                                    var endDate = DateTime.Today;
+
+                                                    if (startDate > endDate)
+                                                    {
+                                                        edad = 0;
+                                                    }
+
+                                                    int years = endDate.Year - startDate.Year;
+                                                    int months = 0;
+                                                    int days = 0;
+
+                                                    // Check if the last year, was a full year.
+                                                    if (endDate < startDate.AddYears(years) && years != 0)
+                                                    {
+                                                        years--;
+                                                    }
+
+                                                    // Calculate the number of months.
+                                                    startDate = startDate.AddYears(years);
+
+                                                    if (startDate.Year == endDate.Year)
+                                                    {
+                                                        months = endDate.Month - startDate.Month;
+                                                    }
+                                                    else
+                                                    {
+                                                        months = (12 - startDate.Month) + endDate.Month;
+                                                    }
+
+                                                    // Check if last month was a complete month.
+                                                    if (endDate < startDate.AddMonths(months) && months != 0)
+                                                    {
+                                                        months--;
+                                                    }
+
+                                                    // Calculate the number of days.
+                                                    startDate = startDate.AddMonths(months);
+
+                                                    days = (endDate - startDate).Days;
+
+                                                    edad = years;
+                                                }
+
+                                            }
+                                            <input class="form-control m-input" type="number" id="edad1" value="@(edad)">
+                                        </div>
+                                    </div>
+                                    <div class="form-group m-form__group row">
+                                        <label for="example-text-input" class="col-2 col-form-label">
+                                            Telefono
+                                        </label>
+                                        <div class="col-7">
+                                            <input class="form-control m-input" type="text" value="@(ViewBag.Paciente.Telefono)" id="telefono1">
+                                        </div>
+                                    </div>
+                                    <div class="form-group m-form__group row">
+                                        <label for="example-text-input" class="col-2 col-form-label">
+                                            Celular
+                                        </label>
+                                        <div class="col-7">
+                                            <input class="form-control m-input" type="text" value="@(ViewBag.Paciente.Celular)" id="celular1">
+                                        </div>
+                                    </div>
+                                    <div class="form-group m-form__group row">
+                                        <label for="example-text-input" class="col-2 col-form-label">
+                                            NSS
+                                        </label>
+                                        <div class="col-7">
+                                            <input class="form-control m-input" id="nss1" value="@(ViewBag.Paciente.NumeroSeguroSocial)" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group m-form__group row">
+                                        <label for="example-text-input" class="col-2 col-form-label">
+                                            Estado
+                                        </label>
+                                        <div class="col-7">
+                                            @Html.DropDownList("Organizacion", null, new { @class = "form-control m-input", @id = "Organizacion1", @name = "Organizacion1", @tabindex = "-1" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group m-form__group row">
+                                        <label for="example-text-input" class="col-2 col-form-label">
+                                            Estado
+                                        </label>
+                                        <div class="col-7">
+                                            @Html.DropDownList("Estado", null, new { @class = "form-control m-input", @id = "Estado1", @name = "Estado", @tabindex = "-1", @onchange = "CallChangeEstado1()" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group m-form__group row">
+                                        <label for="example-text-input" class="col-2 col-form-label">
+                                            Municipio
+                                        </label>
+                                        <div class="col-7" >
+                                            <select id="Municipio1" onchange="CallChangeMunicipio1()" class="form-control m-input">
+                                                <option value="0">Seleccione una opcion</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group m-form__group row">
+                                        <label for="example-text-input" class="col-2 col-form-label">
+                                            Colonia
+                                        </label>
+                                        <div class="col-7"  >
+                                            <select id="Colonia1" class="form-control m-input">
+                                                <option value="0">Seleccione una opcion</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group m-form__group row">
+                                        <label class="col-2 col-form-label">Direccion</label>
+                                        <div class="col-7">
+                                            <input class="form-control m-input" id="direccion1" value="@(ViewBag.Paciente.Direccion)" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group m-form__group row">
+                                    <label for="example-text-input" class="col-2 col-form-label">
+                                        Profesion
+                                    </label>
+                                    <div class="col-7">
+                                        <select id="Profesion1" class="form-control m-input">
+                                            <option value="0">SELECCIONE UNA OPCIÓN</option>
+                                            <option value="1">Primaria</option>
+                                            <option value="2">Secundaria</option>
+                                            <option value="3">Preparatoria</option>
+                                            <option value="4">Licenciatura</option>
+                                            <option value="5">Postgrado</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group m-form__group row">
+                                    <label for="example-text-input" class="col-2 col-form-label">
+                                        Estado Civil
+                                    </label>
+                                    <div class="col-7">
+                                        <select id="Civil1" class="form-control m-input">
+                                            <option value="0">SELECCIONE UNA OPCIÓN</option>
+                                            <option value="1">Soltero(a)</option>
+                                            <option value="2">Casado(a)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="m-portlet__foot m-portlet__foot--fit">
+                                    <div class="m-form__actions">
+                                        <div class="row">
+                                            <div class="col-2"></div>
+                                            <div class="col-7">
+                                                <button type="reset" class="btn btn-accent m-btn m-btn--air m-btn--custom" onclick="Actualizar()">
+                                                    Guardar
+                                                </button>
+                                                &nbsp;&nbsp;
+                                                <a onclick="javascript:$('#listadoPacientes').show();$('#detallePaciente').hide();" class="btn btn-secondary m-btn m-btn--air m-btn--custom">Cancelar</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane" id="m_user_profile_tab_2">
+                           @{ Html.RenderAction("ListadoEstudios", "Pacientes", new { Id = ViewBag.Paciente.Id } ); }
+                        </div>
+                        <div class="tab-pane" id="m_user_profile_tab_3">
+                            @{ Html.RenderAction("ListadoEstudiosGabinete", "Estudios", new { Id = ViewBag.Paciente.Id }); }
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+     function CambiarPass() {
+        if ($('#pass').val() != "") {
+
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    Pass: $('#pass').val()
+                },
+                url: '@Url.Content("~/")Usuarios/ActualizarPass',
+                async: true,
+                success: function (response) {
+                    if (response.Resultado) {
+                        alert("Por seguridad, será redigirido a la pagina de inicio de sesión");
+                        window.location.replace('@Url.Content("~/")Seguridad/Index');
+                    }
+                }
+            })
+        }
+    }
+    function Actualizar(id) {
+        debugger;
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            data: {
+                Direccion: $('#direccion1').val(), NSS: $('#nss1').val(), Nick: $('#nick1').val(), Id: @(ViewBag.Paciente.Id),Nombre: $('#nombre1').val(), Paterno: $('#paterno1').val(), Materno: $('#materno1').val(), Telefono: $('#telefono1').val(), Email: $('#email1').val(), RFC: $('#rfc1').val(), Celular: $('#celular1').val(),
+                Profesion: $('#Profesion1').val(), EstadoCivil: $('#Civil1').val(), Organizacion: parseInt($('#Organizacion1').val()), Edad: $('#edad1').val(),
+                Fecha: $('#fecha1').val(), Ciudad: parseInt($('#Municipio1').val() != null ? $('#Municipio1').val() : "0"), Colonia: parseInt($('#Colonia1').val() != null ? $('#Colonia1').val() : "0"), Genero: ($('#Genero1').val() == "F" ? "F" : "M")
+            },
+
+            url: '@Url.Content("~/")Pacientes/Actualizar',
+            async: true,
+            success: function (response) {
+                alert("Datos guardados");
+                location.replace("@Url.Action("Index","Pacientes")");
+            }
+        })
+    }
+    $(document).ready(function () {
+        debugger;
+        $('#Estado1').val(@(ViewBag.Paciente.Ciudad != null ? ViewBag.Paciente.Ciudad.Estado.Id :0));
+        $('#Genero1').val('@(ViewBag.Paciente.Genero != null ? (ViewBag.Paciente.Genero == "F" ? "F" : "M") : "M")');
+        $('#Civil1').val(@(ViewBag.Paciente.Civil != null ? (int)ViewBag.Paciente.Civil :0));
+        $('#Profesion1').val(@(ViewBag.Paciente.Profesion != null ? (int)ViewBag.Paciente.Profesion: 0));
+        CallChangeEstado1();
+        CalcularEdad();
+    });
+    //function CalcularEdad() {
+    //    debugger;
+    //    var f = new Date();
+    //    var anio = f.getFullYear();
+    //    var e = new Date($('#fecha').val());
+    //    var anioe = e.getFullYear();
+    //    $('#edad').val(f - e);
+    //};
+     function CallChangeEstado1() {
+        var ddl = $('#Municipio1');
+        ddl.empty();
+        var ddl2 = $('#Colonia1');
+        ddl2.empty();
+        if (parseInt($('#Estado1').val()) != 0) {
+            $.getJSON('@Url.Content("~/")Catalogos/GetMunicipiosPorEstado', { Id: parseInt($('#Estado1').val()) }, function (result) {
+                var i = 0;
+                $(result).each(function () {
+                    i++;
+                    $(document.createElement('option'))
+                        .attr('value', this.Id)
+                        .text(this.Nombre)
+                        .appendTo(ddl);
+                    if (i == result.length) {
+                        $('#Municipio1').val(@(ViewBag.Paciente.Ciudad != null ? ViewBag.Paciente.Ciudad.Id :0))
+                        CallChangeMunicipio1();
+                    }
+                });
+            });
+
+        }
+
+    };
+    function CalcularEdad() {
+        debugger;
+        var f = new Date();
+        var anio = f.getFullYear();
+        var mes = f.getMonth();
+        var d = new Date($('#fecha1').val());
+        var fecha = (new Date(d.setMinutes(d.getMinutes() + d.getTimezoneOffset())));
+        var mesfecha = fecha.getMonth();
+        var descuento = (mesfecha <= mes ? 0 : 1)
+        var anioe = fecha.getFullYear();
+        $('#edad1').val((anio - anioe) - descuento);
+    };
+    function CallChangeMunicipio1() {
+        var ddl2 = $('#Colonia1');
+        ddl2.empty();
+        if (parseInt($('#Municipio1').val()) != 0) {
+            $.getJSON('@Url.Content("~/")Catalogos/GetColoniasPorMunicipio', { Id: parseInt($('#Municipio1').val()) }, function (result) {
+                var i = 0;
+                $(result).each(function () {
+                    i++;
+                    $(document.createElement('option'))
+                        .attr({ 'value': this.Id })
+                        .text(this.Nombre)
+                        .appendTo(ddl2);
+                     if (i == result.length)
+                    $('#Colonia1').val(@(ViewBag.Paciente.Colonia != null ? ViewBag.Paciente.Colonia.Id :0))
+                });
+
+            });
+        }
+    };
+
+</script>

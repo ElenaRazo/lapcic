@@ -1,0 +1,136 @@
+﻿
+
+@{
+    ViewBag.Title = "Usuario";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<form class="m-form m-form--fit m-form--label-align-right">
+    <div class="m-portlet__body" style="height:inherit;">
+
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Nombre(s)
+            </label>
+            <div class="col-7">
+                <input class="form-control m-input" type="text" name="nombre" id="nombre">
+
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Apellido Paterno
+            </label>
+            <div class="col-7">
+                <input class="form-control m-input" type="text" id="paterno">
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Apellido Materno
+            </label>
+            <div class="col-7">
+                <input class="form-control m-input" type="text" id="materno">
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Genero
+            </label>
+            <div class="col-7">
+                <select id="Genero" class="form-control m-input">
+                    <option value="1">Masculino</option>
+                    <option value="2">Femenino</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Email
+            </label>
+            <div class="col-7">
+                <input class="form-control m-input" type="text" id="email">
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Telefono
+            </label>
+            <div class="col-7">
+                <input class="form-control m-input" type="text" id="telefono">
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Celular
+            </label>
+            <div class="col-7">
+                <input class="form-control m-input" type="text" id="celular">
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Laboratorio
+            </label>
+            <div class="col-7">
+                @Html.DropDownList("Laboratorios", null, new { @class = "form-control m-input", @id = "Laboratorios", @name = "Laboratorios", @tabindex = "-1" })
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Puesto
+            </label>
+            <div class="col-7">
+                @Html.DropDownList("Puestos", null, new { @class = "form-control m-input", @id = "Puesto", @name = "Puesto", @tabindex = "-1" })
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label class="col-2 col-form-label">Direccion</label>
+            <div class="col-7">
+                <input class="form-control m-input" id="direccion" />
+            </div>
+        </div>
+    </div>
+    <div class="m-portlet__foot m-portlet__foot--fit">
+        <div class="m-form__actions">
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-7">
+                    <button type="reset" class="btn btn-accent m-btn m-btn--air m-btn--custom" onclick="GuardarUsuario()">
+                        Guardar usuario
+                    </button>
+                    &nbsp;&nbsp;
+                    <a href="@Url.Action("Index","Usuarios")" class="btn btn-secondary m-btn m-btn--air m-btn--custom">Cancelar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    function GuardarUsuario() {
+        if ($('#nombre').val() != "") {
+            var nam = $('#nombre').val() + " " + $('#paterno').val() + " " + $('#materno').val();
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    Direccion: $('#direccion').val(), Nick: $('#nick').val(), Nombre: $('#nombre').val(), Paterno: $('#paterno').val(), Materno: $('#materno').val(), Telefono: $('#telefono').val(), Email: $('#email').val(), Celular: $('#celular').val(),
+                    Laboratorio: parseInt($('#Laboratorios').val()),
+                    Puesto: parseInt($('#Puesto').val()), Genero: $('#Genero').val(),
+                },
+                url: '@Url.Content("~/")Usuarios/Crear',
+                async: true,
+                success: function (response) {
+                    if (response.Resultado) {
+                        alert("Usuario registrado con éxito");
+                        window.location.replace('@Url.Content("~/")Usuarios/Index');
+                    }
+                }
+            })
+        }
+    }
+</script>

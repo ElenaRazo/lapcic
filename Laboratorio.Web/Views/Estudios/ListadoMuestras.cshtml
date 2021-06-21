@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewBag.Title = "TipoPago";
+    Layout = null;
+}
+<link href="~/Scripts/jquery.dataTables.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<div class="form-group m-form__group row" style="padding:2.2rem">
+    <div class="col-lg-8 col-md-4 col-sm-12">
+        <input id="txtNombreMuestras" class="form-control m-input" placeholder="Nombre de la muestra" />
+    </div>
+    <div class="col-lg-8 col-md-4 col-sm-12">
+        <a class="btn btn-secondary m-btn m-btn--air m-btn--custom" onclick="GuardarEstudioMuestra()">Agregar muestra</a>
+    </div>
+</div>
+<div class="form-group m-form__group row" style="padding:2.2rem">
+    <div class="col-lg-12 col-md-4 col-sm-12">
+        <table class="table table-striped m-table" id="tblUsuarios">
+            <thead>
+                <tr style="height: 54px;">
+                    <th style="width:90%"> Nombre </th>
+                    <th style="width:auto;"> </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < @ViewBag.Listado.Count; i++)
+                {
+                    <tr>
+                        <td style="width:90%">@(ViewBag.Listado[i].Nombre)</td>
+                        <td style="width:auto;">
+                            @*<a onclick="Eliminar(@ViewBag.Listado[i].Id)" class="btn btn-outline btn-circle dark btn-sm black" title="Eliminar">
+                                <i class="fa fa-trash-o"></i>
+                            </a>*@
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+
+<script type="text/javascript">
+       function GuardarEstudioMuestra() {
+        if ($('#nombre').val() != "") {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    Nombre: $('#txtNombreMuestras').val(), Clave: '@ViewBag.Clave'
+                },
+                url: '@Url.Content("~/")Estudios/GuardarEstudioMuestra',
+                async: true,
+                success: function (response) {
+                        window.location.reload();
+                }
+            })
+        }
+    }
+       function Eliminar() {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    Nombre: $('#txtNombreMuestras').val(), Clave: '@ViewBag.Clave'
+                },
+                url: '@Url.Content("~/")Estudios/GuardarEstudioMuestra',
+                async: true,
+                success: function (response) {
+                        window.location.reload();
+                }
+            })
+    }
+</script>

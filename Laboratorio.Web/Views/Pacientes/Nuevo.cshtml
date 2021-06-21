@@ -1,0 +1,310 @@
+﻿
+
+@{
+    ViewBag.Title = "Solicitudes";
+    Layout = null;
+}
+
+
+
+<form class="m-form m-form--fit m-form--label-align-right">
+    <div class="m-portlet__body" style="height:inherit;">
+
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Nombre(s)
+            </label>
+            <div class="col-7">
+                <input class="form-control m-input" type="text" name="nombre"  id="nombre">
+
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Apellido Paterno
+            </label>
+            <div class="col-7">
+                <input class="form-control m-input" type="text"  id="paterno">
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Apellido Materno
+            </label>
+            <div class="col-7">
+                <input class="form-control m-input" type="text" id="materno">
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Genero
+            </label>
+            <div class="col-7">
+                <select id="Genero" class="form-control m-input">
+                    <option value="M">Masculino</option>
+                    <option value="F">Femenino</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Profesion
+            </label>
+            <div class="col-7">
+                <select id="Profesion" class="form-control m-input">
+                    <option value="0">SELECCIONE UNA OPCIÓN</option>
+                    <option value="1">Primaria</option>
+                    <option value="2">Secundaria</option>
+                    <option value="3">Preparatoria</option>
+                    <option value="4">Licenciatura</option>
+                    <option value="5">Postgrado</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Estado Civil
+            </label>
+            <div class="col-7">
+                <select id="Civil" class="form-control m-input">
+                    <option value="0">SELECCIONE UNA OPCIÓN</option>
+                    <option value="1">Soltero(a)</option>
+                    <option value="2">Casado(a)</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                RFC
+            </label>
+            <div class="col-7">
+                <input class="form-control m-input" type="text" id="rfc" onkeypress="return validarRFC(event)" maxlength="10">
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Email
+            </label>
+            <div class="col-7">
+                <input class="form-control m-input" type="text" id="email">
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Fecha de nacimiento
+            </label>
+            <div class="col-7">
+                <input class="form-control m-input" type="date" id="fecha" value="0001-01-01" onfocusout="CalcularEdad()">
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Telefono
+            </label>
+            <div class="col-7">
+                <input class="form-control m-input" type="text"  id="telefono">
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Celular
+            </label>
+            <div class="col-7">
+                <input class="form-control m-input" type="text"  id="celular">
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Edad
+            </label>
+            <div class="col-7">
+                <input class="form-control m-input" type="number" id="edad">
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                NSS
+            </label>
+            <div class="col-7">
+                <input class="form-control m-input" id="nss"  />
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Organizacion
+            </label>
+            <div class="col-7">
+                @Html.DropDownList("Organizacion", null, new { @class = "form-control m-input", @id = "Organizacion", @name = "Organizacion", @tabindex = "-1" })
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Estado
+            </label>
+            <div class="col-7">
+                @Html.DropDownList("Estado", null, new { @class = "form-control m-input", @id = "Estado", @name = "Estado", @tabindex = "-1", @onchange = "CallChangeEstado()" })
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Municipio
+            </label>
+            <div class="col-7">
+                <select id="Municipio" class="form-control m-input" onchange="CallChangeMunicipio()">
+                    <option value="0">Seleccione una opcion</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Colonia
+            </label>
+            <div class="col-7">
+                @*<input type="text" class="form-control m-input" id="search" name="search" onkeyup="filter()">*@
+                <select id="Colonia" ondblclick="unexpand(this); $(this).css('background-color','#ffeb00')" onFocus="expand(this);$(this).css('background-color','white')" onBlur="unexpand(this)" class="form-control m-input">
+                    <option value="0">Seleccione una opcion</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label class="col-2 col-form-label">Direccion</label>
+            <div class="col-7">
+                <input class="form-control m-input" id="direccion"/>
+            </div>
+        </div>
+    </div>
+    <div class="m-portlet__foot m-portlet__foot--fit">
+        <div class="m-form__actions">
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-7">
+                    <button type="reset" class="btn btn-accent m-btn m-btn--air m-btn--custom" onclick="GuardarPaciente()">
+                        Guardar paciente
+                    </button>
+                    &nbsp;&nbsp;
+                    <a onclick="javascript:$('#listadoPacientes').show();$('#nuevoPaciente').hide();$('#generalesSolicitud').show();" class="btn btn-secondary m-btn m-btn--air m-btn--custom">Cancelar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    $(document).ready(function () {
+        $('#Estado').val(11);
+        CallChangeEstado(true);
+        //SearchTextMedico();
+    });
+    function filter() {
+        var keyword = document.getElementById("search").value;
+        var select = document.getElementById("Colonia");
+        for (var i = 0; i < select.length; i++) {
+            var txt = select.options[i].text;
+            if (txt.toUpperCase().indexOf(keyword) > -1) {
+                $(select.options[i]).removeAttr('disabled').show();
+            } else {
+                $(select.options[i]).attr('disabled', 'disabled').hide();
+            }
+
+            if (i == (select.length - 1)) {
+                $('#Colonia').size = 5;
+            }
+        }
+
+    }
+    function GuardarPaciente() {
+        if ($('#nombre').val() != "") {
+            var nam = $('#nombre').val() + " " + $('#paterno').val() + " " + $('#materno').val();
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    Direccion: $('#direccion').val(), NSS: $('#nss').val(), Nick: $('#nick').val(), Nombre: $('#nombre').val(), Paterno: $('#paterno').val(), Materno: $('#materno').val(), Telefono: $('#telefono').val(), Email: $('#email').val(), RFC: $('#rfc').val(), Celular: $('#celular').val(),
+                    Profesion: $('#Profesion').val(), EstadoCivil: $('#Civil').val(), Organizacion: parseInt($('#Organizacion').val()), Edad: $('#edad').val() != "" ? $('#edad').val() : 0,
+                    Fecha: $('#fecha').val(), Ciudad: parseInt($('#Municipio').val()), Colonia: parseInt($('#Colonia').val()), Genero: ($('#Genero').val() == "F" ? "F" : "M")
+                },
+                url: '@Url.Content("~/")Pacientes/Crear',
+                async: true,
+                success: function (response) {
+                    if (response.Resultado) {
+                        alert("Paciente registrado con éxito");
+                        
+                        $('#generalesSolicitud').show();
+                        $('#nuevoPaciente').hide(); $('#listadoP').show();
+
+                        try {
+                            $('#textPaciente').val(nam);
+                            SearchPaciente();
+                        } catch(ex){
+                            $('#textPaciente1').val(nam);
+                            SearchPaciente1();
+                        }
+                       
+                    }
+                }
+            })
+        }
+    }
+    function CalcularEdad() {
+        debugger;
+        var f = new Date();
+        var anio = f.getFullYear();
+        var mes = f.getMonth();
+        var d = new Date($('#fecha').val());
+        var fecha = (new Date(d.setMinutes(d.getMinutes() + d.getTimezoneOffset())));
+        var mesfecha = fecha.getMonth();
+            var descuento = (mesfecha <= mes ? 0 : 1)
+        var anioe = fecha.getFullYear();
+        $('#edad').val((anio-anioe)-descuento);
+    };
+    function CallChangeEstado(ini) {
+        var ddl = $('#Municipio');
+
+        ddl.empty();
+        var ddl2 = $('#Colonia');
+        ddl2.empty();
+        if (parseInt($('#Estado').val()) != 0) {
+            $.getJSON('@Url.Content("~/")Catalogos/GetMunicipiosPorEstado', { Id: parseInt($('#Estado').val()) }, function (result) {
+                $(result).each(function () {
+                    $(document.createElement('option'))
+                        .attr('value', this.Id)
+                        .text(this.Nombre)
+                        .appendTo(ddl);
+                });
+                $('#Municipio').selectedIndex = "1";
+                if (ini)
+                {
+                    $('#Municipio').val(416);
+                    CallChangeMunicipio();
+                }
+                $.getJSON('@Url.Content("~/")Catalogos/GetColoniasPorEstado', { Id: parseInt($('#Estado').val()) }, function (result) {
+                    $(result).each(function () {
+                        $(document.createElement('option'))
+                            .attr({ 'value': this.Id, 'cp': this.CodigoPostal })
+                            .text(this.Nombre)
+                            .appendTo(ddl2);
+                    });
+                    $('#Colonia').selectedIndex = "1";
+                });
+            });
+
+        }
+
+    };
+    function CallChangeMunicipio() {
+        var ddl2 = $('#Colonia');
+        ddl2.empty();
+        if (parseInt($('#Municipio').val()) != 0) {
+            $.getJSON('@Url.Content("~/")Catalogos/GetColoniasPorMunicipio', { Id: parseInt($('#Municipio').val()) }, function (result) {
+                $(result).each(function () {
+                    $(document.createElement('option'))
+                        .attr({ 'value': this.Id })
+                        .text(this.Nombre)
+                        .appendTo(ddl2);
+                });
+                $('#Colonia').selectedIndex = "1";
+
+            });
+        }
+    };
+</script>

@@ -1,0 +1,90 @@
+﻿
+
+@{
+    ViewBag.Title = "Nuevo";
+    Layout = null;
+}
+
+
+<div class="m-portlet__body">
+    <div id="listadogabinete" class="col-lg-12">
+
+        <input placeholder="Ingresa texto para realizar busqueda" id="textBusqueda2" class="form-control m-input" type="text" onchange="javascript:myFunction2('textBusqueda2','tbls2')" />
+
+        <table class="table table-striped m-table" id="tbls2">
+            <tbody>
+                @for (int i = 0; i < @ViewBag.Gabinete.Count; i++)
+                {
+                <tr>
+                    <td style="width:30%"><span style="font-weight:bold">@(ViewBag.Gabinete[i].Paciente.NombreCompleto) @(ViewBag.Gabinete[i].Paciente.Edad), @(ViewBag.Gabinete[i].Paciente.Genero)</span></td>
+                    <td style="width:15%">@(ViewBag.Gabinete[i].Fecha.ToString("dd/MM/yyyy hh:mm"))</td>
+                    <td style="width:5%">RESULTADO</td>
+                    <td>
+                        @{ Html.RenderAction("DetalleEstudioMedicoGabinete", "Estudios", new { Id = ViewBag.Gabinete[i].Id }); }
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div id="detalleGabinete"></div>
+</div>
+<script type="text/javascript">
+    var tableToExcel1 = (function () {
+        var uri = 'data:application/vnd.ms-excel;base64,'
+            , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>'
+            , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+            , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+        return function (table, name) {
+            if (!table.nodeType) table = document.getElementById(table)
+            var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
+            window.location.href = uri + base64(format(template, ctx))
+        }
+    })()
+    function myFunction2(caja, tabla) {
+        debugger;
+        var input, filter, table, tr, td, td2, i, txtValue;
+        input = document.getElementById(caja);
+        filter = input.value.toUpperCase();
+        table = document.getElementById(tabla);
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            var mostrar = 0;
+            for (var a = 0; a < tr[i].getElementsByTagName("td").length; a++) {
+                txtValue = (tr[i].getElementsByTagName("td")[a].textContent || tr[i].getElementsByTagName("td")[a].innerText)
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    mostrar += 1;
+                }
+            }
+
+            if (mostrar > 0) {
+                tr[i].style.display = "";
+            }
+            else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+</script>
+<script>
+    function DetalleGabinete(Id) {
+        $('#detalleGabinete').html('');
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            data: {
+                Id: Id
+            },
+            url: '@Url.Content("~/")Estudios/',
+            async: true,
+            success: function (response) {
+                $('#detalleGabinete').html(response);
+            },
+            error: function (response) {
+                $('#detalleGabinete').html(response.responseText);
+            }
+        });
+
+        }
+</script>
+@*Interpretación: @(ViewBag.Gabinete[i].Estudios[a].Departamento.Id == 16 ? ViewBag.Gabinete[i].Estudios[a].ObservacionesTecnico : ViewBag.Gabinete[i].Estudios[a].Resultado)*@

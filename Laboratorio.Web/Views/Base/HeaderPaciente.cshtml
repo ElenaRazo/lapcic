@@ -1,0 +1,166 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <style>
+        body {
+            font-size: 16px;
+            font-family: Calibri;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <table>
+            <tr>
+                <th colspan="5" align="right" valign="top">
+                    <br /><br /><br /><br /><br />
+                    <h2>Clave: @ViewBag.Solicitud.ClaveSolicitud</h2>
+                </th>
+            </tr>
+            <tr>
+                <td rowspan="4">
+                    <img src="~/assets/demo/default/media/img/logo/logo.png" style="width:150px" />
+                    <br />
+                </td>
+                <th align="left" style="font-weight: bold; font-size: 16px; text-align:left; " width="12%">
+                    IDPaciente:
+                </th>
+                <th style="text-align:left" width="35%">
+                    <span id="FormView1_CLAVE_SOLICITUDLabel" style="font-size: 16px; ">@ViewBag.Solicitud.Paciente.Id</span>
+                </th>
+                <th align="left" style="font-weight: bold;font-size: 16px;text-align:left; " width="12%">
+                    Edad, Sexo:
+                </th>
+                <th style="text-align:left" width="35%">
+                    <span id="FormView1_EDAD_PACIENTELabel" style="font-size: 16px; ">
+                        @{var edad = ""; }
+                        @{
+                            var startDate = ViewBag.Solicitud.Paciente.FechaNacimiento;
+                            if (startDate != null && startDate.Year > 1)
+                            {
+
+                                var endDate = DateTime.Today;
+
+                                if (startDate > endDate)
+                                {
+                                    edad = "";
+                                }
+
+                                int years = endDate.Year - startDate.Year;
+                                int months = 0;
+                                int days = 0;
+
+                                // Check if the last year, was a full year.
+                                if (endDate < startDate.AddYears(years) && years != 0)
+                                {
+                                    years--;
+                                }
+
+                                // Calculate the number of months.
+                                startDate = startDate.AddYears(years);
+
+                                if (startDate.Year == endDate.Year)
+                                {
+                                    months = endDate.Month - startDate.Month;
+                                }
+                                else
+                                {
+                                    months = (12 - startDate.Month) + endDate.Month;
+                                }
+
+                                // Check if last month was a complete month.
+                                if (endDate < startDate.AddMonths(months) && months != 0)
+                                {
+                                    months--;
+                                }
+
+                                // Calculate the number of days.
+                                startDate = startDate.AddMonths(months);
+
+                                days = (endDate - startDate).Days;
+
+                                edad = years + " año(s) - " + months + " mes(es)";
+                            }
+
+                        }
+                        @edad
+                    </span>,
+                    <span id="FormView1_Label1" style="font-size: 16px; ">@(ViewBag.Solicitud.Paciente.Genero == "F" ? "Femenino" : "Masculino")</span>
+                </th>
+            </tr>
+            <tr>
+                <th align="left" style="font-weight: bold; text-align:left; font-size: 16px;" width="12%">
+                    Paciente:
+                </th>
+                <th style="text-align:left" width="35%">
+                    <span id="FormView1_PACIENTELabel" style="font-size: 16px; ">@ViewBag.Solicitud.Paciente.NombreCompleto.ToUpper()</span>
+                </th>
+                <th align="left" style="font-weight: bold;font-size: 16px;text-align:left;" width="12%">
+                    Empresa:
+                </th>
+                <th style="text-align:left" width="35%">
+                    <span id="FormView1_EMPRESALabel" style="font-size: 16px; ">@ViewBag.Solicitud.Empresa.Nombre.ToUpper()</span>
+                </th>
+            </tr>
+            <tr>
+                <th align="left" style="font-weight: bold;text-align:left;font-size: 16px;" width="12%">
+                    Dirección:
+                </th>
+                <th style="text-align:left" width="35%">
+                    <span id="FormView1_Label2" style="font-size: 16px;">@ViewBag.Solicitud.Paciente.Direccion.ToUpper()</span>
+                </th>
+                <th align="left" style="font-weight: bold;text-align:left;font-size: 16px;" width="12%">
+                    Fecha solicitud:
+                </th>
+                <th style="text-align:left" width="35%">
+                    <span id="FormView1_FECHA_SOLICITUDLabel" style="font-size: 16px;">@ViewBag.Solicitud.Fecha.ToString("dd/MM/yyyy HH:mm:ss")</span>
+                </th>
+            </tr>
+            <tr>
+                <th align="left" style="font-weight: bold; text-align:left;font-size: 16px;" width="12%">
+                    Médico:
+                </th>
+                <th style="text-align:left" width="35%">
+                    <span id="FormView1_MEDICOLabel" style="font-size: 16px">@ViewBag.Solicitud.Medico.NombreCompleto.ToUpper()</span>
+                </th>
+                <th align="left" style="font-weight: bold;text-align:left;font-size: 16px" width="12%">
+                    Fecha impresión:
+                </th>
+                <th style="text-align:left" width="35%">
+                    <span id="FormView1_Label4" style="font-size: 16px">@DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")</span>
+                </th>
+            </tr>
+            <tr>
+                <th colspan="5" width="100%" style="border-bottom:1px solid black">
+                    <center id="FormView1_LABORATORIOLabel" style="font-size: 16px">@ViewBag.Solicitud.Laboratorio.Nombre.ToUpper()</center>
+                </th>
+            </tr>
+
+            <tr>
+                <th colspan="2" style="font-size: 16px;text-align:left;width:20%">Estudio</th>
+                <th style="font-size: 16px;text-align:left; ">Resultado</th>
+                <th colspan="2" style="font-size: 16px;text-align:left;padding-left:80px;">Valor de referencia</th>
+            </tr>
+        </table>
+
+        <script>
+                var vars = {};
+                var x = window.location.search.substring(1).split('&');
+                for (var i in x) {
+                    var z = x[i].split('=', 2);
+                    vars[z[0]] = unescape(z[1]);
+                }
+                document.getElementById('page').innerHTML = vars.page;
+                document.getElementById('topage').innerHTML = vars.topage;
+        </script>
+
+    </div>
+</body>
+</html>

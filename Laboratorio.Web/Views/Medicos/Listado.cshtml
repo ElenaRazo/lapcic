@@ -1,0 +1,127 @@
+﻿
+@{
+    ViewBag.Title = "TipoPago";
+    Layout = null;
+}
+<style>
+
+    #myInput {
+        background-image: url('/css/searchicon.png');
+        background-position: 10px 10px;
+        background-repeat: no-repeat;
+        width: 100%;
+        padding: 12px 20px 12px 40px;
+        border: 1px solid #ddd;
+        margin-bottom: 12px;
+    }
+
+    #myTable {
+        border-collapse: collapse;
+        width: 100%;
+        border: 1px solid #ddd;
+    }
+
+        #myTable th, #myTable td {
+            text-align: left;
+            padding: 12px;
+        }
+
+        #myTable tr {
+            border-bottom: 1px solid #ddd;
+        }
+
+            #myTable tr.header, #myTable tr:hover {
+                background-color: #f1f1f1;
+            }
+</style>
+<link href="~/Scripts/jquery.dataTables.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<a class="btn btn-secondary m-btn m-btn--air m-btn--custom" onclick="tableToExcel('myTable', 'Exportar')" value="Exportar to Excel">Exportar a excel</a>
+<table class="table table-striped m-table" id="myTable">
+    <thead>
+        <tr style="height: 54px;">
+            <th style="width:5%"></th>
+            <th style="width:5%">#Sol</th>
+            <th style="width:35%"> Nombre </th>
+            <th style="width:15%"> Telefono </th>
+            <th style="width:15%"> Celular </th>
+            <th style="width:auto;"> </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < @ViewBag.Medicos.Count; i++)
+        {
+            <tr>
+                <td style="width:10%">@(i + 1)</td>
+                <td style="width:5%">@(ViewBag.Medicos[i].Edad)</td>
+                <td style="width:35%">@(ViewBag.Medicos[i].Nombre + " " + ViewBag.Medicos[i].Paterno + " " + ViewBag.Medicos[i].Materno)</td>
+                <td style="width:15%">@(ViewBag.Medicos[i].Telefono)</td>
+                <td style="width:15%">@(ViewBag.Medicos[i].Celular)</td>
+                <td style="width:auto;">
+                    <a onclick="EliminarMedico(@ViewBag.Medicos[i].Id)" class="btn btn-outline btn-circle dark btn-sm black" title="Eliminar">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+                    <a href="@Url.Action("Detalle","Medicos",new { Id = ViewBag.Medicos[i].Id})" class="btn btn-outline btn-circle dark btn-sm black" title="Ver">
+                        <i class="fa fa-search"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    function myFunction() {
+        debugger;
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+       function EliminarMedico(id) {
+        debugger;
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            data: {
+                Usuario: id
+            },
+
+            url: '@Url.Content("~/")Usuarios/EliminarUsuario',
+            async: true,
+            success: function (response) {
+                alert("Datos guardados");
+                window.location.reload();
+            }
+        })
+    }
+</script>
+<script type="text/javascript">
+    var tableToExcel = (function () {
+        var uri = 'data:application/vnd.ms-excel;base64,'
+            , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>'
+            , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+            , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+        return function (table, name) {
+            if (!table.nodeType) table = document.getElementById(table)
+            var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
+            window.location.href = uri + base64(format(template, ctx))
+        }
+    })()
+    //$(document).ready(function () {
+    //    $('#tblUsuarios').DataTable();
+    //    $('#tblUsuarios').removeClass('dataTable');
+    //});
+</script>

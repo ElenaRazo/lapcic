@@ -1,0 +1,122 @@
+﻿
+@{
+    ViewBag.Title = "Detalle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<form class="m-form m-form--fit m-form--label-align-right">
+    <div class="m-portlet__body" style="height:inherit;">
+
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Nombre(s)
+            </label>
+            <div class="col-7">
+                <input class="form-control m-input" type="text" name="nombre" id="nombremedico" value="@ViewBag.Medico.Nombre">
+
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Apellido Paterno
+            </label>
+            <div class="col-7">
+                <input class="form-control m-input" type="text" id="paternomedico" value="@ViewBag.Medico.Paterno">
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Apellido Materno
+            </label>
+            <div class="col-7">
+                <input class="form-control m-input" type="text" id="maternomedico" value="@ViewBag.Medico.Materno">
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Genero
+            </label>
+            <div class="col-7">
+                <select id="Generomedico" class="form-control m-input">
+                    <option value="H">Masculino</option>
+                    <option value="M">Femenino</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Email
+            </label>
+            <div class="col-7">
+                <input class="form-control m-input" type="text" id="emailmedico" value="@ViewBag.Medico.Email">
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Telefono
+            </label>
+            <div class="col-7">
+                <input class="form-control m-input" type="text" id="telefonomedico" value="@ViewBag.Medico.Telefono">
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-2 col-form-label">
+                Celular
+            </label>
+            <div class="col-7">
+                <input class="form-control m-input" type="text" id="celularmedico" value="@ViewBag.Medico.Celular">
+            </div>
+        </div>
+    </div>
+    <div class="form-group m-form__group row">
+        <label class="col-2 col-form-label">Direccion</label>
+        <div class="col-7">
+            <input class="form-control m-input" id="direccionmedico" value="@ViewBag.Medico.Direccion" />
+        </div>
+    </div>
+    <div class="m-portlet__foot m-portlet__foot--fit">
+        <div class="m-form__actions">
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-7">
+                    <button type="reset" class="btn btn-accent m-btn m-btn--air m-btn--custom" onclick="GuardarMedico()">
+                        Guardar Medico
+                    </button>
+                    &nbsp;&nbsp;
+                    <a href="@Url.Action("Index","Medicos")" class="btn btn-secondary m-btn m-btn--air m-btn--custom">Cancelar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    $(document).ready(function () {
+        debugger;
+        $('#Generomedico').val('@(ViewBag.Medico.Genero != null ? (ViewBag.Medico.Genero == "F" ? "M" : "H") : "H")');
+    });
+    function GuardarMedico() {
+        if ($('#nombremedico').val() != "") {
+            var nam = $('#nombremedico').val() + " " + $('#paternomedico').val() + " " + $('#maternomedico').val();
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    Id: @ViewBag.Medico.Id,
+                    Direccion: $('#direccionmedico').val(), Nombre: $('#nombremedico').val(), Paterno: $('#paternomedico').val(),
+                    Materno: $('#maternomedico').val(), Telefono: $('#telefonomedico').val(), Email: $('#emailmedico').val(), Celular: $('#celularmedico').val(),
+                    Genero: ($('#Genero1').val() == "M" ? 2 : 1)
+                },
+                url: '@Url.Content("~/")Medicos/Actualizar',
+                async: true,
+                success: function (response) {
+                    if (response.Resultado) {
+                        alert("Medico actualizado con éxito");
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+    }
+</script>

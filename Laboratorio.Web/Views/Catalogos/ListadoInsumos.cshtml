@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "Insumos";
+    Layout = null;
+}
+<table class="table table-striped m-table" id="tblInsumos">
+    <thead>
+        <tr style="height: 54px;">
+            <th style="width:10%"></th>
+            <th style="width:20%"> Fecha </th>
+            <th style="width:20%"> Deposito </th>
+            <th style="width:10%"> Cantidad </th>
+            <th style="width:10%"> Unidad </th>
+            <th style="width:20%"> Total de piezas </th>
+            <th style="width:5%"> Costo </th>
+            <th style="width:5%"> Piezas utilizadas en el periodo </th>
+            <th style="width:auto;"> </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < @ViewBag.Insumos.Count; i++)
+        {
+            <tr>
+                <td style="width:10%">@(i + 1)</td>
+                <td style="width:20%">@(ViewBag.Insumos[i].FechaCompra.ToString("dd/MM/yyyy"))</td>
+                <td style="width:20%">@(ViewBag.Insumos[i].TipoDepoosito.Nombre)</td>
+                <td style="width:10%">@(ViewBag.Insumos[i].Cantidad)</td>
+                <td style="width:10%">@(ViewBag.Insumos[i].Unidad)</td>
+                <td style="width:20%">@(ViewBag.Insumos[i].TotalPiezas)</td>
+                <td style="width:10%">@(ViewBag.Insumos[i].Costo)</td>
+                <td style="width:10%">@(ViewBag.Insumos[i].Utilizados)</td>
+                <td style="width:auto;">
+                    <a onclick="Eliminar(@ViewBag.Insumos[i].Id)" class="btn btn-outline btn-circle dark btn-sm black" title="Eliminar">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

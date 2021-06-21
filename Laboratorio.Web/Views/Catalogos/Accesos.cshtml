@@ -1,0 +1,107 @@
+﻿
+@{
+    ViewBag.Title = "TipoPago";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+
+    #myInput {
+        background-image: url('/css/searchicon.png');
+        background-position: 10px 10px;
+        background-repeat: no-repeat;
+        width: 100%;
+        padding: 12px 20px 12px 40px;
+        border: 1px solid #ddd;
+        margin-bottom: 12px;
+    }
+
+    #myTable {
+        border-collapse: collapse;
+        width: 100%;
+        border: 1px solid #ddd;
+    }
+
+        #myTable th, #myTable td {
+            text-align: left;
+            padding: 12px;
+        }
+
+        #myTable tr {
+            border-bottom: 1px solid #ddd;
+        }
+
+            #myTable tr.header, #myTable tr:hover {
+                background-color: #f1f1f1;
+            }
+</style>
+<a class="btn btn-secondary m-btn m-btn--air m-btn--custom" onclick="tableToExcel('myTable', 'Exportar')" value="Exportar to Excel">Exportar a excel</a>
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Busqueda de accesos" title="Ingresa un nombre" />
+<table class="table table-striped m-table" id="myTable">
+    <thead>
+        <tr style="height: 54px;">
+            <th style="width:5%">CheckIn</th>
+            <th style="width:30%"> Usuario </th>
+            <th style="width:30%"> Laboratorio </th>
+            <th style="width:15%"> Maquina </th>
+            <th style="width:10%"> Ip </th>
+            <th style="width:10%"> Fecha </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < @ViewBag.Accesos.Count; i++)
+        {
+            <tr>
+                <td style="width:5%">@(ViewBag.Accesos[i].Id)</td>
+                <td style="width:30%">@(ViewBag.Accesos[i].NombreUsuario)</td>
+                <td style="width:30%">@(ViewBag.Accesos[i].NombreLaboratorio)</td>
+                <td style="width:15%">@(ViewBag.Accesos[i].Maquina)</td>
+                <td style="width:10%">@(ViewBag.Accesos[i].Ip)</td>
+                <td style="width:10%">@(ViewBag.Accesos[i].Fecha.ToString("dd/MM/yyyy HH:mm:ss"))</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<script type="text/javascript">
+    function myFunction() {
+        debugger;
+        var input, filter, table, tr, td, td2, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            td2 = tr[i].getElementsByTagName("td")[2];
+            td3 = tr[i].getElementsByTagName("td")[5];
+            if (td) {
+                txtValue = (td.textContent || td.innerText)
+                txtValue2 = (td2.textContent || td2.innerText);
+                txtValue3 = (td3.textContent || td3.innerText);
+                if ((txtValue.toUpperCase().indexOf(filter) > -1) || (txtValue2.toUpperCase().indexOf(filter) > -1) || (txtValue3.toUpperCase().indexOf(filter) > -1)) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+<script type="text/javascript">
+    var tableToExcel = (function () {
+        var uri = 'data:application/vnd.ms-excel;base64,'
+            , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>'
+            , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+            , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+        return function (table, name) {
+            if (!table.nodeType) table = document.getElementById(table)
+            var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
+            window.location.href = uri + base64(format(template, ctx))
+        }
+    })()
+    //$(document).ready(function () {
+    //    $('#tblUsuarios').DataTable();
+    //    $('#tblUsuarios').removeClass('dataTable');
+    //});
+</script>

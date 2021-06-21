@@ -1,0 +1,54 @@
+﻿
+@{
+    ViewBag.Title = "Estudios";
+    Layout = null;
+}
+<div class="m-portlet__body" id="listado">
+    <table class="table table-striped m-table" id="tblUsuarios">
+        <thead>
+            <tr style="height: 30px; background-color:darkgray; color:white;">
+                <th style="width:40%"> Nombre </th>
+                <th style="width:30%"> Precio </th>
+                <th style="width:auto;">Resultado </th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < @ViewBag.EstudiosSolicitud.Count; i++)
+            {
+                <tr>
+                    <td style="width:40%">@ViewBag.EstudiosSolicitud[i].Nombre</td>
+                    <td style="width:30%">@ViewBag.EstudiosSolicitud[i].PrecioBase</td>
+                    <td style="width:auto;">
+                        <a onclick="javascript:VerCampos(@ViewBag.EstudiosSolicitud[i].ClaveEstudio,@ViewBag.EstudiosSolicitud[i].Edad,'@ViewBag.EstudiosSolicitud[i].Genero',@(ViewBag.EstudiosSolicitud[i].Perfil.ToString() == "True" ? 1 : 0), '@ViewBag.EstudiosSolicitud[i].Nombre')" class="btn btn-outline btn-circle dark btn-sm black" title="Detalle">
+                            <i class="fa fa-search"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function VerCampos(clave, edad, genero, p, nombre) {
+        debugger;
+        $('#Resultado').html('');
+        $('#Resultado').show();
+        $('#listadoEstudiosSolicitud').hide();
+         $.ajax({
+            type: "POST",
+            dataType: 'json',
+            data: {
+                Estudio: clave, Edad: edad, Genero: genero, Perfil: p == 1 ? true:false, Clave : '@ViewBag.Solicitud', Nombre: nombre
+            },
+            url: '@Url.Content("~/")Estudios/ResultadosSolicitud',
+            async: true,
+            success: function (response) {
+                $('#Resultado').html(response);
+            },
+            error: function (response) {
+                $('#Resultado').html(response.responseText);
+            }
+        });
+    }
+</script>

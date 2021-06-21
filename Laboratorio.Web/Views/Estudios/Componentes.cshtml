@@ -1,0 +1,96 @@
+﻿
+
+@{
+    ViewBag.Title = "Componentes";
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="m-portlet__body" id="Componentes">
+        <a onclick="javascript: $('#nuevoComponente').show(); $('#Componentes').hide(); $('#detalleComponente').hide();" class="btn btn-secondary m-btn m-btn--air m-btn--custom">
+            Nuevo Componente
+        </a>
+
+        <table class="table table-striped m-table" id="tblComponentes">
+            <thead>
+                <tr style="height: 30px; background-color:#ccc; color:white;">
+                    <th style="width:10%"> Abreviatura </th>
+                    <th style="width:20%"> Nombre </th>
+                    <th style="width:5%"> Unidad </th>
+                    <th style="width:5%"> Orden  </th>
+                    <th style="width:10%"> Texto normal general  </th>
+                    <th style="width:20%"> Indicación </th>
+                    <th style="width:10%"> Captura </th>
+                    <th style="width:auto;"> </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < @ViewBag.Componentes.Count; i++)
+                {
+                <tr>
+                    <td style="width:10%">@(ViewBag.Componentes[i].Abreviatura)</td>
+                    <td style="width:20%">@(ViewBag.Componentes[i].Nombre)</td>
+                    <td style="width:5%">@(ViewBag.Componentes[i].Unidad)</td>
+                    <td style="width:5%">@(ViewBag.Componentes[i].Orden)</td>
+                    <td style="width:10%">@Html.Raw(ViewBag.Componentes[i].TextoNormalGeneral)</td>
+                    <td style="width:20%">@(ViewBag.Componentes[i].Indicaciones)</td>
+                    <td style="width:10%">@(ViewBag.Componentes[i].TipoCaptura.Descripcion)</td>
+                    <td style="width:auto;">
+                        <a onclick="EiminarComponente(@ViewBag.Componentes[i].Id)" class="btn btn-outline btn-circle dark btn-sm black" title="Eliminar">
+                            <i class="fa fa-trash-o"></i>
+                        </a>
+                        <a onclick="Ver(@ViewBag.Componentes[i].Id)" class="btn btn-outline btn-circle dark btn-sm black" title="Eliminar">
+                            <i class="fa fa-search"></i>
+                        </a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div id="detalleComponente" style="display:none;">
+
+    </div>
+    <div id="nuevoComponente" style="display:none;">
+        @{ Html.RenderAction("NuevoComponente", "Estudios", new { Clave = ViewBag.ClaveEstudio }); }
+    </div>
+    <script>
+      function Ver(id) {
+        $.ajax({
+
+            type: "POST",
+            dataType: 'json',
+            data: { Id: id},
+            url: '@Url.Content("~/")Estudios/DetalleComponente',
+            async: true,
+            success: function (response) {
+                $('#Componentes').hide();
+                $('#detalleComponente').show();
+                $('#detalleComponente').html(response);
+
+            },
+            error: function (obj, error, objError) {
+                $('#Componentes').hide();
+                $('#detalleComponente').show();
+                $('#detalleComponente').html(obj.responseText);
+            }
+        });
+
+    }
+        function EiminarComponente(id) {
+        if ($('#descripcion').val() != "") {
+            $.ajax({
+
+                type: "POST",
+                dataType: 'json',
+                data: { Id: id },
+                url: '@Url.Content("~/")Estudios/EiminarComponente',
+                async: true,
+                success: function (response) {
+                    alert("Datos guardados");
+                    location.reload();
+                }
+            })
+        }
+    }
+    </script>

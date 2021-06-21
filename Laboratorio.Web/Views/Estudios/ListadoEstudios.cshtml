@@ -1,0 +1,117 @@
+﻿
+@{
+    ViewBag.Title = "TipoPago";
+    Layout = null;
+}
+<style>
+
+    #myInput {
+        background-image: url('/css/searchicon.png');
+        background-position: 10px 10px;
+        background-repeat: no-repeat;
+        width: 100%;
+        padding: 12px 20px 12px 40px;
+        border: 1px solid #ddd;
+        margin-bottom: 12px;
+    }
+
+    #myTable {
+        border-collapse: collapse;
+        width: 100%;
+        border: 1px solid #ddd;
+    }
+
+        #myTable th, #myTable td {
+            text-align: left;
+            padding: 12px;
+        }
+
+        #myTable tr {
+            border-bottom: 1px solid #ddd;
+        }
+
+            #myTable tr.header, #myTable tr:hover {
+                background-color: #f1f1f1;
+            }
+</style>
+<table class="table table-striped m-table" id="myTable">
+    <thead>
+        <tr style="height: 54px;">
+            <th style="width:5%"></th>
+            <th style="width:10%"> Clave </th>
+            <th style="width:10%"> Abreviatura </th>
+            <th style="width:40%"> Nombre </th>
+            <th style="width:10%"> Precio </th>
+            <th style="width:15%"> Área </th>
+            <th style="width:auto;"> </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < @ViewBag.Estudios.Count; i++)
+        {
+            <tr>
+                <td style="width:10%">@(ViewBag.Estudios[i].Id)</td>
+                <td style="width:10%">@(ViewBag.Estudios[i].ClaveEstudio)</td>
+                <td style="width:10%">@(ViewBag.Estudios[i].Abreviatura)</td>
+                <td style="width:40%">@(ViewBag.Estudios[i].Nombre)</td>
+                <td style="width:10%">@(ViewBag.Estudios[i].PrecioBase)</td>
+                <td style="width:15%">@(ViewBag.Estudios[i].Departamento.Nombre)</td>
+                <td style="width:auto;">
+                    <a onclick="EliminarEstudio(@ViewBag.Estudios[i].Id)" class="btn btn-outline btn-circle dark btn-sm black" title="Eliminar">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+                    <a href="@Url.Action("Detalle","Estudios", new { Id = @ViewBag.Estudios[i].Id })" class="btn btn-outline btn-circle dark btn-sm black" title="Detalle">
+                        <i class="fa fa-search"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<script type="text/javascript">
+    function myFunction() {
+        debugger;
+        var input, filter, table, tr, td, td2, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            td2 = tr[i].getElementsByTagName("td")[3];
+            if (td) {
+                txtValue = (td.textContent || td.innerText)
+                txtValue2 = (td2.textContent || td2.innerText);
+                if ((txtValue.toUpperCase().indexOf(filter) > -1) || (txtValue2.toUpperCase().indexOf(filter) > -1)) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+      function EliminarEstudio(id) {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    Id: id
+                },
+                url: '@Url.Content("~/")Estudios/Eliminar',
+            async: true,
+            success: function (response) {
+                if (response.respuesta)
+                alert('Estudio eliminado con éxito');
+                window.location.reload();
+            },
+            error: function (response) {
+                if (response.respuesta)
+                alert('Estudio eliminado con éxito');
+                window.location.reload();
+            }
+        });
+
+    }
+</script>

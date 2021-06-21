@@ -1,0 +1,278 @@
+﻿@{
+    ViewBag.Title = "Resultado";
+    Layout = null;
+}
+<html>
+
+<head>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
+
+</head>
+<body>
+    <style>
+        @@media print {
+            table {
+                margin-bottom: 300px;
+            }
+
+            @@page {
+                size: letter; /* DIN A4 standard, Europe */
+                margin: 0px;
+            }
+
+            @@page:last {
+                @@bottom-center {
+                    content: counter(page)
+                }
+            }
+
+            html, body {
+                font-size: 11px;
+                background: #FFF;
+                overflow: visible;
+            }
+        }
+
+        body {
+            font-size: 14px;
+            font-family: Calibri;
+        }
+
+        .nota {
+            position: fixed;
+            bottom: 0px;
+            padding: 10px;
+        }
+
+
+        .footer {
+            position: fixed;
+            bottom: 60px;
+            width: 100%;
+            height: 3rem;
+            text-align: center;
+        }
+
+        #page-container {
+            position: relative;
+            min-height: calc(100% - 3.5rem);
+        }
+
+        #content-wrap {
+            padding-bottom: 3rem; /* Footer height */
+        }
+    </style>
+    <div id="page-container">
+        <div id="content-wrap">
+            <table>
+                <tbody>
+                    @{
+                        var estudio = "";
+                        var i = 0;
+                        var estudios = ViewBag.Resultado.Count;
+                        foreach (var r in ViewBag.Resultado)
+                        {
+                            try
+                            {
+                                if (ViewBag.Resultado[i + 1].NombreEstudio.ToString() != r.NombreEstudio)
+                                {
+                                    estudio = ViewBag.Resultado[i + 1].NombreEstudio.ToString();
+                                }
+                                else
+                                {
+                                    estudio = "";
+                                }
+                            }
+                            catch (Exception err) { estudio = r.NombreEstudio; }
+                            i++;
+                            if (estudio != "")
+                            {
+                                if (r.Titulo == "1")
+                                {
+                                <tr>
+                                    <td width="250" valign="top" style="font-size: 15px; font-weight:@(r.Titulo == "1" ? "bold" : "normal")">@r.NombreEstudio</td>
+                                    <td width="300" valign="top" style="font-weight:@(r.FueraRango ? "bold" : "normal");font-size: 15px;">
+                                        @(Html.Raw(r.Resultado))  @(r.Unidad)<br />
+                                        @(Html.Raw(r.Observaciones))
+                                    </td>
+                                    <td colspan="2" valign="top" style="font-weight:normal;font-size: 15px;padding-left:20px;">
+
+                                        @if (r.TipoCaptura.ToString() == "4" && (r.Observaciones) != "")
+                                        {
+                                            @(Html.Raw(r.Observaciones))
+                                        }
+                                        else
+                                    {
+                                        if (r.Normal != "")
+                                        {
+                                                @(r.Normal)
+                                            }
+                                        else
+                                        {
+                                                @((r.Titulo == "1" && r.Titulo == "2" && r.Titulo == "3" && r.Titulo == "4") ? r.MIN + " - " + r.MAX : "")
+                                            }
+                                    }
+
+                                    </td>
+                                </tr>
+                                @*<tr>
+                                        <td valign="top" style="border-bottom:1px solid #ccc; font-weight:@(r.Negrita ? "bold" : "normal");font-size: 13px;width:20%;padding-top:10px;margin-top:50px;">@r.NombreEstudio</td>
+                                        <td valign="top" style="border-bottom:1px solid #ccc;font-weight:@(r.FueraRango ? "bold" : "normal");font-size: 13px;width:30%;padding-top:10px;margin-top:50px;"> @(Html.Raw(r.Resultado))  @(r.Unidad)</td>
+                                        <td valign="top" style="border-bottom:1px solid #ccc;font-weight:normal;font-size: 13px;width:30%;padding-top:10px;margin-top:50px;">
+                                            @if (r.TipoCaptura.ToString() == "4" && (r.Observaciones) != "")
+                                            {
+                                               @(Html.Raw(r.Observaciones))
+                                            }
+                                            else
+                                            {
+                                                if (r.Normal != "")
+                                                {
+                                                    @(r.Normal)
+                                                }
+                                                else
+                                                {
+                                                    @((r.Titulo == "1" && r.Titulo == "2" && r.Titulo == "3" && r.Titulo == "4") ? r.MIN + " - " + r.MAX : "")
+                                                }
+                                            }
+
+                                        </td>
+                                        <td valign="top" style="border-bottom:1px solid #ccc;font-weight:normal;font-size: 14px;width:25%">@(Html.Raw(r.Observaciones))</td>
+                                    </tr>*@
+                                }
+                                else
+                                {
+
+                                    if (r.TipoCaptura.ToString() == "1" && r.Observaciones != "")
+                                    {
+                                        <tr>
+                                            @if (r.EstudioComponente.ToString() == "-1")
+                                            {
+                                                <td valign="top" colspan="4" style="font-size: 15px;font-weight:@(r.Negrita ? "bold" : "normal"); background-color:@(r.Titulo == "1" ? "#F0F0F0" : "white")margin-top:15px;">@r.NombreEstudio</td>
+                                            }
+                                            else
+                                            {
+                                                <td width="250" valign="top" style="font-size: 15px; font-weight:@(r.Titulo == "1" ? "bold" : "normal");border-bottom:1px solid #ccc;background-color:@(r.Titulo == "1" ? "#F0F0F0" : "white")">@r.NombreEstudio</td>
+                                                <td valign="top" width="300" style="font-weight:@(r.FueraRango ? "bold" : "normal");font-size: 15px;border-bottom:1px solid #ccc;background-color:@(r.Titulo == "1" ? "#F0F0F0" : "white")">
+                                                    @(Html.Raw(r.Resultado))  @(r.Unidad)<br />
+                                                    @(Html.Raw(r.Observaciones))
+                                                </td>
+                                                <td colspan="2" valign="top" style="font-weight:normal;font-size: 15px;padding-left:20px;background-color:@(r.Titulo == "1" ? "#F0F0F0" : "white")">
+                                                    @if (r.TipoCaptura.ToString() == "4" && r.Observaciones != "")
+                                                    {
+                                                        @(Html.Raw(r.Observaciones))
+                                                    }
+                                                    else
+                                                    {
+                                                        if (r.Normal != "")
+                                                        {
+                                                            @(Html.Raw(r.Normal))
+                                                        }
+                                                        else
+                                                        {
+                                                            @((r.Titulo == "1" && r.Titulo == "2" && r.Titulo == "3" && r.Titulo == "4") ? r.MIN + " - " + r.MAX : "")
+                                                        }
+                                                    }
+
+                                                </td>
+                                            }
+                                        </tr>
+                                        @*<tr>
+                                            <td width="250" valign="top" style="background-color:@(r.Titulo == "1" ? "#F0F0F0" : "white")"></td>
+                                            <td colspan="3" style="background-color:@(r.Titulo == "1" ? "#F0F0F0" : "white")">
+                                                @(Html.Raw(r.Observaciones))
+                                            </td>
+                                        </tr>*@
+
+                                    }
+                                    else
+                                    {
+                                    <tr>
+                                        @if (r.EstudioComponente.ToString() == "-1" || r.Titulo.ToString() == "NEstud")
+                                        {
+                                        <td valign="top" colspan="4" style="font-size: 15px;font-weight:@(r.Negrita ? "bold" : "normal"); background-color:#F0F0F0;border-bottom:1px solid #ccc;margin-top:15px;">@r.NombreEstudio</td>
+                                        }
+                                        else
+                                        {
+
+                                            if (r.TipoCaptura.ToString() == "3" && r.Normal == "")
+                                            {
+                                                <td width="250" valign="top" style="font-size: 15px; font-weight:@(r.Titulo == "1" ? "bold" : "normal");background-color:@(r.Titulo == "1" ? "#F0F0F0" : "white"); border-bottom:1px solid #ccc;">
+                                                    @r.NombreEstudio
+
+                                                </td>
+                                                <td valign="top" colspan="3" width="300" style="font-weight:@(r.FueraRango ? "bold" : "normal");font-size: 15px;background-color:@(r.Titulo == "1" ? "#F0F0F0" : "white"); border-bottom:1px solid #ccc;">
+                                                    @(Html.Raw(r.Resultado))  @(r.Unidad)
+                                                    @if (r.Normal == "" && r.Observaciones == "" && (r.Resultado.Length < 150 && ViewBag.Resultado.Count < 3))
+                                                    {
+                                                        
+                                                    }
+                                                    <br />
+                                                    @(Html.Raw(r.Observaciones))
+
+
+                                                </td>
+
+                                            }
+                                            else
+                                            {
+                                                <td width="250" valign="top" style="font-size: 15px; background-color:@(r.Titulo == "1" ? "#F0F0F0" : "white"); font-weight:@(r.Titulo == "1" ? "bold" : "normal");border-bottom:1px solid #ccc;">@(r.NombreEstudio) </td>
+                                                <td valign="top" width="300" style="font-weight:@(r.FueraRango ? "bold" : "normal");background-color:@(r.Titulo == "1" ? "#F0F0F0" : "white");font-size: 15px;border-bottom:1px solid #ccc;">
+                                                    @(Html.Raw(r.Resultado))  @(r.Unidad)
+                                                    &nbsp;
+                                                    <br />
+                                                    @(Html.Raw(r.Observaciones))
+                                                </td>
+                                                <td colspan="2" valign="top" style="font-weight:normal;font-size: 15px;padding-left:20px;background-color:@(r.Titulo == "1" ? "#F0F0F0" : "white");">
+                                                    @if (r.TipoCaptura.ToString() == "4" && (r.Observaciones) != "")
+                                                    {
+                                                        @(Html.Raw(r.Observaciones))
+                                                    }
+                                                    else
+                                                    {
+                                                        if (r.Normal == "." || r.Normal == "")
+                                                        {
+                                                           
+                                                        }
+                                                        else if (r.Normal != "")
+                                                        {
+                                                            @(Html.Raw(r.Normal))
+                                                        }
+                                                        else
+                                                        {
+                                                            @((r.Titulo == "1" && r.Titulo == "2" && r.Titulo == "3" && r.Titulo == "4") ? r.MIN + " - " + r.MAX : "")
+                                                        }
+                                                    }
+
+                                                </td>
+                                            }
+                                        }
+                                    </tr>
+                                    }
+                                }
+                            }
+                        }
+
+                        }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script language="javascript" type="text/javascript">
+        //$(document).ready(function () {
+        //    var pdf = new jsPDF('p', 'pt', 'a4');
+        //    pdf.addHTML(document.body, function () {
+        //        pdf.save('web.pdf');
+        //    });
+        //});
+        if (window.print())
+            window.close();
+    </script>
+
+</body>
+
+</html>
+
+
+

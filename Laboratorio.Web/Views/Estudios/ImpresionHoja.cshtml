@@ -1,0 +1,370 @@
+﻿
+@{
+    ViewBag.Title = "Resultado";
+    Layout = null;
+}
+<style type="text/css">
+   @@page
+    {
+        size: auto;   /* auto is the initial value */
+
+        /* this affects the margin in the printer settings */
+        margin: 0.5cm 0.5cm 0.5cm 0.5cm;
+    }
+    #footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        font-size: 6pt;
+        color: black;
+        /* For testing */
+    }
+    #background {
+        position: absolute;
+        z-index: 0;
+        background: white;
+        display: block;
+        min-height: 50%;
+        min-width: 50%;
+        color: yellow;
+    }
+
+    #content {
+        position: absolute;
+        z-index: 1;
+    }
+
+    #bg-text {
+        color: lightgrey;
+        font-size: 12px;
+        position: fixed;
+        bottom: 0px;
+        right: 50px;
+    }
+
+    body {
+        font-size:13px;
+    }
+
+    .nota {
+        position: fixed;
+        bottom: 0px;
+        padding: 10px;
+    }
+
+    .ClaveHT {
+        text-align: left;
+        color: #DDD;
+        font-size: 2em;
+    }
+
+    .HRCVE1 {
+        position: relative;
+        top: 930px;
+        text-align: right;
+        z-index: -1;
+    }
+
+    .HRCVE2 {
+        position: absolute;
+        top: 2200px;
+        text-align: right;
+        z-index: -1;
+    }
+
+    .HRCVE3 {
+        position: absolute;
+        top: 3470px;
+        text-align: right;
+        z-index: -1;
+    }
+
+    .HRCVE4 {
+        position: absolute;
+        top: 4060px;
+        text-align: right;
+        z-index: -1;
+    }
+</style>
+<table>
+    <thead>
+        <tr>
+            <td>
+                <table border="0">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div id="pnlEncabezado" style="width:808px;">
+
+                                    <table cellspacing="0" border="0" id="FormView1" style="border-collapse:collapse;">
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <table border="0" cellpadding="0" cellspacing="0">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    <span id="FormView1_Label5" style='font-weight: bold;font-size:13px; float:left; color:@(ViewBag.Solicitud.TipoUrgencia.ToString() == "URGENCIA" ? "red" : "black")'>Entrega: @ViewBag.Solicitud.TipoUrgencia</span>
+                                                                    <span style="display:@(ViewBag.Solicitud.ObservacionUrgencia != "" ? "block" : "none")">
+                                                                        @(ViewBag.Solicitud.ObservacionUrgencia)
+                                                                    </span>
+                                                                </td>
+                                                                <td align="right" valign="top">
+                                                                    <strong>Clave: </strong>
+                                                                    <span id="FormView1_Label5">@ViewBag.Solicitud.ClaveSolicitud</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="2">
+                                                                    <table style="border-bottom: black 1px solid" width="100%">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td align="right" style="font-weight: bold; width: 69px;font-size:13px; ">
+                                                                                    Clave:
+                                                                                </td>
+                                                                                <td>
+                                                                                    <span id="FormView1_CLAVE_SOLICITUDLabel" style="font-size:13px; ">@ViewBag.Solicitud.ClaveSolicitud</span>
+                                                                                </td>
+                                                                                <td align="right" style="font-weight: bold;font-size:13px; ">
+                                                                                    Edad, Sexo:
+                                                                                </td>
+                                                                                <td style="width: 245px">
+                                                                                    <span id="FormView1_EDAD_PACIENTELabel" style="font-size:13px; ">
+                                                                                        @*@(ViewBag.Solicitud.Paciente.Edad == 0 ? (@DateTime.Now.Month - ViewBag.Solicitud.Paciente.FechaNacimiento.Month) + 12 * (@DateTime.Now.Year - ViewBag.Solicitud.Paciente.FechaNacimiento.Year) + " meses" : ViewBag.Solicitud.Paciente.Edad)*@
+                                                                                        @{var edad = ""; }
+                                                                                        @{
+                                                                                            var startDate = ViewBag.Solicitud.Paciente.FechaNacimiento;
+                                                                                            if (startDate != null && startDate.Year > 1)
+                                                                                            {
+
+                                                                                                var endDate = DateTime.Today;
+
+                                                                                                if (startDate > endDate)
+                                                                                                {
+                                                                                                    edad = "";
+                                                                                                }
+
+                                                                                                int years = endDate.Year - startDate.Year;
+                                                                                                int months = 0;
+                                                                                                int days = 0;
+
+                                                                                                // Check if the last year, was a full year.
+                                                                                                if (endDate < startDate.AddYears(years) && years != 0)
+                                                                                                {
+                                                                                                    years--;
+                                                                                                }
+
+                                                                                                // Calculate the number of months.
+                                                                                                startDate = startDate.AddYears(years);
+
+                                                                                                if (startDate.Year == endDate.Year)
+                                                                                                {
+                                                                                                    months = endDate.Month - startDate.Month;
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    months = (12 - startDate.Month) + endDate.Month;
+                                                                                                }
+
+                                                                                                // Check if last month was a complete month.
+                                                                                                if (endDate < startDate.AddMonths(months) && months != 0)
+                                                                                                {
+                                                                                                    months--;
+                                                                                                }
+
+                                                                                                // Calculate the number of days.
+                                                                                                startDate = startDate.AddMonths(months);
+
+                                                                                                days = (endDate - startDate).Days;
+
+                                                                                                edad = years + " año(s) - " + months + " mes(es)";
+                                                                                            }
+
+                                                                                        }
+                                                                                        @edad
+                                                                                    </span>,
+                                                                                    <span id="FormView1_Label1" style="font-size:13px; ">@(ViewBag.Solicitud.Paciente.Genero == "F" ? "Femenino" : "Masculino") - @(ViewBag.Solicitud.Paciente.FechaNacimiento.ToString("dd/MM/yyyy"))</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td align="right" style="font-weight: bold; font-size:13px; width: 69px;">
+                                                                                    Paciente:
+                                                                                </td>
+                                                                                <td style="width: 300px">
+                                                                                    <span id="FormView1_PACIENTELabel" style="font-size:13px; ">@ViewBag.Solicitud.Paciente.NombreCompleto</span>
+                                                                                </td>
+                                                                                <td align="right" style="font-weight: bold;font-size:13px; ">
+                                                                                    Empresa:
+                                                                                </td>
+                                                                                <td style="width: 245px">
+                                                                                    <span id="FormView1_EMPRESALabel" style="font-size:13px; ">@ViewBag.Solicitud.Empresa.Nombre</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td align="right" style="font-weight: bold;font-size:13px; width: 69px;">
+                                                                                    Dirección:
+                                                                                </td>
+                                                                                <td style="width: 300px">
+                                                                                    <span id="FormView1_Label2" style="font-size:13px;">@ViewBag.Solicitud.Paciente.Direccion</span>
+                                                                                </td>
+                                                                                <td align="right" style="font-weight: bold;font-size:13px;">
+                                                                                    Fecha solicitud:
+                                                                                </td>
+                                                                                <td style="width: 245px">
+                                                                                    <span id="FormView1_FECHA_SOLICITUDLabel" style="font-size:13px;">@ViewBag.Solicitud.Fecha.ToString("dd/MM/yyyy HH:mm:ss")</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td align="right" style="font-weight: bold; font-size:13px;width: 69px;">
+                                                                                    Médico:
+                                                                                </td>
+                                                                                <td style="width: 300px; height: 18px">
+                                                                                    <span id="FormView1_MEDICOLabel" style="font-size: 14px">@ViewBag.Solicitud.Medico.NombreCompleto</span>
+                                                                                </td>
+                                                                                <td align="right" style="font-weight: bold;font-size: 14px">
+                                                                                    Fecha impresión:
+                                                                                </td>
+                                                                                <td style="width: 245px; height: 18px">
+                                                                                    <span id="FormView1_Label4" style="font-size: 14px">@DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+       <tr>
+           <td>
+               @{
+                   List<string> _listado = new List<string>();
+                   foreach (var e in ViewBag.EstudiosSolicitud)
+                   {
+
+                       if (e.Componentes.Count > 1)
+                       {
+                           _listado.Add(e.Nombre);
+                           foreach (var c in e.Componentes)
+                           {
+                               _listado.Add(c.Nombre + "   _________________");
+                           }
+                       }
+                       else if (e.Componentes.Count == 1)
+                       {
+                           _listado.Add("-" + e.Componentes[0].Nombre + "   _________________");
+                       }
+                       else if (e.Componentes.Count == 0)
+                       {
+                           _listado.Add(e.Nombre);
+                       }
+                   }
+                   var columnCount = 0.0;
+                   @*List<string> list = new List<string>();
+            var itemCount = double.Parse(_listado.Count.ToString());
+            var rowCount = Math.Ceiling(double.Parse(_listado.Count.ToString()) / double.Parse("2"));
+            columnCount = Math.Ceiling(itemCount / rowCount); // Added line.
+
+            for (var i = 0; i < rowCount * columnCount; i++)
+            {
+                var index = (int)((i % columnCount) * rowCount + Math.Floor(double.Parse(i.ToString()) / columnCount));
+                if (index < itemCount)
+                {
+                    list.Add(_listado[index]);
+                }
+            }
+            foreach (var e in list)
+            {
+                <tr>
+                    <td valign="top" style="width:50%;">
+                        <table border="0" style="width:100%">
+                            <tbody>
+                                <tr>
+                                    <td valign="top" style="font-weight:bold;width:500px;font-size: 14px"><br>@e</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            }*@
+               int numStatuses = Enumerable.Range(0, _listado.Count).Count(i => _listado[i] != null); //counts not null rows in array
+               int numColumns = _listado.Count > 30 ? 2 : 1;
+               int remainder = numStatuses % numColumns;
+               int floorRows = Convert.ToInt32(Math.Floor(Convert.ToDecimal(numStatuses) / Convert.ToDecimal(numColumns)));
+               int ceilingRows = Convert.ToInt32(Math.Ceiling(Convert.ToDecimal(numStatuses) / Convert.ToDecimal(numColumns)));
+               int numRows = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(numStatuses) / Convert.ToDouble(numColumns)));
+               int colCount = 0;
+               int index = 0;
+               double colWidth = Math.Round((100.00 / numColumns), 2);
+               String statusHTML = null;
+
+               statusHTML = "<table width=\"100%\"><tr><td width=\"" + colWidth + "%\">";
+               for (int i = 0; i < numColumns; i++) // runs for the total number of columns
+               {
+                   if (index < numStatuses) // doesn't print blank array values
+                   {
+                       if (colCount < remainder) // columns that go down all the way
+                       {
+                           for (int j = 0; j < ceilingRows; j++)
+                           {
+                               var est = _listado[index].Replace("-", "");
+                               statusHTML += " <div " + ((!_listado[index].Contains("___") || _listado[index].Contains("-")) ? "style=font-weight:bold;font-size:12.5px;font-family:Calibri;padding-top:9px;" : "style=font-size:12.5px;font-family:Calibri;padding-top:7px;") + "\" class=\"" + est + "\">" + _listado[index] + "</div>";
+                               index++;
+                           }
+                       }
+                       else // columns that don't go down all the way
+                       {
+                           for (int j = 0; j < floorRows; j++)
+                           {
+                               var est = _listado[index].Replace("-", "");
+                               statusHTML += "<div " + ((!_listado[index].Contains("___") || _listado[index].Contains("-")) ? "style=font-weight:bold;font-size:12.5px;font-family:Calibri;padding-top:9px;" : "style=font-size:12.5px;font-family:Calibri;padding-top:7px;") + "\" class=\"" + est + "\">" + _listado[index] + "</div>";
+                               index++;
+                           }
+                       }
+                       colCount++;
+                       if (colCount < numColumns && colCount < numStatuses) // checks if done with column
+                       {
+                           statusHTML += "</td><td width=\"" + colWidth + "%\">";
+                       }
+                       else if (colCount == numColumns)
+                       {
+                           colCount = 0;
+                       }
+                   }
+               }
+               if (numStatuses < numColumns) // if it's only one row
+               {
+                   for (int j = 0; j < numColumns - numStatuses; j++)
+                   {
+                       statusHTML += "</td>\n<td width=\"" + colWidth + "%\">";
+                   }
+               }
+               statusHTML += "</td>\n</tr>\n</table>";
+               }
+               <div>@Html.Raw(statusHTML)</div>
+               
+           </td>
+       </tr>
+    </tbody>
+</table>
+<div id="footer">
+    <div style="color:LightGrey;font-size:50pt;opacity: 0.5;font-weight:bold;text-decoration:none; text-align:right;">@ViewBag.Solicitud.ClaveSolicitud</div><br />
+    <div style="font-size:13px;color:black;">Para efectos de lo dispuesto en la legislación aplicable, el titular manifiesta que el aviso de privacidad le ha sido dado a conocer por LAPCIC. Haber leído y acordado los términos expuestos en este aviso de privacidad y que otorga su consentimiento para que sus datos personales sean tratados conforme a lo señalado en el presente. LAPCIC cuenta con una plataforma digital para brindarle información sobre los servicios contratados. Al acceder a esta plataforma se adquiere la condición de Usuario, lo cuál implica la aceptación lisa y llana de las condiciones de uso. Para conocer el aviso de privacidad completo, es necesario entrar al portal https://servicioslapcic.com.mx/seguridad/paciente y descargarlo directamente</div>
+    <div style="font-size:13px;color:black;"> El laboratorio Lapcic, dará informe sobre las prácticas de análisis a realizar conforme a lo que indica el médico o en su caso a solicitud del mismo paciente, para realizar los estudios de su interés, informándole al paciente sobre los procedimientos que se le van a practicar de la toma de muestra de los diferentes estudios que el interesado solicita. (Norma 007-SSA3-2011)<br /></div><div><div style="Display:inline-block; width:32%; text-align: center; font-size:12px;">firma el Paciente</div><div style="Display:inline-block; width:32%; text-align: center; font-size:12px;">1er Testigo</div><div style="Display:inline-block; width:32%; text-align: center; font-size:12px;">2do Testigo</div></div><strong></strong>
+    </div>
+    <script language="javascript" type="text/javascript">
+        if (window.print())
+            window.close();
+    </script>

@@ -1,0 +1,229 @@
+﻿
+@{
+    ViewBag.Title = "Resultado";
+    Layout = null;
+}
+<html>
+
+<head>
+</head>
+<body>
+    <style type="text/css">
+        body {
+            font-size: 14px;
+            font-family: Calibri;
+        }
+
+        .nota {
+            position: fixed;
+            bottom: 0px;
+            padding: 10px;
+        }
+
+        .ClaveHT {
+            text-align: left;
+            color: #DDD;
+            font-size: 2em;
+        }
+
+        .HRCVE1 {
+            position: absolute;
+            top: 930px;
+            text-align: right;
+            z-index: -1;
+        }
+
+        .HRCVE2 {
+            position: absolute;
+            top: 2200px;
+            text-align: right;
+            z-index: -1;
+        }
+
+        .HRCVE3 {
+            position: absolute;
+            top: 3470px;
+            text-align: right;
+            z-index: -1;
+        }
+
+        .HRCVE4 {
+            position: absolute;
+            top: 4060px;
+            text-align: right;
+            z-index: -1;
+        }
+        .footer {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: white;
+            color: black;
+            text-align: center;
+        }
+    </style>
+    <table style="border-bottom: black 1px solid; width:100%; ">
+        <thead>
+            <tr>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="4" align="right" valign="top" style="float:right">
+                    <strong>Clave: </strong>
+                    <span id="FormView1_Label5">@ViewBag.Solicitud.ClaveSolicitud</span>
+                </td>
+            </tr>
+            <tr>
+                <td align="right" style="font-weight: bold; font-size: 14px; ">
+                    Clave:
+                </td>
+                <td style="width: 300px">
+                    <span id="FormView1_CLAVE_SOLICITUDLabel" style="font-size: 14px; ">@ViewBag.Solicitud.ClaveSolicitud</span>
+                </td>
+                <td align="right" style="font-weight: bold;font-size: 14px; ">
+                    Edad, Sexo:
+                </td>
+                <td style="width: 284px">
+                    <span id="FormView1_EDAD_PACIENTELabel" style="font-size: 14px; ">@ViewBag.Solicitud.Paciente.Edad</span>,
+                    <span id="FormView1_Label1" style="font-size: 14px; ">M</span>
+                </td>
+            </tr>
+            <tr>
+                <td align="right" style="font-weight: bold; font-size: 14px; width: 69px;">
+                    Paciente:
+                </td>
+                <td style="width: 300px">
+                    <span id="FormView1_PACIENTELabel" style="font-size: 14px; ">@ViewBag.Solicitud.Paciente.NombreCompleto</span>
+                </td>
+                <td align="right" style="font-weight: bold;font-size: 14px; ">
+                    Empresa:
+                </td>
+                <td style="width: 284px">
+                    <span id="FormView1_EMPRESALabel" style="font-size: 14px; ">@ViewBag.Solicitud.Empresa.Nombre</span>
+                </td>
+            </tr>
+            <tr>
+                <td align="right" style="font-weight: bold;font-size: 14px; width: 69px;">
+                    Dirección:
+                </td>
+                <td style="width: 300px">
+                    <span id="FormView1_Label2" style="font-size: 14px;">@ViewBag.Solicitud.Paciente.Direccion</span>
+                </td>
+                <td align="right" style="font-weight: bold;font-size: 14px;">
+                    Fecha solicitud:
+                </td>
+                <td style="width: 284px">
+                    <span id="FormView1_FECHA_SOLICITUDLabel" style="font-size: 14px;">@ViewBag.Solicitud.Fecha.ToString("dd/MM/yyyy HH:mm:ss")</span>
+                </td>
+            </tr>
+            <tr>
+                <td align="right" style="font-weight: bold; font-size: 14px;width: 69px;">
+                    Médico:
+                </td>
+                <td style="width: 300px; height: 18px">
+                    <span id="FormView1_MEDICOLabel" style="font-size: 14px">@ViewBag.Solicitud.Medico.NombreCompleto</span>
+                </td>
+                <td align="right" style="font-weight: bold;font-size: 14px">
+                    Fecha impresión:
+                </td>
+                <td style="width: 284px; height: 18px">
+                    <span id="FormView1_Label4" style="font-size: 14px">@DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")</span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <center id="FormView1_LABORATORIOLabel" style="font-size: 14px">@ViewBag.Solicitud.Laboratorio.Nombre</center>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" style="font-weight:bold;font-size: 14px;width:20%; float:left;">ESTUDIO</td>
+                <td valign="top" style="font-weight:normal;font-size: 14px;width:25%;float:left;">RESULTADO</td>
+                <td valign="top" style="font-weight:normal;font-size: 14px;width:30%; float:left;"> NORMAL</td>
+                <td valign="top" style="font-weight:normal;font-size: 14px;width:25%;float:left;"> OBSERVACIONES</td>
+            </tr>
+            @foreach (var r in ViewBag.Resultado)
+            {
+
+                if (r.Titulo == "1")
+                {
+                    <tr>
+                        <td valign="top" style="border-bottom:1px solid #ccc; font-weight:@(r.Negrita ? "bold" : "normal");font-size: 14px;width:25%;padding-top:10px;margin-top:50px;">@r.NombreEstudio</td>
+                        <td valign="top" style="border-bottom:1px solid #ccc;font-weight:@(r.FueraRango ? "bold" : "normal");font-size: 14px;width:20%;padding-top:10px;margin-top:50px;">@(r.Resultado + " " + r.Unidad)</td>
+                        <td valign="top" style="border-bottom:1px solid #ccc;font-weight:normal;font-size: 14px;width:30%;padding-top:10px;margin-top:50px;">
+                            @if (r.TipoCaptura.ToString() == "4" && r.Observaciones != "")
+                            {
+                                @r.Observaciones
+                            }
+                            else
+                            {
+                                if (r.Normal != "")
+                                {
+                                    @(r.Normal)
+                                }
+                                else
+                                {
+                                    @((r.Titulo == "1" && r.Titulo == "2" && r.Titulo == "3" && r.Titulo == "4") ? r.MIN + " - " + r.MAX : "")
+                                }
+                            }
+
+                        </td>
+                        <td valign="top" style="border-bottom:1px solid #ccc;font-weight:normal;font-size: 14px;width:25%">@r.Observaciones</td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        @if (r.EstudioComponente.ToString() == "-1")
+                        {
+                            <td valign="top" colspan="4" style="font-size: 14px;width:25%; padding-left:30px;font-weight:bold;border-bottom:1px solid #ccc;margin-top:15px;">@r.NombreEstudio</td>
+                        }
+                        else
+                        {
+                            <td valign="top" style="font-size: 14px;width:20%; padding-left:30px;">@r.NombreEstudio</td>
+                            <td valign="top" style="font-weight:@(r.FueraRango ? "bold" : "normal");font-size: 14px;width:20%;">@(r.Resultado + " " + r.Unidad)</td>
+                            <td valign="top" style="font-weight:normal;font-size: 14px;width:30%;">
+                                @if (r.TipoCaptura.ToString() == "4" && r.Observaciones != "")
+                                {
+                                    @r.Observaciones
+                                }
+                                else
+                                {
+                                    if (r.Normal != "")
+                                    {
+                                        @(r.Normal)
+                                    }
+                                    else
+                                    {
+                                        @((r.Titulo == "1" && r.Titulo == "2" && r.Titulo == "3" && r.Titulo == "4") ? r.MIN + " - " + r.MAX : "")
+                                    }
+                                }
+
+                            </td>
+                            <td valign="top" style="font-weight:normal;font-size: 14px;width:25%">@r.Observaciones</td>
+                        }
+                    </tr>
+                }
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4">
+                    QFB. Yazmin Sanchez Castillo<br />
+                    RPF 9048926 SSG2996 (Norma 007 - SSA3 - 2011) Universidad de Guanajuato
+
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+    <script language="javascript" type="text/javascript">
+            //if (window.print())
+              //  window.close();
+    </script>
+
+</body>
+
+</html>
+

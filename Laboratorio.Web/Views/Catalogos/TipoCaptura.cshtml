@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewBag.Title = "TipoPago";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="m-portlet m-portlet--tabs m-portlet--accent m-portlet--head-solid-bg m-portlet--head-sm">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <i class="icon-layers font-blue"></i>
+            <span class="caption-subject bold uppercase m--font-metal">
+                TIPO DE CAPTURA
+            </span>
+        </div>
+    </div>
+    <div class="m-portlet__body">
+        <table class="table table-striped m-table" id="tblUsuarios">
+            <thead>
+                <tr style="height: 54px;">
+                    <th style="width:10%"></th>
+                    <th style="width:60%"> Descripcion </th>
+                    <th style="width:auto;"> </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < @ViewBag.Tipos.Count; i++)
+                {
+                    <tr>
+                        <td style="width:10%">@(i + 1)</td>
+                        <td style="width:50%">@(ViewBag.Tipos[i].Descripcion)</td>
+                        <td style="width:auto;">
+                            <a onclick="Eliminar(@ViewBag.Tipos[i].Id)" class="btn btn-outline btn-circle dark btn-sm black" title="Eliminar">
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#tblUsuarios').DataTable();
+        $('#tblUsuarios').removeClass('dataTable');
+    });
+</script>

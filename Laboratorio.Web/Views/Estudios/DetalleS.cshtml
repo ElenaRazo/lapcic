@@ -1,0 +1,80 @@
+﻿
+@{
+    ViewBag.Title = "Resultado";
+    Layout = null;
+}
+<html>
+<body style="margin-top:100px; ">
+    <table border="0" style="width:80%; margin:50px; display:@(((int)ViewBag.EstatusSolicitud < 5) ? "inline-table": "none")" >
+        <tbody>
+            <tr><td colspan="3" onclick="javascript: $('#detalleEstudioPaciente').hide(); $('#listadoEstudioPaciente').show();" style="text-align:right;">Cerrar</td></tr>
+            <tr>
+                <td valign="top" style="font-weight:bold;font-size: 11px;">Lista de estudios solicitados</td>
+            </tr>
+
+            @foreach (var r in ViewBag.EstudiosSolicitud)
+            {
+                <tr>
+                    <td valign="top" style="font-size: 11px;">* @r.Nombre</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+@if (ViewBag.Pagado && ViewBag.Resultado != null && (int)ViewBag.EstatusSolicitud > 4)
+{
+    <table border="0" style="width:80%; margin:50px;">
+        <tbody>
+            <tr><td  onclick="javascript: $('#detalleEstudioPaciente').hide(); $('#listadoEstudioPaciente').show();" style="text-align:right;">Cerrar</td></tr>
+            <tr>
+                <td valign="top" style="font-weight:bold;font-size: 11px;width:20%">Estudio</td>
+                <td valign="top" style="font-weight:normal;font-size: 11px;width:25%;">Resultado</td>
+                <td valign="top" style="font-weight:normal;font-size: 11px;width:55%;"> Normal</td>
+            </tr>
+
+            @foreach (var r in ViewBag.Resultado)
+            {
+                if (r.Titulo != "1" && r.Titulo != "2" && r.Titulo != "3" && r.Titulo != "4")
+                {
+                    <tr>
+                        <td colspan="4" valign="top" style="font-weight:bold;font-size: 11px; padding-top:10px;"><br>@r.NombreEstudio</td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td valign="top" style="font-weight:bold;font-size: 11px;width:20%">@r.NombreEstudio</td>
+                        <td valign="top" style="font-weight:@(r.FueraRango ? "bold" : "normal");font-size: 11px;width:25%;">@(r.Resultado + " " + r.Unidad)</td>
+                        <td valign="top" style="font-weight:normal;font-size: 11px;width:55%;">
+                            @if (r.TipoCaptura.ToString() == "4" && r.Observaciones != "")
+                            {
+                                @r.Observaciones
+                            }
+                            else
+                            {
+                                if (r.Normal != "")
+                                {
+                                    @(r.Normal)
+                                }
+                                else
+                                {
+                                    @((r.Titulo == "1" && r.Titulo == "2" && r.Titulo == "3" && r.Titulo == "4") ? r.MIN + " - " + r.MAX : "")
+                                }
+                            }
+
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}
+    
+    <script language="javascript" type="text/javascript">
+            //if (window.print())
+              //  window.close();
+    </script>
+
+</body>
+
+</html>
+

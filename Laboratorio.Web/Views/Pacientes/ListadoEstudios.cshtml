@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewBag.Title = "Estudios";
+    Layout = null;
+}
+<div class="m-portlet__body" id="listado">
+    <table class="table table-striped m-table" id="tblUsuarios">
+        <thead>
+            <tr style="height: 30px; background-color:#4c9a79; color:white;">       
+                <th style="width:5%"> Clave </th>
+                <th style="width:32%"> Medico/Organización </th>
+                <th style="width:8%"> Total </th>
+                <th style="width:8%"> Debe </th>
+                <th style="width:20%"> Estatus </th>
+                <th style="width:16%"> Fecha </th>
+                <th style="width:auto;"> </th>
+            </tr>
+        </thead>
+        <tbody>
+           
+            @for (int i = 0; i < @ViewBag.Solicitudes.Count; i++)
+            {
+                <tr>
+                    <td style="width:10%">@(ViewBag.Solicitudes[i].ClaveSolicitud)</td>
+                    <td style="width:32%">@(ViewBag.Solicitudes[i].Medico.NombreCompleto)<br />@(ViewBag.Solicitudes[i].Empresa.Nombre)</td>
+                    <td style="width:8%">@(ViewBag.Solicitudes[i].Total)</td>
+                    <td style="width:8%">@(ViewBag.Solicitudes[i].Debe)</td>
+                    <td style="width:20%">@(ViewBag.Solicitudes[i].EstatusSolicitud)</td>
+                    <td style="width:16%">@(ViewBag.Solicitudes[i].Fecha)</td>
+                    <td style="width:auto;">
+                        <a onclick="Eliminar(@ViewBag.Solicitudes[i].Id)" class="btn btn-outline btn-circle dark btn-sm black" title="Eliminar">
+                            <i class="fa fa-trash-o"></i>
+                        </a>
+                        <a href="@Url.Action("DetalleSolicitud","Estudios", new { Id = @ViewBag.Solicitudes[i].Id })" class="btn btn-outline btn-circle dark btn-sm black" title="Detalle">
+                            <i class="fa fa-search"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
